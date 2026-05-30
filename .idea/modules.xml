@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/stock_market_tracker_mobile_app.iml" filepath="$PROJECT_DIR$/stock_market_tracker_mobile_app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/stock_market_tracker_mobile_app_android.iml" filepath="$PROJECT_DIR$/android/stock_market_tracker_mobile_app_android.iml" />
     </modules>
   </component>
 </project>
