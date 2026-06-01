@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
 
 class NewsCard extends StatelessWidget {
   final String title;
@@ -24,7 +25,7 @@ class NewsCard extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.backgroundColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -51,7 +52,7 @@ class NewsCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: AppColors.textPrimaryColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
@@ -64,7 +65,7 @@ class NewsCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    color: Colors.grey,
+                    color: AppColors.textSecondaryColor,
                     fontSize: 12,
                   ),
                 ),
@@ -74,7 +75,7 @@ class NewsCard extends StatelessWidget {
                 Text(
                   time,
                   style: const TextStyle(
-                    color: Colors.grey,
+                    color: AppColors.textSecondaryColor,
                     fontSize: 11,
                   ),
                 ),
