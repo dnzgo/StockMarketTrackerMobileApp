@@ -56,6 +56,7 @@ class StockCard extends StatelessWidget{
             ],
           ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
