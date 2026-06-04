@@ -15,8 +15,11 @@ class SearchBarWidget extends StatelessWidget{
     return Container(
       child: TextField(
         decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40)
+          ),
           hintText: hintText,
-          suffixIcon: Icon(Icons.search),
+          prefixIcon: Icon(Icons.search),
         ),
         onChanged: (searchText) { onChanged(searchText);},
       ),

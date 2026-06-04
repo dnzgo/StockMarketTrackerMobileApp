@@ -20,9 +20,10 @@ class _NewsExploreState extends State<NewsExploreScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: 0,
+                vertical: 2,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     "News",

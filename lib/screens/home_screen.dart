@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               SizedBox(height: 16),
-              SectionTitle(title: "Quick Overview"),
+              SectionTitle(title: "Market Overview"),
               SizedBox(height: 0),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              SectionTitle(title: "Hot Stocks", actionText: "See all"),
+              SectionTitle(title: "Trending Stocks", actionText: "See all"),
               StockCard(
                   symbol: "TSLA",
                   companyName: "Tesla, Inc.",
@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   changePercentage: 2.333,
                   isPositive: true
               ),
-              SectionTitle(title: "Hot News", actionText: "See all"),
+              SectionTitle(title: "Trending News", actionText: "See all"),
               NewsCard(
                 title: "Apple unveils new AI-powered devices",
                 description:
