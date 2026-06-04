@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class SearchBar extends StatelessWidget{
+class SearchBarWidget extends StatelessWidget{
   final String hintText;
   final ValueChanged<String> onChanged;
 
-  const SearchBar({
+  const SearchBarWidget({
     super.key,
     required this.hintText,
     required this.onChanged
