@@ -27,15 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 0,
-                    ),
-                    child: Column(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -53,20 +50,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                           ),
-                        )
+                        ),
                       ],
                     ),
 
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      CircleAvatar(
-                        child: Icon(Icons.person_outline),
-                      )
-                    ],
-                  )
-                ],
+                    CircleAvatar(
+                      radius: 30,
+                      child: Icon(
+                        Icons.person_outline,
+                        size: 45,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 16),
               SectionTitle(title: "Market Overview"),
