@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/screens/news_detail_screen.dart';
+import '../models/news_article.dart';
+import '../screens/news_detail_screen.dart';
 import '../widgets/news_card.dart';
 import '../widgets/search_bar.dart';
 
@@ -11,6 +12,27 @@ class NewsExploreScreen extends StatefulWidget {
 }
 
 class _NewsExploreState extends State<NewsExploreScreen> {
+
+  final List<NewsArticle> latestNews = [
+    NewsArticle(
+      title: "Apple unveils new AI-powered devices",
+      description: "Apple introduced new AI features.",
+      articleText: "Full article text here...",
+      imageURL: "https://...",
+      source: "Reuters",
+      date: "June 6, 2026",
+    ),
+
+    NewsArticle(
+      title: "Tesla stock jumps after strong earnings",
+      description: "Tesla shares surged after earnings.",
+      articleText: "Full article text here...",
+      imageURL: "https://...",
+      source: "Bloomberg",
+      date: "June 5, 2026",
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,73 +68,28 @@ class _NewsExploreState extends State<NewsExploreScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    NewsCard(
-                      title: "Apple unveils new AI-powered devices",
-                      description:
-                      "Apple introduced new AI features for its devices.",
-                      imageUrl:
-                      "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800",
-                      time: "4h ago",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NewsDetailScreen(
-                              title: "Apple launches new chip for apple AI",
-                              articleText: "Full article text is here",
-                              source: "Reuters",
-                              date: "June 6, 2026",
-                              imageURL: "",
-                            )
-                          )
-                        );
-                      },
-                    ),
-                    NewsCard(
-                      title: "Tesla stock jumps after strong earnings",
-                      description:
-                      "Tesla shares surged after earnings report.",
-                      imageUrl:
-                      "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800",
-                      time: "2h ago",
-                      onTap: () {},
-                    ),
-                    NewsCard(
-                      title: "NVIDIA expands AI infrastructure",
-                      description:
-                      "NVIDIA announced new AI investments worldwide.",
-                      imageUrl:
-                      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800",
-                      time: "1h ago",
-                      onTap: () {},
-                    ),
-                    NewsCard(
-                      title: "Microsoft launches new cloud services",
-                      description:
-                      "New Azure features were announced today.",
-                      imageUrl:
-                      "https://images.unsplash.com/photo-1633419461186-7d40a38105ec?w=800",
-                      time: "5h ago",
-                      onTap: () {},
-                    ),
-                    NewsCard(
-                      title: "Amazon reports strong quarterly growth",
-                      description:
-                      "Amazon exceeded analyst expectations.",
-                      imageUrl:
-                      "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=800",
-                      time: "7h ago",
-                      onTap: () {},
-                    ),
-                    NewsCard(
-                      title: "Amazon reports strong quarterly growth",
-                      description:
-                      "Amazon exceeded analyst expectations.",
-                      imageUrl:
-                      "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=800",
-                      time: "7h ago",
-                      onTap: () {},
-                    ),
+                    ...latestNews.map((news) {
+                      return NewsCard(
+                        title: news.title,
+                        description: news.description,
+                        imageURL: news.imageURL,
+                        date: news.date,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewsDetailScreen(
+                                  title: news.title,
+                                  articleText: news.articleText,
+                                  source: news.source,
+                                  date: news.date,
+                                  imageURL: news.imageURL,
+                                )
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
                   ],
                 ),
               ),

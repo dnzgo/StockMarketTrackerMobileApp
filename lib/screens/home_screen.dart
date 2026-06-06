@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/stock.dart';
+import '../models/news_article.dart';
 import '../widgets/stock_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/quick_overview_card.dart';
@@ -36,6 +37,26 @@ class _HomeScreenState extends State<HomeScreen> {
         companyName: 'Tesla, Inc.',
         price: 321.33,
         changePercentage: -1.2
+    ),
+  ];
+
+  final List<NewsArticle> trendingNews = [
+    NewsArticle(
+      title: "Apple unveils new AI-powered devices",
+      description: "Apple introduced new AI features.",
+      articleText: "Full article text here...",
+      imageURL: "https://...",
+      source: "Reuters",
+      date: "June 6, 2026",
+    ),
+
+    NewsArticle(
+      title: "Tesla stock jumps after strong earnings",
+      description: "Tesla shares surged after earnings.",
+      articleText: "Full article text here...",
+      imageURL: "https://...",
+      source: "Bloomberg",
+      date: "June 5, 2026",
     ),
   ];
 
@@ -130,37 +151,30 @@ class _HomeScreenState extends State<HomeScreen> {
               }).toList(),
 
               SectionTitle(title: "Trending News", actionText: "See all"),
-              NewsCard(
-                title: "Apple unveils new AI-powered devices",
-                description:
-                "Apple introduced new AI features for its devices.",
-                imageUrl:
-                "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800",
-                time: "4h ago",
-                onTap: () {
-                  Navigator.push(
+
+              ...trendingNews.map((news) {
+                return NewsCard(
+                  title: news.title,
+                  description: news.description,
+                  imageURL: news.imageURL,
+                  date: news.date,
+                  onTap: () {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NewsDetailScreen(
-                            title: "Apple launches new chip for apple AI",
-                            articleText: "Veranstaltungen von Apple bieten sowie eine direktere Möglichkeit, sich über die neuesten Tools, Technologien und Ressourcen von Apple zu informieren. Die Räume befinden sich in Mitte, im Herzen von Berlins florierendem Business- und Startup-Ökosystem, und schließen an die Entwicklerzentren in Bengaluru, Cupertino, Shanghai und Singapur an.Europa ist die Heimat einer außergewöhnlichen Entwickler-Community, die Apps entwickelt und damit Verbindungen schafft, Kreativität fördert und Innovationen vorantreibt“, sagt Susan Prescott, Vice President of Worldwide Developer Relations bei Apple. „Wir waren schon immer davon überzeugt, dass Unglaubliches entsteht, wenn Entwickler:innen über die richtigen Tools und Ressourcen verfügen, um ihre beste Arbeit umzusetzen. Auf dieser Überzeugung basiert dieses Zentrum, und wir freuen uns darauf, zu sehen, was die Community in Zukunft entwickeln wird.“Das Apple Developer Center Berlin ist für Teams jeder Größe und in jeder Phase der App-Entwicklung konzipiert. Es wird als Basis für Präsenzveranstaltungen, Workshops und Einzeltermine dienen. Regelmäßige Veranstaltungen werden Entwickler:innen helfen, ihre Fähigkeiten zu verbessern und das Design, die Qualität und die Leistung ihrer Apps für iOS, iPadOS, macOS, tvOS, visionOS und watchOS zu optimieren. Die Veranstaltungen spiegeln die Vielfalt und Kreativität der europäischen Entwickler-Community wider. Darüber hinaus gibt es Bereiche für Diskussionen und spezielle Labore, in denen Entwickler:innen praktische Unterstützung durch Expert:innen von Apple in mehreren Sprachen erhalten können.",
-                            source: "Reuters",
-                            date: "June 6, 2026",
-                            imageURL: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800",
-                          )
-                      )
-                  );
-                },
-              ),
-              NewsCard(
-                title: "Tesla stock jumps after strong earnings",
-                description:
-                "Tesla shares surged after earnings report.",
-                imageUrl:
-                "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800",
-                time: "2h ago",
-                onTap: () {},
-              ),
+                        builder: (context) => NewsDetailScreen(
+                            title: news.title,
+                            articleText: news.articleText,
+                            source: news.source,
+                            date: news.date,
+                            imageURL: news.imageURL,
+                        )
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+
             ],
           ),
         ),

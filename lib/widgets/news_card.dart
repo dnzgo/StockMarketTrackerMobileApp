@@ -4,16 +4,16 @@ import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
 class NewsCard extends StatelessWidget {
   final String title;
   final String description;
-  final String imageUrl;
-  final String time;
+  final String imageURL;
+  final String date;
   final VoidCallback onTap;
 
   const NewsCard({
     super.key,
     required this.title,
     required this.description,
-    required this.imageUrl,
-    required this.time,
+    required this.imageURL,
+    required this.date,
     required this.onTap,
   });
 
@@ -39,7 +39,7 @@ class NewsCard extends StatelessWidget {
               child: SizedBox(
                 width: 120,
                 child: Image.network(
-                  imageUrl,
+                  imageURL,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -78,7 +78,7 @@ class NewsCard extends StatelessWidget {
                     const SizedBox(height: 6),
 
                     Text(
-                      time,
+                      date,
                       style: const TextStyle(
                         color: AppColors.textSecondaryColor,
                         fontSize: 11,
