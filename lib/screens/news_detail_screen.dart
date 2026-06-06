@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/screens/stock_detail_screen.dart';
 import '../widgets/section_title.dart';
@@ -36,12 +38,15 @@ class NewsDetailScreen extends StatelessWidget{
           children: [
             Text(title),
             SizedBox(height: 16,),
-            Container( // container for image
-              height: 220,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: SizedBox(
+                width: double.infinity,
+                height: 220,
+                child: Image.network(
+                  imageURL,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             SizedBox(height: 16,),

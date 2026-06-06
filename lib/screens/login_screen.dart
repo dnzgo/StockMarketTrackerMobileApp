@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/screens/main_navigation_screen.dart';
+import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
 
 class LoginScreen extends StatefulWidget{
   const LoginScreen({super.key});
@@ -17,10 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.purple,
-        title: Text("StockMarket"),
-      ),
+      backgroundColor: Colors.transparent,
       body: Padding(
         padding: EdgeInsets.all(24),
         child: Center(
