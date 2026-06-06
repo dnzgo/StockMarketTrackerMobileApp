@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_theme.dart';
 
 class PortfolioSummaryCard extends StatelessWidget{
   final double totalValue;
@@ -17,17 +18,38 @@ class PortfolioSummaryCard extends StatelessWidget{
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white12,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Total Balance"),
+          Text(
+            "Total Balance",
+            style: const TextStyle(
+              color: AppColors.textPrimaryColor,
+              fontSize: 15,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
           SizedBox(height: 6,),
-          Text(totalValue.toStringAsFixed(2) + "€"),
+          Text(
+            totalValue.toStringAsFixed(2) + "€",
+            style: const TextStyle(
+              color: AppColors.textPrimaryColor,
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           SizedBox(height: 4,),
-          Text(totalPnL.toStringAsFixed(2) + "€ (" + totalPnLPercentage.toStringAsFixed(2) + "%)"),
+          Text(
+            totalPnL.toStringAsFixed(2) + "€ (" + totalPnLPercentage.toStringAsFixed(2) + "%)",
+            style: const TextStyle(
+              color: AppColors.textPrimaryColor,
+              fontSize: 15,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
           SizedBox(height: 12,),
           Container(
             height: 220,
