@@ -55,7 +55,7 @@ class PortfolioSummaryCard extends StatelessWidget{
             height: 220,
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.white12,
                 borderRadius: BorderRadius.circular(10)
             ),
           ),
