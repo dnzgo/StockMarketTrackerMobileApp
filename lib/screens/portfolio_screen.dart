@@ -104,6 +104,27 @@ class _PortfolioState extends State<PortfolioScreen> {
                   );
                 },
               ),
+              StockCard(
+                symbol: "TSLA",
+                companyName: "Tesla Inc.",
+                price: 321.333,
+                changePercentage: -1.2,
+                isPositive: false,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => StockDetailScreen(
+                            symbol: "TSLA",
+                            companyName: "Tesla Inc.",
+                            price: 321.333,
+                            changePercentage: -1.2,
+                            isPositive: false,
+                          )
+                      )
+                  );
+                },
+              ),
             ],
           ),
         )

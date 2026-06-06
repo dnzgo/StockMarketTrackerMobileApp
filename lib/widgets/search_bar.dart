@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_theme.dart';
 
 class SearchBarWidget extends StatelessWidget{
   final String hintText;
@@ -13,10 +14,11 @@ class SearchBarWidget extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: AppColors.glassCardDecoration,
       child: TextField(
         decoration: InputDecoration(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40)
+            borderRadius: BorderRadius.circular(20)
           ),
           hintText: hintText,
           prefixIcon: Icon(Icons.search),

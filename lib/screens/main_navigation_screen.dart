@@ -100,7 +100,7 @@ class _MainNavigationState extends State<MainNavigationScreen> {
           size: 34,
           color: isSelected
               ? Colors.white
-              : Colors.white.withOpacity(0.7),
+              : Colors.white.withOpacity(0.4),
         ),
       ),
     );

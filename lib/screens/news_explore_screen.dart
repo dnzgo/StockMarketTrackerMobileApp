@@ -104,6 +104,15 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                       time: "7h ago",
                       onTap: () {},
                     ),
+                    NewsCard(
+                      title: "Amazon reports strong quarterly growth",
+                      description:
+                      "Amazon exceeded analyst expectations.",
+                      imageUrl:
+                      "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=800",
+                      time: "7h ago",
+                      onTap: () {},
+                    ),
                   ],
                 ),
               ),
