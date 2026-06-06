@@ -28,10 +28,7 @@ class NewsCard extends StatelessWidget {
           vertical: 8,
         ),
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: AppColors.backgroundColor,
-          borderRadius: BorderRadius.circular(16),
-        ),
+        decoration: AppColors.glassCardDecoration,
         child: Row(
           children: [
             ClipRRect(

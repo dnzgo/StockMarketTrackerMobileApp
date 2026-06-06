@@ -32,10 +32,7 @@ class StockCard extends StatelessWidget{
           horizontal: 24,
           vertical: 12,
         ),
-        decoration: BoxDecoration(
-            color: AppColors.backgroundColor,
-            borderRadius: BorderRadius.circular(16)
-        ),
+        decoration: AppColors.glassCardDecoration,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
 

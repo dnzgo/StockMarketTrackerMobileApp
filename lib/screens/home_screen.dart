@@ -4,6 +4,7 @@ import '../widgets/section_title.dart';
 import '../widgets/quick_overview_card.dart';
 import '../screens/stock_detail_screen.dart';
 import '../screens/news_detail_screen.dart';
+import '../utils/app_theme.dart';
 
 import '../widgets/news_card.dart';
 
@@ -18,11 +19,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 16
+            vertical: 10,
           ),
           child: Column(
             children: [
@@ -32,8 +33,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Welcome back,"),
-                      Text("Deniz Gözcü")
+                      Text(
+                        "Welcome back,",
+                        style: const TextStyle(
+                          color: AppColors.textPrimaryColor,
+                          fontSize: 15,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      Text(
+                        "Deniz Gözcü",
+                        style: const TextStyle(
+                          color: AppColors.textPrimaryColor,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
                     ],
                   ),
                   Column(

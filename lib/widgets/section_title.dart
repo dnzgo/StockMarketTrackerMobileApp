@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_theme.dart';
 
 class SectionTitle extends StatelessWidget{
   final String title;
@@ -18,9 +19,26 @@ class SectionTitle extends StatelessWidget{
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title),
+          Text(
+              title,
+              style: const TextStyle(
+                color: AppColors.textPrimaryColor,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+          ),
+
           actionText != null
-              ? TextButton(onPressed: () {}, child: Text(actionText!))
+              ? TextButton(onPressed: () {},
+              child: Text(
+                actionText!,
+                style: TextStyle(
+                  color: AppColors.textSecondaryColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+          )
               : SizedBox.shrink()
 
         ],

@@ -18,14 +18,11 @@ class QuickOverviewCard extends StatelessWidget{
     return Container(
       height: 100,
       margin: const EdgeInsets.symmetric(
-        horizontal: 16,
+        horizontal: 8,
         vertical: 8,
       ),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: AppColors.glassCardDecoration,
       child: Column(
         children: [
           Text(marketName,

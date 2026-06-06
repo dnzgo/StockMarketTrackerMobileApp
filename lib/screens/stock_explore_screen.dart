@@ -13,6 +13,7 @@ class _StockExploreState extends State<StockExploreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SafeArea(
           child: Column(
             children: [
@@ -22,8 +23,16 @@ class _StockExploreState extends State<StockExploreScreen> {
                   vertical: 0,
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Stocks"),
+                    const Text(
+                      "Stocks",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(height: 4),
                     SearchBarWidget(hintText: "Search Stocks...", onChanged: (text) {},),
                   ],
