@@ -27,60 +27,65 @@ class NewsCard extends StatelessWidget {
           horizontal: 16,
           vertical: 8,
         ),
-        padding: const EdgeInsets.all(12),
         decoration: AppColors.glassCardDecoration,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                imageUrl,
-                width: 90,
-                height: 90,
-                fit: BoxFit.cover,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                bottomLeft: Radius.circular(16),
+              ),
+              child: SizedBox(
+                width: 120,
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
 
-            const SizedBox(width: 12),
-
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: AppColors.textPrimaryColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppColors.textPrimaryColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
 
-                  const SizedBox(height: 6),
+                    const SizedBox(height: 6),
 
-                  Text(
-                    description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: AppColors.textSecondaryColor,
-                      fontSize: 12,
+                    Text(
+                      description,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppColors.textSecondaryColor,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
 
-                  const SizedBox(height: 6),
+                    const SizedBox(height: 6),
 
-                  Text(
-                    time,
-                    style: const TextStyle(
-                      color: AppColors.textSecondaryColor,
-                      fontSize: 11,
+                    Text(
+                      time,
+                      style: const TextStyle(
+                        color: AppColors.textSecondaryColor,
+                        fontSize: 11,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
