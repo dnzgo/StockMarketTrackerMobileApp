@@ -30,26 +30,33 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Welcome back,",
-                        style: const TextStyle(
-                          color: AppColors.textPrimaryColor,
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Welcome back,",
+                          style: const TextStyle(
+                            color: AppColors.textPrimaryColor,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "Deniz Gözcü",
-                        style: const TextStyle(
-                          color: AppColors.textPrimaryColor,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
+                        Text(
+                          "Deniz Gözcü",
+                          style: const TextStyle(
+                            color: AppColors.textPrimaryColor,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,

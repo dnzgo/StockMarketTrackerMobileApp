@@ -14,6 +14,7 @@ class _PortfolioState extends State<PortfolioScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text("Portfolio"),
       ),
