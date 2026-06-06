@@ -16,7 +16,16 @@ class _PortfolioState extends State<PortfolioScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text("Portfolio"),
+        backgroundColor: Colors.transparent,
+        centerTitle: false,
+        title: Text(
+          "Portfolio",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
