@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/stock.dart';
 import '../widgets/stock_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/quick_overview_card.dart';
@@ -16,6 +17,28 @@ class HomeScreen extends StatefulWidget{
 
 }
 class _HomeScreenState extends State<HomeScreen> {
+
+  final List<Stock> trendingStocks = [
+    Stock(
+      symbol: 'TSLA',
+      companyName: 'Tesla, Inc.',
+      price: 321.33,
+      changePercentage: -1.2,
+    ),
+    Stock(
+      symbol: 'NVDA',
+      companyName: 'NVIDIA',
+      price: 142.81,
+      changePercentage: 2.4,
+    ),
+    Stock(
+        symbol: 'TSLA',
+        companyName: 'Tesla, Inc.',
+        price: 321.33,
+        changePercentage: -1.2
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,69 +104,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SectionTitle(title: "Trending Stocks", actionText: "See all"),
-              StockCard(
-                symbol: "TSLA",
-                companyName: "Tesla Inc.",
-                price: 321.333,
-                changePercentage: -1.2,
-                isPositive: false,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StockDetailScreen(
-                            symbol: "TSLA",
-                            companyName: "Tesla Inc.",
-                            price: 321.333,
-                            changePercentage: -1.2,
-                            isPositive: false,
-                          )
-                      )
-                  );
-                },
-              ),
-              StockCard(
-                symbol: "TSLA",
-                companyName: "Tesla Inc.",
-                price: 321.333,
-                changePercentage: -1.2,
-                isPositive: false,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StockDetailScreen(
-                            symbol: "TSLA",
-                            companyName: "Tesla Inc.",
-                            price: 321.333,
-                            changePercentage: -1.2,
-                            isPositive: false,
-                          )
-                      )
-                  );
-                },
-              ),
-              StockCard(
-                symbol: "TSLA",
-                companyName: "Tesla Inc.",
-                price: 321.333,
-                changePercentage: -1.2,
-                isPositive: false,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StockDetailScreen(
-                            symbol: "TSLA",
-                            companyName: "Tesla Inc.",
-                            price: 321.333,
-                            changePercentage: -1.2,
-                            isPositive: false,
-                          )
-                      )
-                  );
-                },
-              ),
+
+              ...trendingStocks.map((stock) {
+                return StockCard(
+                    symbol: stock.symbol,
+                    companyName: stock.companyName,
+                    price: stock.price,
+                    changePercentage: stock.changePercentage,
+                    isPositive: stock.isPositive,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StockDetailScreen(
+                                symbol: stock.symbol,
+                                companyName: stock.companyName,
+                                price: stock.price,
+                                changePercentage: stock.changePercentage,
+                                isPositive: stock.isPositive,
+                            ),
+                        ),
+                      );
+                    },
+                );
+              }).toList(),
+
               SectionTitle(title: "Trending News", actionText: "See all"),
               NewsCard(
                 title: "Apple unveils new AI-powered devices",
