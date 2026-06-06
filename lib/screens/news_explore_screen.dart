@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_market_tracker_mobile_app/screens/news_detail_screen.dart';
 import '../widgets/news_card.dart';
 import '../widgets/search_bar.dart';
 
@@ -52,6 +53,20 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                       imageUrl:
                       "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800",
                       time: "4h ago",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewsDetailScreen(
+                              title: "Apple launches new chip for apple AI",
+                              articleText: "Full article text is here",
+                              source: "Reuters",
+                              date: "June 6, 2026",
+                              imageURL: "",
+                            )
+                          )
+                        );
+                      },
                     ),
                     NewsCard(
                       title: "Tesla stock jumps after strong earnings",
@@ -60,6 +75,7 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                       imageUrl:
                       "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800",
                       time: "2h ago",
+                      onTap: () {},
                     ),
                     NewsCard(
                       title: "NVIDIA expands AI infrastructure",
@@ -68,6 +84,7 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                       imageUrl:
                       "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800",
                       time: "1h ago",
+                      onTap: () {},
                     ),
                     NewsCard(
                       title: "Microsoft launches new cloud services",
@@ -76,6 +93,7 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                       imageUrl:
                       "https://images.unsplash.com/photo-1633419461186-7d40a38105ec?w=800",
                       time: "5h ago",
+                      onTap: () {},
                     ),
                     NewsCard(
                       title: "Amazon reports strong quarterly growth",
@@ -84,6 +102,7 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                       imageUrl:
                       "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=800",
                       time: "7h ago",
+                      onTap: () {},
                     ),
                   ],
                 ),

@@ -3,6 +3,7 @@ import '../widgets/stock_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/quick_overview_card.dart';
 import '../screens/stock_detail_screen.dart';
+import '../screens/news_detail_screen.dart';
 
 import '../widgets/news_card.dart';
 
@@ -133,14 +134,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 imageUrl:
                 "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800",
                 time: "4h ago",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NewsDetailScreen(
+                            title: "Apple launches new chip for apple AI",
+                            articleText: "Full article text is here",
+                            source: "Reuters",
+                            date: "June 6, 2026",
+                            imageURL: "",
+                          )
+                      )
+                  );
+                },
               ),
               NewsCard(
-                title: "Apple unveils new AI-powered devices",
+                title: "Tesla stock jumps after strong earnings",
                 description:
-                "Apple introduced new AI features for its devices.",
+                "Tesla shares surged after earnings report.",
                 imageUrl:
-                "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800",
-                time: "4h ago",
+                "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800",
+                time: "2h ago",
+                onTap: () {},
               ),
             ],
           ),

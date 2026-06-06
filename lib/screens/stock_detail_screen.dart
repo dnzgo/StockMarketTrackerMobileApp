@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/widgets/stock_chart_card.dart';
+import '../widgets/stock_chart_card.dart';
 import '../widgets/stock_info_card.dart';
 import '../screens/trade_screen.dart';
 
