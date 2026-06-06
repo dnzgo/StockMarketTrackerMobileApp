@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/widgets/stock_chart_card.dart';
 import '../widgets/stock_info_card.dart';
+import '../screens/trade_screen.dart';
 
 class StockDetailScreen extends StatefulWidget{
   final String symbol;
@@ -82,7 +83,18 @@ class _StockDetailState extends State<StockDetailScreen> {
         child: Padding(
           padding: EdgeInsets.all(16),
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TradeScreen(
+                      symbol: widget.symbol,
+                      companyName: widget.companyName,
+                      price: widget.price,
+                    )
+                  ),
+                );
+              },
               child: Text("Trade " + widget.symbol)
           ),
         ),
