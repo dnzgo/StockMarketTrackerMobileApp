@@ -59,4 +59,20 @@ class AppColors {
       ),
     ],
   );
+
+  static BoxDecoration glassButtonDecoration = BoxDecoration(
+    borderRadius: BorderRadius.circular(16),
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Color.fromRGBO(255, 255, 255, 0.12),
+        Color.fromRGBO(255, 255, 255, 0.05),
+      ],
+    ),
+    border: Border.all(
+      color: Color.fromRGBO(255, 255, 255, 0.20),
+      width: 1,
+    ),
+  );
 }
