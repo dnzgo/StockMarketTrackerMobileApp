@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -18,7 +19,7 @@ class _ProfileState extends State<ProfileScreen> {
         title: const Text(
           "Profile",
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.textPrimaryColor,
             fontSize: 28,
             fontWeight: FontWeight.bold,
           ),
@@ -43,7 +44,7 @@ class _ProfileState extends State<ProfileScreen> {
           const Text(
             "Emir Yalçınkaya",
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.textPrimaryColor,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -54,7 +55,7 @@ class _ProfileState extends State<ProfileScreen> {
           const Text(
             "emir@gmail.com",
             style: TextStyle(
-              color: Colors.white70,
+              color: AppColors.textSecondaryColor,
               fontSize: 15,
             ),
           ),

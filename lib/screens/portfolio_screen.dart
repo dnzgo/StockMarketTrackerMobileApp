@@ -3,6 +3,7 @@ import '../widgets/portfolio_summary_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/stock_card.dart';
 import '../screens/stock_detail_screen.dart';
+import '../utils/app_theme.dart';
 
 class PortfolioScreen extends StatefulWidget{
   const PortfolioScreen({super.key});
@@ -21,7 +22,7 @@ class _PortfolioState extends State<PortfolioScreen> {
         title: Text(
           "Portfolio",
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.textPrimaryColor,
             fontSize: 28,
             fontWeight: FontWeight.bold,
           ),

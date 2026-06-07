@@ -3,6 +3,7 @@ import '../models/stock.dart';
 import '../screens/stock_detail_screen.dart';
 import '../widgets/stock_card.dart';
 import '../widgets/search_bar.dart';
+import '../utils/app_theme.dart';
 
 class StockExploreScreen extends StatefulWidget{
   const StockExploreScreen({super.key});
@@ -51,7 +52,7 @@ class _StockExploreState extends State<StockExploreScreen> {
                     const Text(
                       "Stocks",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textPrimaryColor,
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),

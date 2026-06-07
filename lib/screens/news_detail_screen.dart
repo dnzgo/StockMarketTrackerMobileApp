@@ -34,14 +34,14 @@ class NewsDetailScreen extends StatelessWidget{
             backgroundColor: Colors.transparent,
             elevation: 0,
             iconTheme: const IconThemeData(
-              color: Colors.white,
+              color: AppColors.textPrimaryColor,
             ),
             title: Text(
               title.length <= 20
                   ? title
                   : "${title.substring(0, 20)}...",
               style: const TextStyle(
-                color: Colors.white,
+                color: AppColors.textPrimaryColor,
               ),
             ),
           ),
@@ -53,7 +53,7 @@ class NewsDetailScreen extends StatelessWidget{
                 Text(
                   title,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textPrimaryColor,
                   ),
                 ),
 
@@ -79,13 +79,13 @@ class NewsDetailScreen extends StatelessWidget{
                     Text(
                       source,
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: AppColors.textSecondaryColor,
                       ),
                     ),
                     Text(
                       date,
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: AppColors.textSecondaryColor,
                       ),
                     ),
                   ],

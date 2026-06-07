@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
+import '../widgets/stock_chart_card.dart';
 
-class TradeScreen extends StatefulWidget{
+class TradeScreen extends StatefulWidget {
   final String symbol;
   final String companyName;
   final double price;
 
-  const TradeScreen({super.key,
+  const TradeScreen({
+    super.key,
     required this.symbol,
     required this.companyName,
-    required this.price
+    required this.price,
   });
 
   @override
   State<StatefulWidget> createState() => _TradeState();
-
 }
 
 class _TradeState extends State<TradeScreen> {
+  bool isBuySelected = true;
+  int quantity = 1;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,36 +34,108 @@ class _TradeState extends State<TradeScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           iconTheme: const IconThemeData(
-            color: Colors.white,
+             color: AppColors.textPrimaryColor
           ),
           title: Text(
             "Trade ${widget.symbol}",
             style: const TextStyle(
-              color: Colors.white,
+              color: AppColors.textPrimaryColor
             ),
           ),
         ),
-        body: Padding(
+        body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.companyName,
+                "${isBuySelected ? "Buy" : "Sell"} ${widget.companyName}",
                 style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+                  color: AppColors.textPrimaryColor,
+                  fontSize: 34,
                   fontWeight: FontWeight.bold,
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
 
               Text(
-                "\$${widget.price.toStringAsFixed(2)}",
+                widget.symbol,
                 style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 18,
+                  color: AppColors.textSecondaryColor,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              const StockChartCard(),
+
+              const SizedBox(height: 24),
+
+              Container(
+                decoration: AppColors.glassCardDecoration,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isBuySelected = true;
+                          });
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: isBuySelected
+                                ? AppColors.increasedValueColor
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Buy",
+                              style: TextStyle(
+                                color: AppColors.textPrimaryColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isBuySelected = false;
+                          });
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: !isBuySelected
+                                ? AppColors.decreasedValueColor
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Sell",
+                              style: TextStyle(
+                                color: AppColors.textPrimaryColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
@@ -67,43 +143,226 @@ class _TradeState extends State<TradeScreen> {
 
               const Text(
                 "Trade Type",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: AppColors.textPrimaryColor,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              Container(
+                height: 60,
+                decoration: AppColors.glassCardDecoration,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                ),
+                child: const Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Market Order",
+                      style: TextStyle(
+                        color: AppColors.textPrimaryColor,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Icon(
+                      Icons.keyboard_arrow_down,
+                      color: AppColors.textPrimaryColor,
+                    ),
+                  ],
+                ),
               ),
 
               const SizedBox(height: 24),
 
               const Text(
                 "Quantity",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: AppColors.textPrimaryColor,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              Container(
+                height: 60,
+                decoration: AppColors.glassCardDecoration,
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.remove,
+                        color: AppColors.textPrimaryColor,
+                      ),
+                    ),
+
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          quantity.toString(),
+                          style: const TextStyle(
+                            color: AppColors.textPrimaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.add,
+                        color: AppColors.textPrimaryColor,
+                      ),
+                    ),
+                  ],
+                ),
               ),
 
               const SizedBox(height: 24),
 
               const Text(
-                "Estimated Total",
-                style: TextStyle(color: Colors.white),
+                "Order Summary",
+                style: TextStyle(
+                  color: AppColors.textPrimaryColor,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
 
-              ElevatedButton(
-                onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    shadowColor: Colors.transparent,
-                    elevation: 0,
-                    minimumSize: const Size(double.infinity, 55),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Price per Share",
+                    style: TextStyle(
+                      color: AppColors.textPrimaryColor,
                     ),
                   ),
-                child: const Text("Confirm Trade"),
+                  Text(
+                    "€${widget.price.toStringAsFixed(2)}",
+                    style: const TextStyle(
+                      color: AppColors.textPrimaryColor,
+                    ),
+                  ),
+                ],
               ),
+
+              const SizedBox(height: 12),
+
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Shares",
+                    style: TextStyle(
+                      color: AppColors.textSecondaryColor
+                    ),
+                  ),
+                  Text(
+                    quantity.toString(),
+                    style: const TextStyle(
+                      color: AppColors.textPrimaryColor,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 12),
+
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Trading Fee (0.1%)",
+                    style: TextStyle(
+                      color: AppColors.textSecondaryColor,
+                    ),
+                  ),
+                  Text(
+                    "€${((widget.price * quantity) * 0.001).toStringAsFixed(2)}",
+                    style: const TextStyle(
+                      color: AppColors.textPrimaryColor,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
+              const Divider(
+                color: AppColors.textSecondaryColor,
+              ),
+
+              const SizedBox(height: 16),
+
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Total Cost",
+                    style: TextStyle(
+                      color: AppColors.textPrimaryColor,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "€${(widget.price * quantity).toStringAsFixed(2)}",
+                    style: const TextStyle(
+                      color: AppColors.textPrimaryColor,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 40),
+
+              InkWell(
+                onTap: () {},
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: isBuySelected
+                        ? AppColors.increasedValueColor
+                        : AppColors.decreasedValueColor,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "${isBuySelected ? "Buy" : "Sell"} ${widget.symbol}",
+                      style: const TextStyle(
+                        color: AppColors.textPrimaryColor,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 30),
             ],
           ),
         ),
       ),
     );
   }
-
 }

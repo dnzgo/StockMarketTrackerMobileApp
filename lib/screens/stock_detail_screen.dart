@@ -37,12 +37,12 @@ class _StockDetailState extends State<StockDetailScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           iconTheme: const IconThemeData(
-            color: Colors.white,
+            color: AppColors.textPrimaryColor,
           ),
           title: Text(
             widget.companyName,
             style: const TextStyle(
-              color: Colors.white,
+              color: AppColors.textPrimaryColor,
             ),
           ),
         ),
@@ -61,7 +61,7 @@ class _StockDetailState extends State<StockDetailScreen> {
                     Text(
                       widget.symbol,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textPrimaryColor,
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),
@@ -72,7 +72,7 @@ class _StockDetailState extends State<StockDetailScreen> {
                         Text(
                           widget.price.toStringAsFixed(2),
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: AppColors.textPrimaryColor,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
@@ -99,9 +99,9 @@ class _StockDetailState extends State<StockDetailScreen> {
                 const SizedBox(height: 24),
 
                 const Text(
-                  "Key Information",
+                  "Statistics",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textPrimaryColor,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
@@ -137,8 +137,9 @@ class _StockDetailState extends State<StockDetailScreen> {
         bottomNavigationBar: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: ElevatedButton(
-              onPressed: () {
+            child: InkWell(
+              borderRadius: BorderRadius.circular(24),
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -150,7 +151,20 @@ class _StockDetailState extends State<StockDetailScreen> {
                   ),
                 );
               },
-              child: Text("Trade ${widget.symbol}"),
+              child: Container(
+                height: 60,
+                decoration: AppColors.glassButtonDecoration,
+                child: Center(
+                  child: Text(
+                    "Trade ${widget.symbol}",
+                    style: const TextStyle(
+                      color: AppColors.textPrimaryColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),

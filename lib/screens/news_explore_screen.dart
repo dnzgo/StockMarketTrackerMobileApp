@@ -3,6 +3,7 @@ import '../models/news_article.dart';
 import '../screens/news_detail_screen.dart';
 import '../widgets/news_card.dart';
 import '../widgets/search_bar.dart';
+import '../utils/app_theme.dart';
 
 class NewsExploreScreen extends StatefulWidget {
   const NewsExploreScreen({super.key});
@@ -51,7 +52,7 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                   const Text(
                     "News",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimaryColor,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
