@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/screens/stock_detail_screen.dart';
 import '../widgets/section_title.dart';
 import '../widgets/affected_stock_chip.dart';
+import '../utils/app_theme.dart';
 
 class NewsDetailScreen extends StatelessWidget{
   final String title;
@@ -23,43 +24,78 @@ class NewsDetailScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          title.length <= 20
-              ? title
-              : title.substring(0, 20) + "..."
+    return Container(
+        decoration: AppColors.appBackground(
+          center: Alignment.bottomRight,
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title),
-            SizedBox(height: 16,),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: SizedBox(
-                width: double.infinity,
-                height: 220,
-                child: Image.network(
-                  imageURL,
-                  fit: BoxFit.cover,
-                ),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            iconTheme: const IconThemeData(
+              color: Colors.white,
+            ),
+            title: Text(
+              title.length <= 20
+                  ? title
+                  : "${title.substring(0, 20)}...",
+              style: const TextStyle(
+                color: Colors.white,
               ),
             ),
-            SizedBox(height: 16,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(source),
-                Text(date),
-              ],
-            ),
-            SizedBox(height: 12,),
-            SectionTitle(title: "Affected Stocks"),
-            SizedBox(height: 12,),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+
+                SizedBox(height: 16),
+
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 220,
+                    child: Image.network(
+                      imageURL,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 16),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      source,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                      ),
+                    ),
+                    Text(
+                      date,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 12),
+
+                SectionTitle(title: "Affected Stocks"),
+
+                SizedBox(height: 12),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -105,10 +141,11 @@ class NewsDetailScreen extends StatelessWidget{
             SizedBox(height: 24,),
             Text(articleText),
             SizedBox(height: 24,),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
-  }
+       ),
+      );
+    }
 
 }

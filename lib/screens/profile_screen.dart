@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatefulWidget{
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
   State<StatefulWidget> createState() => _ProfileState();
 }
+
 class _ProfileState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class _ProfileState extends State<ProfileScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         centerTitle: false,
-        title: Text(
+        title: const Text(
           "Profile",
           style: TextStyle(
             color: Colors.white,
@@ -23,7 +24,42 @@ class _ProfileState extends State<ProfileScreen> {
           ),
         ),
       ),
+      body: Column(
+        children: [
+          const SizedBox(height: 24),
+
+          Center(
+            child: CircleAvatar(
+              radius: 50,
+              child: Icon(
+                Icons.person_outline,
+                size: 45,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          const Text(
+            "Emir Yalçınkaya",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          const Text(
+            "emir@gmail.com",
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: 15,
+            ),
+          ),
+        ],
+      ),
     );
   }
-
 }

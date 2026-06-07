@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
 
-class StockInfoCard extends StatelessWidget{
+class StockInfoCard extends StatelessWidget {
   final String title;
   final double value;
 
@@ -14,34 +14,38 @@ class StockInfoCard extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 8,
+      width: 90,
+      height: 100,
+      margin: const EdgeInsets.only(
+        right: 8,
+        top: 8,
+        bottom: 8,
       ),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: AppColors.glassCardDecoration,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(title,
+          Text(
+            title,
+            textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              color: AppColors.textPrimaryColor,
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
+              color: AppColors.textSecondaryColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
             ),
           ),
+
+          const SizedBox(height: 8),
+
           Text(
-            "€${value.toStringAsFixed(2)}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+            value.toStringAsFixed(2),
+            textAlign: TextAlign.center,
             style: const TextStyle(
               color: AppColors.textPrimaryColor,
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -49,5 +53,4 @@ class StockInfoCard extends StatelessWidget{
       ),
     );
   }
-
 }
