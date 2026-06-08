@@ -18,6 +18,7 @@ class OrderSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             "Order Summary",
@@ -27,10 +28,12 @@ class OrderSummaryCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          SizedBox(height: 12,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     "Price per Share:",
@@ -38,12 +41,14 @@ class OrderSummaryCard extends StatelessWidget {
                       color: AppColors.textPrimaryColor,
                     ),
                   ),
+                  SizedBox(height: 8,),
                   const Text(
                     "Shares:",
                     style: TextStyle(
                         color: AppColors.textSecondaryColor
                     ),
                   ),
+                  SizedBox(height: 8,),
                   const Text(
                     "Trading Fee (0.1%):",
                     style: TextStyle(
@@ -53,6 +58,7 @@ class OrderSummaryCard extends StatelessWidget {
                 ],
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
                     "€${price.toStringAsFixed(2)}",
@@ -60,12 +66,14 @@ class OrderSummaryCard extends StatelessWidget {
                       color: AppColors.textPrimaryColor,
                     ),
                   ),
+                  SizedBox(height: 8,),
                   Text(
                     quantity.toString(),
                     style: const TextStyle(
                       color: AppColors.textPrimaryColor,
                     ),
                   ),
+                  SizedBox(height: 8,),
                   Text(
                     "€${((price * quantity) * 0.001).toStringAsFixed(2)}",
                     style: const TextStyle(
@@ -77,9 +85,11 @@ class OrderSummaryCard extends StatelessWidget {
               ),
             ],
           ),
+          SizedBox(height: 8,),
           const Divider(
             color: AppColors.textSecondaryColor,
           ),
+          SizedBox(height: 8,),
           Row(
             mainAxisAlignment:
             MainAxisAlignment.spaceBetween,
@@ -106,6 +116,7 @@ class OrderSummaryCard extends StatelessWidget {
               ),
             ],
           ),
+          SizedBox(height: 40,),
         ],
       )
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_market_tracker_mobile_app/widgets/trade_type_selection.dart';
 import '../services/service_locator.dart';
 import '../models/stock.dart';
 import '../utils/app_theme.dart';
@@ -161,43 +162,7 @@ class _TradeState extends State<TradeScreen> {
               ),
 
               const SizedBox(height: 24),
-
-              const Text(
-                "Trade Type",
-                style: TextStyle(
-                  color: AppColors.textPrimaryColor,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const SizedBox(height: 12),
-
-              Container(
-                height: 60,
-                decoration: AppColors.glassCardDecoration,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
-                child: const Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Market Order",
-                      style: TextStyle(
-                        color: AppColors.textPrimaryColor,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      color: AppColors.textPrimaryColor,
-                    ),
-                  ],
-                ),
-              ),
-
+              TradeTypeSelection(),
               const SizedBox(height: 24),
 
               const Text(
@@ -335,7 +300,6 @@ class _TradeState extends State<TradeScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 30),
             ],
           ),
