@@ -24,6 +24,24 @@ class _TradeState extends State<TradeScreen> {
   bool isBuySelected = true;
   int quantity = 1;
 
+  bool canIncreaseQuantity() {
+    final nextQuantity = quantity + 1;
+    if(isBuySelected) {
+      final nextCost = nextQuantity * widget.price;
+      return nextCost <= portfolioService.cashBalance;
+    } else {
+      final ownedQuantity = portfolioService.getOwnedQuantity(widget.symbol);
+      return nextQuantity <= ownedQuantity;
+    }
+  }
+
+  bool canConfirmTrade() {
+    if(isBuySelected) {
+      return quantity * widget.price <= portfolioService.cashBalance;
+    }
+    return portfolioService.getOwnedQuantity(widget.symbol) >= quantity;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -198,13 +216,13 @@ class _TradeState extends State<TradeScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: () {
+                      onPressed: quantity > 1
+                        ? () {
                         setState(() {
-                          if(quantity > 1) {
-                            quantity--;
-                          }
+                          quantity--;
                         });
-                      },
+                      }
+                      : null,
                       icon: const Icon(
                         Icons.remove,
                         color: AppColors.textPrimaryColor,
@@ -225,11 +243,13 @@ class _TradeState extends State<TradeScreen> {
                     ),
 
                     IconButton(
-                      onPressed: () {
+                      onPressed: canIncreaseQuantity()
+                        ? () {
                         setState(() {
                           quantity++;
                         });
-                      },
+                      }
+                      : null,
                       icon: const Icon(
                         Icons.add,
                         color: AppColors.textPrimaryColor,
@@ -237,6 +257,27 @@ class _TradeState extends State<TradeScreen> {
                     ),
                   ],
                 ),
+              ),
+              SizedBox(height: 4,),
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Available:",
+                    style: TextStyle(
+                      color: AppColors.textPrimaryColor,
+                    ),
+                  ),
+                  Text(
+                    isBuySelected
+                      ? "€${portfolioService.cashBalance.toStringAsFixed(2)}"
+                      : portfolioService.getOwnedQuantity(widget.symbol).toStringAsFixed(2) + " " + widget.symbol,
+                    style: const TextStyle(
+                      color: AppColors.textPrimaryColor,
+                    ),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 24),
@@ -257,7 +298,7 @@ class _TradeState extends State<TradeScreen> {
                 MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Price per Share",
+                    "Price per Share:",
                     style: TextStyle(
                       color: AppColors.textPrimaryColor,
                     ),
@@ -278,7 +319,7 @@ class _TradeState extends State<TradeScreen> {
                 MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Shares",
+                    "Shares:",
                     style: TextStyle(
                       color: AppColors.textSecondaryColor
                     ),
@@ -299,7 +340,7 @@ class _TradeState extends State<TradeScreen> {
                 MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Trading Fee (0.1%)",
+                    "Trading Fee (0.1%):",
                     style: TextStyle(
                       color: AppColors.textSecondaryColor,
                     ),
@@ -326,7 +367,7 @@ class _TradeState extends State<TradeScreen> {
                 MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Total Cost",
+                    "Total:",
                     style: TextStyle(
                       color: AppColors.textPrimaryColor,
                       fontSize: 22,
@@ -334,7 +375,11 @@ class _TradeState extends State<TradeScreen> {
                     ),
                   ),
                   Text(
-                    "€${(widget.price * quantity).toStringAsFixed(2)}",
+                    "€${(
+                      isBuySelected
+                        ? widget.price * quantity * 1.001
+                        : widget.price * quantity * 0.999).toStringAsFixed(2
+                    )}",
                     style: const TextStyle(
                       color: AppColors.textPrimaryColor,
                       fontSize: 22,
@@ -347,7 +392,7 @@ class _TradeState extends State<TradeScreen> {
               const SizedBox(height: 40),
 
               InkWell(
-                onTap: () {
+                onTap: canConfirmTrade() ? () {
                   final stock = Stock(
                     symbol: widget.symbol,
                     companyName: widget.companyName,
@@ -373,15 +418,16 @@ class _TradeState extends State<TradeScreen> {
                       ),
                     ),
                   );
-                },
+                } : null,
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
                   height: 60,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: isBuySelected
+                    color: canConfirmTrade() ? (isBuySelected
                         ? AppColors.increasedValueColor
-                        : AppColors.decreasedValueColor,
+                        : AppColors.decreasedValueColor)
+                        : Colors.white12,
                   ),
                   child: Center(
                     child: Text(
