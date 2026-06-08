@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/service_locator.dart';
 import '../widgets/portfolio_summary_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/stock_card.dart';
@@ -42,90 +43,36 @@ class _PortfolioState extends State<PortfolioScreen> {
               SizedBox(height: 12,),
               SectionTitle(title: "Holdings"),
               SizedBox(height: 8,),
-              StockCard(
-                symbol: "TSLA",
-                companyName: "Tesla Inc.",
-                price: 321.333,
-                changePercentage: -1.2,
-                isPositive: false,
-                onTap: () {
-                  Navigator.push(
+
+              ...portfolioService.holdings.map((holding) {
+                return StockCard(
+                  symbol: holding.stock.symbol,
+                  companyName: holding.stock.companyName,
+                  price: holding.stock.price,
+                  changePercentage:
+                  holding.stock.changePercentage,
+                  isPositive:
+                  holding.stock.changePercentage >= 0,
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => StockDetailScreen(
-                            symbol: "TSLA",
-                            companyName: "Tesla Inc.",
-                            price: 321.333,
-                            changePercentage: -1.2,
-                            isPositive: false,
-                          )
-                      )
-                  );
-                },
-              ),
-              StockCard(
-                symbol: "TSLA",
-                companyName: "Tesla Inc.",
-                price: 321.333,
-                changePercentage: -1.2,
-                isPositive: false,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StockDetailScreen(
-                            symbol: "TSLA",
-                            companyName: "Tesla Inc.",
-                            price: 321.333,
-                            changePercentage: -1.2,
-                            isPositive: false,
-                          )
-                      )
-                  );
-                },
-              ),
-              StockCard(
-                symbol: "TSLA",
-                companyName: "Tesla Inc.",
-                price: 321.333,
-                changePercentage: -1.2,
-                isPositive: false,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StockDetailScreen(
-                            symbol: "TSLA",
-                            companyName: "Tesla Inc.",
-                            price: 321.333,
-                            changePercentage: -1.2,
-                            isPositive: false,
-                          )
-                      )
-                  );
-                },
-              ),
-              StockCard(
-                symbol: "TSLA",
-                companyName: "Tesla Inc.",
-                price: 321.333,
-                changePercentage: -1.2,
-                isPositive: false,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StockDetailScreen(
-                            symbol: "TSLA",
-                            companyName: "Tesla Inc.",
-                            price: 321.333,
-                            changePercentage: -1.2,
-                            isPositive: false,
-                          )
-                      )
-                  );
-                },
-              ),
+                        builder: (context) => StockDetailScreen(
+                          symbol: holding.stock.symbol,
+                          companyName: holding.stock.companyName,
+                          price: holding.stock.price,
+                          changePercentage:
+                          holding.stock.changePercentage,
+                          isPositive:
+                          holding.stock.changePercentage >= 0,
+                        ),
+                      ),
+                    );
+                    setState(() {});
+                  },
+                );
+              }).toList(),
+
             ],
           ),
         )

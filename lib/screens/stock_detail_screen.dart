@@ -139,8 +139,8 @@ class _StockDetailState extends State<StockDetailScreen> {
             padding: const EdgeInsets.all(16),
             child: InkWell(
               borderRadius: BorderRadius.circular(24),
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => TradeScreen(
@@ -150,6 +150,7 @@ class _StockDetailState extends State<StockDetailScreen> {
                     ),
                   ),
                 );
+                setState(() {});
               },
               child: Container(
                 height: 60,
