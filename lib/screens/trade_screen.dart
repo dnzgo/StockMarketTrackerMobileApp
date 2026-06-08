@@ -3,6 +3,7 @@ import '../services/service_locator.dart';
 import '../models/stock.dart';
 import '../utils/app_theme.dart';
 import '../widgets/stock_chart_card.dart';
+import '../widgets/order_summary_card.dart';
 
 class TradeScreen extends StatefulWidget {
   final String symbol;
@@ -22,7 +23,7 @@ class TradeScreen extends StatefulWidget {
 
 class _TradeState extends State<TradeScreen> {
   bool isBuySelected = true;
-  int quantity = 1;
+  double quantity = 1;
 
   bool canIncreaseQuantity() {
     final nextQuantity = quantity + 1;
@@ -282,114 +283,7 @@ class _TradeState extends State<TradeScreen> {
 
               const SizedBox(height: 24),
 
-              const Text(
-                "Order Summary",
-                style: TextStyle(
-                  color: AppColors.textPrimaryColor,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Price per Share:",
-                    style: TextStyle(
-                      color: AppColors.textPrimaryColor,
-                    ),
-                  ),
-                  Text(
-                    "€${widget.price.toStringAsFixed(2)}",
-                    style: const TextStyle(
-                      color: AppColors.textPrimaryColor,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-
-              Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Shares:",
-                    style: TextStyle(
-                      color: AppColors.textSecondaryColor
-                    ),
-                  ),
-                  Text(
-                    quantity.toString(),
-                    style: const TextStyle(
-                      color: AppColors.textPrimaryColor,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-
-              Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Trading Fee (0.1%):",
-                    style: TextStyle(
-                      color: AppColors.textSecondaryColor,
-                    ),
-                  ),
-                  Text(
-                    "€${((widget.price * quantity) * 0.001).toStringAsFixed(2)}",
-                    style: const TextStyle(
-                      color: AppColors.textPrimaryColor,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 16),
-
-              const Divider(
-                color: AppColors.textSecondaryColor,
-              ),
-
-              const SizedBox(height: 16),
-
-              Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Total:",
-                    style: TextStyle(
-                      color: AppColors.textPrimaryColor,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    "€${(
-                      isBuySelected
-                        ? widget.price * quantity * 1.001
-                        : widget.price * quantity * 0.999).toStringAsFixed(2
-                    )}",
-                    style: const TextStyle(
-                      color: AppColors.textPrimaryColor,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 40),
+              OrderSummaryCard(isBuySelected: isBuySelected, quantity: quantity, price: widget.price),
 
               InkWell(
                 onTap: canConfirmTrade() ? () {
