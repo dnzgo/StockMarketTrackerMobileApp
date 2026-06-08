@@ -104,4 +104,28 @@ class PortfolioService {
 
   }
 
+  PortfolioHolding? getHoldingBySymbol(String symbol) {
+    try {
+      return _holdings.firstWhere(
+            (holding) => holding.stock.symbol == symbol,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  bool hasStock(String symbol) {
+    return getHoldingBySymbol(symbol) != null;
+  }
+
+  double getOwnedQuantity(String symbol) {
+    final holding = getHoldingBySymbol(symbol);
+
+    if (holding == null) {
+      return 0;
+    }
+
+    return holding.quantity;
+  }
+
 }

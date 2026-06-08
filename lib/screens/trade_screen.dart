@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
+import '../services/service_locator.dart';
+import '../models/stock.dart';
+import '../utils/app_theme.dart';
 import '../widgets/stock_chart_card.dart';
 
 class TradeScreen extends StatefulWidget {
@@ -196,7 +198,13 @@ class _TradeState extends State<TradeScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          if(quantity > 1) {
+                            quantity--;
+                          }
+                        });
+                      },
                       icon: const Icon(
                         Icons.remove,
                         color: AppColors.textPrimaryColor,
@@ -217,7 +225,11 @@ class _TradeState extends State<TradeScreen> {
                     ),
 
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          quantity++;
+                        });
+                      },
                       icon: const Icon(
                         Icons.add,
                         color: AppColors.textPrimaryColor,
@@ -335,7 +347,33 @@ class _TradeState extends State<TradeScreen> {
               const SizedBox(height: 40),
 
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  final stock = Stock(
+                    symbol: widget.symbol,
+                    companyName: widget.companyName,
+                    price: widget.price,
+                    changePercentage: 0,
+                  );
+                  if (isBuySelected) {
+                    portfolioService.buyStock(
+                      stock: stock,
+                      quantity: quantity.toDouble(),
+                    );
+                  } else {
+                    portfolioService.sellStock(
+                      stock: stock,
+                      quantity: quantity.toDouble(),
+                    );
+                  }
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        "${isBuySelected ? "Bought" : "Sold"} $quantity ${widget.symbol}",
+                      ),
+                    ),
+                  );
+                },
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
                   height: 60,
