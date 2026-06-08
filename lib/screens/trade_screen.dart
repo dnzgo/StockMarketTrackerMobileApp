@@ -32,17 +32,46 @@ class _TradeState extends State<TradeScreen> {
       final nextCost = nextQuantity * widget.price;
       return nextCost <= portfolioService.cashBalance;
     } else {
-      final ownedQuantity = portfolioService.getOwnedQuantity(widget.symbol);
       return nextQuantity <= ownedQuantity;
     }
   }
 
   bool canConfirmTrade() {
     if(isBuySelected) {
-      return quantity * widget.price <= portfolioService.cashBalance;
+      return estimatedCost <= portfolioService.cashBalance;
     }
-    return portfolioService.getOwnedQuantity(widget.symbol) >= quantity;
+    return ownedQuantity >= quantity;
   }
+
+  void executeTrade() {
+    final stock = Stock(
+      symbol: widget.symbol,
+      companyName: widget.companyName,
+      price: widget.price,
+      changePercentage: 0,
+    );
+
+    if (isBuySelected) {
+      portfolioService.buyStock(stock: stock, quantity: quantity);
+    } else {
+      portfolioService.sellStock(stock: stock, quantity: quantity);
+    }
+    setState(() {});
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "${isBuySelected ? "Bought" : "Sold"} $quantity ${widget.symbol}",
+        ),
+      ),
+    );
+  }
+
+  double get ownedQuantity =>
+      portfolioService.getOwnedQuantity(widget.symbol);
+
+  double get estimatedCost =>
+      quantity * widget.price;
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +134,7 @@ class _TradeState extends State<TradeScreen> {
                         onTap: () {
                           setState(() {
                             isBuySelected = true;
+                            quantity = 1;
                           });
                         },
                         child: Container(
@@ -134,6 +164,7 @@ class _TradeState extends State<TradeScreen> {
                         onTap: () {
                           setState(() {
                             isBuySelected = false;
+                            quantity = 1;
                           });
                         },
                         child: Container(
@@ -238,7 +269,7 @@ class _TradeState extends State<TradeScreen> {
                   Text(
                     isBuySelected
                       ? "€${portfolioService.cashBalance.toStringAsFixed(2)}"
-                      : portfolioService.getOwnedQuantity(widget.symbol).toStringAsFixed(2) + " " + widget.symbol,
+                      : ownedQuantity.toStringAsFixed(2) + " " + widget.symbol,
                     style: const TextStyle(
                       color: AppColors.textPrimaryColor,
                     ),
@@ -251,33 +282,8 @@ class _TradeState extends State<TradeScreen> {
               OrderSummaryCard(isBuySelected: isBuySelected, quantity: quantity, price: widget.price),
 
               InkWell(
-                onTap: canConfirmTrade() ? () {
-                  final stock = Stock(
-                    symbol: widget.symbol,
-                    companyName: widget.companyName,
-                    price: widget.price,
-                    changePercentage: 0,
-                  );
-                  if (isBuySelected) {
-                    portfolioService.buyStock(
-                      stock: stock,
-                      quantity: quantity.toDouble(),
-                    );
-                  } else {
-                    portfolioService.sellStock(
-                      stock: stock,
-                      quantity: quantity.toDouble(),
-                    );
-                  }
+                onTap: canConfirmTrade() ? executeTrade : null,
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        "${isBuySelected ? "Bought" : "Sold"} $quantity ${widget.symbol}",
-                      ),
-                    ),
-                  );
-                } : null,
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
                   height: 60,

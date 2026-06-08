@@ -6,6 +6,9 @@ class PortfolioService {
   // private user cash balance
   double _cashBalance = 10000;
 
+  // trading fee percentage = 0.1%
+  static const double tradingFeeRate = 0.001;
+
   // public read only access to user cash balance
   double get cashBalance => _cashBalance;
 
@@ -25,12 +28,17 @@ class PortfolioService {
     );
 
     // calculate new buy cost
-    final newBuyCost = quantity * stock.price;
+    final stockCost = quantity * stock.price;
+    final tradingFee = stockCost * tradingFeeRate;
+    final totalBuyCost = stockCost + tradingFee;
 
     // if user does not have enough cash to buy
-    if (newBuyCost > _cashBalance) {
+    if (totalBuyCost > _cashBalance) {
       return;
     }
+
+    // if user has enough cash to buy then subtract cost from balance
+    _cashBalance -= totalBuyCost;
 
     // if stock is not in portfolio add it as a new holding
     if (existingIndex == -1) {
@@ -49,13 +57,10 @@ class PortfolioService {
     // existing total cost before this buy
     final oldTotalCost = existingHolding.totalCost;
 
-    // if user has enough cash to buy then subtract cost from balance
-    _cashBalance -= newBuyCost;
-
     // total quantity after buy
     final newQuantity = existingHolding.quantity + quantity;
     // calculate weighted average buy price after this buy
-    final newAverageBuyPrice = (oldTotalCost + newBuyCost) / newQuantity;
+    final newAverageBuyPrice = (oldTotalCost + stockCost) / newQuantity;
 
     // change old immutable holding with updated holding
     _holdings[existingIndex] = PortfolioHolding(
@@ -86,7 +91,10 @@ class PortfolioService {
     final newQuantity = existingHolding.quantity - quantity;
 
     // add sell value to cash balance
-    final totalSellValue = quantity * stock.price;
+    final stockValue = quantity * stock.price;
+    final tradingFee = stockValue * tradingFeeRate;
+    final totalSellValue = stockValue - tradingFee;
+
     _cashBalance += totalSellValue;
 
     // if sold all then remove stock from holdings list
