@@ -8,12 +8,14 @@ class PortfolioSummaryCard extends StatelessWidget{
   final double totalValue;
   final double totalPnL;
   final double totalPnLPercentage;
+  final bool isPositive;
 
   const PortfolioSummaryCard({
     super.key,
     required this.totalValue,
     required this.totalPnL,
     required this.totalPnLPercentage,
+    required this.isPositive,
   });
 
   @override
@@ -28,7 +30,7 @@ class PortfolioSummaryCard extends StatelessWidget{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Total Balance",
+            "Total Value",
             style: const TextStyle(
               color: AppColors.textPrimaryColor,
               fontSize: 15,
@@ -40,17 +42,19 @@ class PortfolioSummaryCard extends StatelessWidget{
             totalValue.toStringAsFixed(2) + "€",
             style: const TextStyle(
               color: AppColors.textPrimaryColor,
-              fontSize: 15,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 4,),
+          SizedBox(height: 0,),
           Text(
-            totalPnL.toStringAsFixed(2) + "€ (" + totalPnLPercentage.toStringAsFixed(2) + "%)",
-            style: const TextStyle(
-              color: AppColors.textPrimaryColor,
+            "${totalPnL.toStringAsFixed(2)}€ (${totalPnLPercentage.toStringAsFixed(2)}%)",
+            style: TextStyle(
+              color: isPositive
+                ? AppColors.increasedValueColor
+                : AppColors.decreasedValueColor,
               fontSize: 15,
-              fontWeight: FontWeight.normal,
+              fontWeight: FontWeight.w600,
             ),
           ),
           SizedBox(height: 12,),

@@ -152,4 +152,46 @@ class PortfolioService {
     return holding.quantity;
   }
 
+  // current total value of all holdings.
+  double get totalHoldingsValue {
+    return _holdings.fold( // fold() -> loop through holdings and sum values
+      0,
+      (sum, holding) => sum + holding.currentValue,
+    );
+  }
+
+  // total balance = holdings value + cash balance
+  double get totalBalance {
+    return _cashBalance + totalHoldingsValue;
+  }
+
+  // total PnL of all holdings
+  double get totalPnL{
+    return _holdings.fold(
+      0,
+      (sum, holding) => sum + holding.profitLoss,
+    );
+  }
+
+  // total PnL, profit or loss
+  bool get isPositive{
+    return totalPnL >= 0;
+  }
+
+  // total portfolio cost basis
+  double get totalCostBasis{
+    return _holdings.fold(
+      0,
+      (sum, holding) => sum + holding.totalCost,
+    );
+  }
+
+  // total portfolio PnL percentage
+  double get totalPnLPercentage{
+    if (totalCostBasis == 0) {
+      return 0;
+    }
+    return (totalPnL / totalCostBasis) * 100;
+  }
+
 }
