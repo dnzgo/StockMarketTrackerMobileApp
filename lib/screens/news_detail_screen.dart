@@ -50,15 +50,6 @@ class NewsDetailScreen extends StatelessWidget{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: AppColors.textPrimaryColor,
-                  ),
-                ),
-
-                SizedBox(height: 16),
-
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: SizedBox(
@@ -138,8 +129,27 @@ class NewsDetailScreen extends StatelessWidget{
                 ],
               ),
             ),
-            SizedBox(height: 24,),
-            Text(articleText),
+
+            SizedBox(height: 24),
+
+            Text(
+              title,
+              style: const TextStyle(
+                color: AppColors.textPrimaryColor,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            SizedBox(height: 20),
+
+            Text(
+              articleText,
+              style: const TextStyle(
+                color: AppColors.textPrimaryColor,
+              ),
+            ),
+
             SizedBox(height: 24,),
             ],
           ),

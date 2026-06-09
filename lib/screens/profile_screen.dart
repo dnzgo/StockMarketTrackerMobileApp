@@ -29,7 +29,7 @@ class _ProfileState extends State<ProfileScreen> {
         children: [
           const SizedBox(height: 24),
 
-          Center(
+          const Center(
             child: CircleAvatar(
               radius: 50,
               child: Icon(
@@ -59,7 +59,73 @@ class _ProfileState extends State<ProfileScreen> {
               fontSize: 15,
             ),
           ),
+
+          const SizedBox(height: 70),
+
+          _buildProfileButton(
+            icon: Icons.settings,
+            title: "Account Settings",
+          ),
+
+          const SizedBox(height: 16),
+
+          _buildProfileButton(
+            icon: Icons.notifications,
+            title: "Notifications",
+          ),
+
+          const SizedBox(height: 16),
+
+          _buildProfileButton(
+            icon: Icons.security,
+            title: "Security & Privacy",
+          ),
+
+          const SizedBox(height: 16),
+
+          _buildProfileButton(
+            icon: Icons.help_outline,
+            title: "Help & Support",
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildProfileButton({
+    required IconData icon,
+    required String title,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(24),
+        onTap: () {},
+        child: Container(
+          height: 60,
+          decoration: AppColors.glassButtonDecoration,
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                color: AppColors.textPrimaryColor,
+                size: 24,
+              ),
+
+              const SizedBox(width: 20),
+
+              Text(
+                title,
+                style: const TextStyle(
+                  color: AppColors.textPrimaryColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

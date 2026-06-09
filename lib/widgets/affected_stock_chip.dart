@@ -26,15 +26,18 @@ class AffectedStockChip extends StatelessWidget{
       child: Container(
         width: 90,
         padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white12,
-          borderRadius: BorderRadius.circular(12),
-        ),
+        decoration: AppColors.glassCardDecoration,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(symbol),
+            Text(
+              symbol,
+              style: const TextStyle(
+                color: AppColors.textPrimaryColor,
+              ),
+            ),
+
             Text(
               "${changePercentage.toStringAsFixed(2)}%",
               style: TextStyle(
