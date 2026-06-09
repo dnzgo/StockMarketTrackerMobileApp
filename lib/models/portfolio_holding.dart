@@ -1,6 +1,13 @@
 import '../models/stock.dart';
 
 class PortfolioHolding {
+  /*
+  Portfolio holding is one holding in the portfolio,
+  We save which stock, the quantity of the stock, average buy price of the stock,
+  every buy needs to update quantity and average buy price,
+  every sell needs to update quantity,
+  and helper methods to get total cost, PnL, PnL percentage, PnL type (profit or loss)
+   */
   final Stock stock;
   final double quantity;
   final double averageBuyPrice;

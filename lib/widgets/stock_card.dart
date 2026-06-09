@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
 
 class StockCard extends StatelessWidget{
+  /*
+  stockCard for home and stock screens to list stocks as cards,
+  card shows: symbol of stock, company name
+  price of share, change percentage,
+  and card is clickable but interaction handled in screens with onTap
+   */
   final String symbol;
   final String companyName;
   final double price;

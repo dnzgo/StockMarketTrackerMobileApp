@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class PortfolioSummaryCard extends StatelessWidget{
+  /*
+  Portfolio Summary Card shows balance, PnL,PnL percentage
+   */
   final double totalValue;
   final double totalPnL;
   final double totalPnLPercentage;

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class TradeTypeSelection extends StatelessWidget{
+  /*
+  Trade type selection for selecting trade type like market or limit
+  but for now only shows market because trade type selection wont be implemented for now.
+   */
   @override
   Widget build(BuildContext context) {
     return Column(

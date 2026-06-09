@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class SectionTitle extends StatelessWidget{
+  /*
+  to separate sections we use this card to show section name,
+  also a clickable text can be put to go related screen but that is optional
+   */
   final String title;
   final String? actionText;
   const SectionTitle({

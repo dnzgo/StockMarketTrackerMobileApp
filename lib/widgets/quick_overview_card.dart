@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
 
 class QuickOverviewCard extends StatelessWidget{
+  /*
+  Quick overview card shows stock Indexes with name, price value, and percentage
+   */
   final String marketName;
   final double marketValue;
   final double changePercentage;

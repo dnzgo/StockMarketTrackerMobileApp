@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class OrderSummaryCard extends StatelessWidget {
+  /*
+  Order summary card shows order related data like
+  stock share price, quantity that selected, fee, total price
+   */
 
   final bool isBuySelected;
   final double quantity;

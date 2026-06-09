@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
 
 class NewsCard extends StatelessWidget {
+  /*
+  newsCard for home and news screens to list news as cards,
+  card shows: title of news, description(shorter version of article)
+  image of news, date of the news publish,
+  and card is clickable but interaction handled in screens with onTap
+   */
   final String title;
   final String description;
   final String imageURL;

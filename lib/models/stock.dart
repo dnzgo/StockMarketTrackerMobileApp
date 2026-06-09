@@ -1,4 +1,12 @@
 class Stock {
+  /*
+  stock model for data:
+  symbol of the stock,
+  company name of the stock,
+  price of the stock,
+  change percentage of the stock,
+  helper method to get PnL type(profit or loss)
+   */
 
   final String symbol;
   final String companyName;

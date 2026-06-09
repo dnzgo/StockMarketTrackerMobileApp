@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class AffectedStockChip extends StatelessWidget{
+  /*
+  Affected stock chip for news detail screen to show stocks affected from news
+  small card that only shows symbol and change percentage
+   */
   final String symbol;
   final double changePercentage;
   final bool isPositive;

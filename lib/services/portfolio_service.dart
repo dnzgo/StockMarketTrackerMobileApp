@@ -2,6 +2,22 @@ import '../models/portfolio_holding.dart';
 import '../models/stock.dart';
 
 class PortfolioService {
+  /*
+  Portfolio service is for portfolio management:
+  cash balance for users cash in this app,
+  trading fee rate to calculate fees and every buy / sell
+  substructs fee from cash balance but does not effect the average buy price of the stock and PnL
+  list of holdings that saves the stock holdings and a getter to access holdings list
+  buyStock function: this function handles stock buy, if user already have that stock, finds the stock in holdings list and updates,
+  if stock is not in the list it adds it, also checks if user have enough cash to buy.
+  sellStock function: this function handles stock sell, checks if user have enough to sell and executes sell,
+  if user sells all finds from holdings list then removes from holdings list,
+  if sells a part of stock then finds stock from holdings and updates it.
+  Helper methods to:
+  getHoldingBySymbol: returns stock holding by symbol
+  hasStock: checks if user already have that stock in the holdings list
+  getOwnedQuantity: returns quantity of stock by stock symbol
+   */
 
   // private user cash balance
   double _cashBalance = 10000;

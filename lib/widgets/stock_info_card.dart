@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
+import '../utils/app_theme.dart';
 
 class StockInfoCard extends StatelessWidget {
+  /*
+  Stock info card for show stock statistics in stock detail screen, like open price, high price etc.
+   */
   final String title;
   final double value;
 
