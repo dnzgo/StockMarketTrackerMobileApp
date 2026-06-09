@@ -61,7 +61,7 @@ class AppColors {
   );
 
   static BoxDecoration glassButtonDecoration = BoxDecoration(
-    borderRadius: BorderRadius.circular(16),
+    borderRadius: BorderRadius.circular(32),
     gradient: LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,

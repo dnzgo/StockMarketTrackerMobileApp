@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/screens/main_navigation_screen.dart';
 import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
-import 'package:stock_market_tracker_mobile_app/screens/signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
+  String name = "";
+  String surname = "";
   String emailAddress = "";
   String password = "";
 
@@ -21,6 +22,12 @@ class _LoginScreenState extends State<LoginScreen> {
         center: Alignment.center,
       ),
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          iconTheme: const IconThemeData(
+            color: AppColors.textPrimaryColor,
+          ),
+        ),
         backgroundColor: Colors.transparent,
         body: SafeArea(
           child: Padding(
@@ -31,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
-                      "Welcome to",
+                      "Create an Account",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: AppColors.textPrimaryColor,
@@ -50,6 +57,64 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                     const SizedBox(height: 50),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: AppColors.glassCardDecoration,
+                          child: TextField(
+                          style: const TextStyle(
+                            color: AppColors.textPrimaryColor,
+                          ),
+                          decoration: const InputDecoration(
+                            hintText: "Name*",
+                            hintStyle: TextStyle(
+                              color: AppColors.textSecondaryColor,
+                            ),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                          ),
+                          onChanged: (text) {
+                            name = text;
+                          },
+                        ),
+                       ),
+                      ),
+
+                        const SizedBox(width: 12),
+
+                        Expanded(
+                          child: Container(
+                            decoration: AppColors.glassCardDecoration,
+                        child: TextField(
+                          style: const TextStyle(
+                            color: AppColors.textPrimaryColor,
+                          ),
+                          decoration: const InputDecoration(
+                            hintText: "Surname*",
+                            hintStyle: TextStyle(
+                              color: AppColors.textSecondaryColor,
+                            ),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                          ),
+                          onChanged: (text) {
+                            surname = text;
+                          },
+                        ),
+                       ),
+                     ),
+                    ],
+                   ),
+
+                    const SizedBox(height: 24),
 
                     Container(
                       decoration: AppColors.glassCardDecoration,
@@ -119,31 +184,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         decoration: AppColors.glassButtonDecoration,
                         child: const Center(
                           child: Text(
-                            "Login",
+                            "Create Account",
                             style: TextStyle(
                               color: AppColors.textPrimaryColor,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignupScreen(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        "Don't have an account? Create Account",
-                        style: TextStyle(
-                          color: AppColors.textSecondaryColor,
-                          fontSize: 14,
                         ),
                       ),
                     ),
