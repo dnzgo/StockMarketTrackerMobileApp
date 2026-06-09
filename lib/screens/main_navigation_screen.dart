@@ -14,18 +14,37 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationState extends State<MainNavigationScreen> {
-  int selectedIndex = 0;
 
-  final List<Widget> screens = const [
-    HomeScreen(),
-    NewsExploreScreen(),
-    StockExploreScreen(),
-    PortfolioScreen(),
-    ProfileScreen(),
-  ];
+  int selectedIndex = 0;
+  String selectedCategory = "All";
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> screens = [
+      HomeScreen(
+        onSeeAllTrendingStocks: () {
+          setState(() {
+            selectedIndex = 2;
+            selectedCategory = "Trends";
+          });
+        },
+        onSeeAllTrendingNews: () {
+          setState(() {
+            selectedIndex = 1;
+            selectedCategory = "Trends";
+          });
+        },
+      ),
+      NewsExploreScreen(
+        initialCategory: selectedCategory,
+      ),
+      StockExploreScreen(
+        initialCategory: selectedCategory,
+      ),
+      const PortfolioScreen(),
+      const ProfileScreen(),
+    ];
+
     return Container(
       decoration: AppColors.appBackground(
         center: Alignment.bottomRight,
@@ -33,52 +52,40 @@ class _MainNavigationState extends State<MainNavigationScreen> {
       child: Scaffold(
         extendBody: true,
         backgroundColor: Colors.transparent,
-          body: Stack(
-            children: [
-              screens[selectedIndex],
-
-              Positioned(
-                left: 20,
-                right: 20,
-                bottom: 20,
-                child: Container(
-                  height: 80,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    gradient: const LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [
-                        AppColors.backgroundColor,
-                        AppColors.backgroundLightingColor,
-                      ],
-                    ),
-                    border: Border.all(
-                      color: Colors.white24,
-                      width: 1,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.35),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildNavItem(Icons.home_rounded, 0),
-                      _buildNavItem(Icons.newspaper_rounded, 1),
-                      _buildNavItem(Icons.bar_chart_rounded, 2),
-                      _buildNavItem(Icons.pie_chart_rounded, 3),
-                      _buildNavItem(Icons.person_rounded, 4),
+        body: Stack(
+          children: [
+            screens[selectedIndex],
+            Positioned(
+              left: 20,
+              right: 20,
+              bottom: 20,
+              child: Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  gradient: const LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      AppColors.backgroundColor,
+                      AppColors.backgroundLightingColor,
                     ],
                   ),
                 ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildNavItem(Icons.home_rounded, 0),
+                    _buildNavItem(Icons.newspaper_rounded, 1),
+                    _buildNavItem(Icons.bar_chart_rounded, 2),
+                    _buildNavItem(Icons.pie_chart_rounded, 3),
+                    _buildNavItem(Icons.person_rounded, 4),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -8,11 +8,15 @@ class SectionTitle extends StatelessWidget{
    */
   final String title;
   final String? actionText;
+  final VoidCallback? onTap;
+
   const SectionTitle({
     super.key,
     required this.title,
-    this.actionText
+    this.actionText,
+    this.onTap,
   });
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,7 +37,7 @@ class SectionTitle extends StatelessWidget{
           ),
 
           actionText != null
-              ? TextButton(onPressed: () {},
+              ? InkWell(onTap: onTap,
               child: Text(
                 actionText!,
                 style: TextStyle(

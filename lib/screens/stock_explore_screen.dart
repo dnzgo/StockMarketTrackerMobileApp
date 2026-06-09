@@ -6,12 +6,19 @@ import '../widgets/search_bar.dart';
 import '../utils/app_theme.dart';
 
 class StockExploreScreen extends StatefulWidget{
-  const StockExploreScreen({super.key});
+  final String initialCategory;
+
+  const StockExploreScreen({
+    super.key,
+    this.initialCategory = "All",
+  });
 
   @override
   State<StatefulWidget> createState() => _StockExploreState();
 }
 class _StockExploreState extends State<StockExploreScreen> {
+
+  late String selectedCategory;
 
   final List<Stock> stocks = [
     Stock(
@@ -33,6 +40,21 @@ class _StockExploreState extends State<StockExploreScreen> {
         changePercentage: -1.2
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCategory = widget.initialCategory;
+  }
+
+  @override
+  void didUpdateWidget(covariant StockExploreScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.initialCategory != widget.initialCategory) {
+      selectedCategory = widget.initialCategory;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

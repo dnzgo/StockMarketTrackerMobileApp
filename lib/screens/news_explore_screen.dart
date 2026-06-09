@@ -6,13 +6,21 @@ import '../widgets/search_bar.dart';
 import '../utils/app_theme.dart';
 
 class NewsExploreScreen extends StatefulWidget {
-  const NewsExploreScreen({super.key});
+
+  final String initialCategory;
+
+  const NewsExploreScreen({
+    super.key,
+    this.initialCategory = "All",
+  });
 
   @override
   State<NewsExploreScreen> createState() => _NewsExploreState();
 }
 
 class _NewsExploreState extends State<NewsExploreScreen> {
+
+  late String selectedCategory;
 
   final List<NewsArticle> latestNews = [
     NewsArticle(
@@ -33,6 +41,21 @@ class _NewsExploreState extends State<NewsExploreScreen> {
       date: "June 5, 2026",
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCategory = widget.initialCategory;
+  }
+
+  @override
+  void didUpdateWidget(covariant NewsExploreScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.initialCategory != widget.initialCategory) {
+      selectedCategory = widget.initialCategory;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

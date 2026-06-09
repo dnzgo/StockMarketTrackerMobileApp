@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_market_tracker_mobile_app/screens/stock_explore_screen.dart';
 import '../models/stock.dart';
 import '../models/news_article.dart';
 import '../widgets/stock_card.dart';
@@ -11,7 +12,15 @@ import '../utils/app_theme.dart';
 import '../widgets/news_card.dart';
 
 class HomeScreen extends StatefulWidget{
-  const HomeScreen({super.key});
+
+  final VoidCallback onSeeAllTrendingStocks;
+  final VoidCallback onSeeAllTrendingNews;
+
+  const HomeScreen({
+    super.key,
+    required this.onSeeAllTrendingStocks,
+    required this.onSeeAllTrendingNews,
+  });
 
   @override
   State<StatefulWidget> createState() => _HomeScreenState();
@@ -124,9 +133,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              SectionTitle(title: "Trending Stocks", actionText: "See all"),
+              SectionTitle(
+                title: "Trending Stocks",
+                actionText: "See all",
+                onTap: widget.onSeeAllTrendingStocks,
+              ),
 
-              ...trendingStocks.map((stock) {
+              ...trendingStocks.take(3).map((stock) {
                 return StockCard(
                     symbol: stock.symbol,
                     companyName: stock.companyName,
@@ -150,9 +163,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }).toList(),
 
-              SectionTitle(title: "Trending News", actionText: "See all"),
+              SectionTitle(
+                title: "Trending News",
+                actionText: "See all",
+                onTap: widget.onSeeAllTrendingNews,
+              ),
 
-              ...trendingNews.map((news) {
+              ...trendingNews.take(3).map((news) {
                 return NewsCard(
                   title: news.title,
                   description: news.description,
@@ -174,6 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 );
               }).toList(),
+
+              SizedBox(height: 60,),
             ],
           ),
         ),
