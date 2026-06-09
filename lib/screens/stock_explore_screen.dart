@@ -19,6 +19,7 @@ class StockExploreScreen extends StatefulWidget{
 class _StockExploreState extends State<StockExploreScreen> {
 
   late String selectedCategory;
+  String searchText = "";
 
   final List<Stock> stocks = [
     Stock(
@@ -40,6 +41,16 @@ class _StockExploreState extends State<StockExploreScreen> {
         changePercentage: -1.2
     ),
   ];
+
+  // filtered stock list based on search text
+  List<Stock> get filteredStocks {
+    final query = searchText.toLowerCase();
+
+    return stocks.where((stock) {
+      return stock.symbol.toLowerCase().contains(query) ||
+          stock.companyName.toLowerCase().contains(query);
+    }).toList();
+  }
 
   @override
   void initState() {
@@ -80,7 +91,14 @@ class _StockExploreState extends State<StockExploreScreen> {
                       ),
                     ),
                     SizedBox(height: 4),
-                    SearchBarWidget(hintText: "Search Stocks...", onChanged: (text) {},),
+                    SearchBarWidget(
+                      hintText: "Search Stocks...",
+                      onChanged: (text) {
+                        setState(() {
+                          searchText = text;
+                        });
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -91,7 +109,7 @@ class _StockExploreState extends State<StockExploreScreen> {
                         // spread operator (...) used children expects individual widgets
                         // but stock.map returns a list spread operator unwraps the list items
                         // into children one by one
-                        ...stocks.map((stock) {
+                        ...filteredStocks.map((stock) {
                           return StockCard(
                             symbol: stock.symbol,
                               companyName: stock.companyName,

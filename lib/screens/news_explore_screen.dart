@@ -21,6 +21,7 @@ class NewsExploreScreen extends StatefulWidget {
 class _NewsExploreState extends State<NewsExploreScreen> {
 
   late String selectedCategory;
+  String searchText = "";
 
   final List<NewsArticle> latestNews = [
     NewsArticle(
@@ -41,6 +42,16 @@ class _NewsExploreState extends State<NewsExploreScreen> {
       date: "June 5, 2026",
     ),
   ];
+
+  // filtered news list based on search text
+  List<NewsArticle> get filteredNews {
+    final query = searchText.toLowerCase();
+    return latestNews.where((news) {
+      return news.title.toLowerCase().contains(query) ||
+          news.description.toLowerCase().contains(query) ||
+          news.source.toLowerCase().contains(query);
+    }).toList();
+  }
 
   @override
   void initState() {
@@ -83,7 +94,11 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                   const SizedBox(height: 4),
                   SearchBarWidget(
                     hintText: "Search News...",
-                    onChanged: (text) {},
+                    onChanged: (text) {
+                      setState(() {
+                        searchText = text;
+                      });
+                    },
                   ),
                 ],
               ),
@@ -92,7 +107,7 @@ class _NewsExploreState extends State<NewsExploreScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    ...latestNews.map((news) {
+                    ...filteredNews.map((news) {
                       return NewsCard(
                         title: news.title,
                         description: news.description,

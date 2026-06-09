@@ -16,6 +16,9 @@ class SearchBarWidget extends StatelessWidget{
     return Container(
       decoration: AppColors.glassCardDecoration,
       child: TextField(
+        style: const TextStyle(
+          color: AppColors.textPrimaryColor,
+        ),
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20)
