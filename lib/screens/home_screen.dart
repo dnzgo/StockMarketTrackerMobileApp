@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/screens/stock_explore_screen.dart';
 import '../models/stock.dart';
 import '../models/news_article.dart';
+import '../models/market_index.dart';
 import '../widgets/stock_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/quick_overview_card.dart';
@@ -69,6 +70,29 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
+  final List<MarketIndex> marketIndexes = [
+    MarketIndex(
+      name: "NASDAQ",
+      value: 17650.43,
+      changePercentage: 1.32,
+    ),
+    MarketIndex(
+      name: "S&P 500",
+      value: 5398.20,
+      changePercentage: 0.84,
+    ),
+    MarketIndex(
+      name: "DAX",
+      value: 18902.54,
+      changePercentage: -0.43,
+    ),
+    MarketIndex(
+      name: "FTSE 100",
+      value: 8273.11,
+      changePercentage: 0.22,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,12 +148,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    QuickOverviewCard(marketName: "NASDAQ", marketValue: 2323.22, changePercentage: 2.50),
-                    QuickOverviewCard(marketName: "NASDAQ", marketValue: 2323.22, changePercentage: 2.50),
-                    QuickOverviewCard(marketName: "NASDAQ", marketValue: 2323.22, changePercentage: 2.50),
-                    QuickOverviewCard(marketName: "NASDAQ", marketValue: 2323.22, changePercentage: 2.50),
-                    QuickOverviewCard(marketName: "NASDAQ", marketValue: 2323.22, changePercentage: 2.50),
-                    QuickOverviewCard(marketName: "NASDAQ", marketValue: 2323.22, changePercentage: 2.50),
+                    ...marketIndexes.map((index) {
+                      return QuickOverviewCard(
+                        marketName: index.name,
+                        marketValue: index.value,
+                        changePercentage:
+                        index.changePercentage,
+                      );
+                    }).toList(),
                   ],
                 ),
               ),
