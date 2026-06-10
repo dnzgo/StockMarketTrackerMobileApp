@@ -6,6 +6,7 @@ import '../models/market_index.dart';
 import '../widgets/stock_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/quick_overview_card.dart';
+import '../widgets/country_selector.dart';
 import '../screens/stock_detail_screen.dart';
 import '../screens/news_detail_screen.dart';
 import '../utils/app_theme.dart';
@@ -28,6 +29,15 @@ class HomeScreen extends StatefulWidget{
 
 }
 class _HomeScreenState extends State<HomeScreen> {
+
+  String selectedCountry = "Germany";
+
+  final List<String> countries = [
+    "Germany",
+    "United States",
+    "United Kingdom",
+    "Turkey",
+  ];
 
   final List<Stock> trendingStocks = [
     Stock(
@@ -103,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
             vertical: 10,
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -140,6 +151,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+
+              ),
+              CountrySelector(
+                selectedCountry: selectedCountry,
+                countries: countries,
+                onChanged: (country) {
+                  setState(() {
+                    selectedCountry = country!;
+                  });
+                },
               ),
               SizedBox(height: 16),
               SectionTitle(title: "Market Overview"),
