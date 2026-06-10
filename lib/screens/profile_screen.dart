@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_market_tracker_mobile_app/screens/premium_screen.dart';
 import '../utils/app_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -63,15 +64,24 @@ class _ProfileState extends State<ProfileScreen> {
           const SizedBox(height: 70),
 
           _buildProfileButton(
-            icon: Icons.settings,
-            title: "Account Settings",
+            icon: Icons.diamond_outlined,
+            title: "Upgrade Premium",
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PremiumScreen(),
+                ),
+              );
+            },
           ),
 
           const SizedBox(height: 16),
 
           _buildProfileButton(
-            icon: Icons.notifications,
-            title: "Notifications",
+            icon: Icons.settings,
+            title: "Account Settings",
+            onTap: () {},
           ),
 
           const SizedBox(height: 16),
@@ -79,6 +89,7 @@ class _ProfileState extends State<ProfileScreen> {
           _buildProfileButton(
             icon: Icons.security,
             title: "Security & Privacy",
+            onTap: () {},
           ),
 
           const SizedBox(height: 16),
@@ -86,6 +97,7 @@ class _ProfileState extends State<ProfileScreen> {
           _buildProfileButton(
             icon: Icons.help_outline,
             title: "Help & Support",
+            onTap: () {},
           ),
         ],
       ),
@@ -95,12 +107,13 @@ class _ProfileState extends State<ProfileScreen> {
   Widget _buildProfileButton({
     required IconData icon,
     required String title,
+    required VoidCallback onTap,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: InkWell(
         borderRadius: BorderRadius.circular(24),
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           height: 60,
           decoration: AppColors.glassButtonDecoration,

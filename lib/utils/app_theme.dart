@@ -75,4 +75,27 @@ class AppColors {
       width: 1,
     ),
   );
+
+  static BoxDecoration selectedGlassCardDecoration = BoxDecoration(
+    borderRadius: BorderRadius.circular(24),
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Color.fromRGBO(255, 255, 255, 0.08),
+        Color.fromRGBO(255, 255, 255, 0.03),
+      ],
+    ),
+    border: Border.all(
+      color: AppColors.textPrimaryColor,
+      width: 1.5,
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.white10,
+        blurRadius: 10,
+        spreadRadius: 0,
+      ),
+    ],
+  );
 }
