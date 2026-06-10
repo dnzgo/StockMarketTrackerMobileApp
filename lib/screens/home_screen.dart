@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final Map<String, String>countries = {
     "DE": "Germany",
     "US": "United States",
-    "UK": "United Kingdom",
+    "GB": "United Kingdom",
     "TR": "Turkey",
   };
 
