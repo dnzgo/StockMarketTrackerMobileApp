@@ -3,6 +3,7 @@ import '../models/news_article.dart';
 import '../screens/news_detail_screen.dart';
 import '../widgets/news_card.dart';
 import '../widgets/search_bar.dart';
+import '../widgets/category_chip.dart';
 import '../utils/app_theme.dart';
 
 class NewsExploreScreen extends StatefulWidget {
@@ -43,13 +44,29 @@ class _NewsExploreState extends State<NewsExploreScreen> {
     ),
   ];
 
+  // category list
+  final List<String> categories = [
+    "All",
+    "Trends",
+    "Technology",
+    "Energy",
+    "Finance",
+    "Crypto",
+  ];
+
   // filtered news list based on search text
   List<NewsArticle> get filteredNews {
     final query = searchText.toLowerCase();
     return latestNews.where((news) {
-      return news.title.toLowerCase().contains(query) ||
-          news.description.toLowerCase().contains(query) ||
-          news.source.toLowerCase().contains(query);
+      final matchesSearch =
+        news.title.toLowerCase().contains(query) ||
+          news.source.toLowerCase().contains(query) ||
+          news.description.toLowerCase().contains(query);
+      final matchesCategory =
+          selectedCategory == "All" ||
+            selectedCategory == "Trends";
+
+      return matchesSearch && matchesCategory;
     }).toList();
   }
 
@@ -100,6 +117,27 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                       });
                     },
                   ),
+                  const SizedBox(height: 12),
+
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...categories.map((category) {
+                          return CategoryChip(
+                            title: category,
+                            isSelected: selectedCategory == category,
+                            onTap: () {
+                              setState(() {
+                                selectedCategory = category;
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                 ],
               ),
             ),

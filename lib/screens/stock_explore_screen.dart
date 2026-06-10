@@ -3,6 +3,7 @@ import '../models/stock.dart';
 import '../screens/stock_detail_screen.dart';
 import '../widgets/stock_card.dart';
 import '../widgets/search_bar.dart';
+import '../widgets/category_chip.dart';
 import '../utils/app_theme.dart';
 
 class StockExploreScreen extends StatefulWidget{
@@ -42,13 +43,29 @@ class _StockExploreState extends State<StockExploreScreen> {
     ),
   ];
 
-  // filtered stock list based on search text
+  // category list
+  final List<String> categories = [
+    "All",
+    "Trends",
+    "Technology",
+    "Energy",
+    "Finance",
+    "Crypto",
+  ];
+
+  // filtered stock list based on search text and category(for now mock)
   List<Stock> get filteredStocks {
     final query = searchText.toLowerCase();
 
     return stocks.where((stock) {
-      return stock.symbol.toLowerCase().contains(query) ||
-          stock.companyName.toLowerCase().contains(query);
+      final matchesSearch =
+          stock.symbol.toLowerCase().contains(query) ||
+              stock.companyName.toLowerCase().contains(query);
+      final matchesCategory =
+          selectedCategory == "All" ||
+              selectedCategory == "Trends";
+
+      return matchesSearch && matchesCategory;
     }).toList();
   }
 
@@ -99,6 +116,27 @@ class _StockExploreState extends State<StockExploreScreen> {
                         });
                       },
                     ),
+                    const SizedBox(height: 12),
+
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          ...categories.map((category) {
+                            return CategoryChip(
+                              title: category,
+                              isSelected: selectedCategory == category,
+                              onTap: () {
+                                setState(() {
+                                  selectedCategory = category;
+                                });
+                              },
+                            );
+                          }).toList(),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),
