@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/widgets/holding_card.dart';
+import '../widgets/holding_card.dart';
+import '../widgets/stock_card.dart';
 import '../services/service_locator.dart';
 import '../widgets/portfolio_summary_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/holding_card.dart';
+import '../widgets/cash_balance_card.dart';
 import '../screens/stock_detail_screen.dart';
 import '../utils/app_theme.dart';
 
@@ -43,8 +45,14 @@ class _PortfolioState extends State<PortfolioScreen> {
                 isPositive: portfolioService.isPositive,
               ),
               SizedBox(height: 12,),
+
               SectionTitle(title: "Holdings"),
               SizedBox(height: 8,),
+
+              CashBalanceCard(
+                cashType: "EURO",
+                value: portfolioService.cashBalance,
+              ),
 
               ...portfolioService.holdings.map((holding) {
                 return HoldingCard(
