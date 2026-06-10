@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class CountrySelector extends StatelessWidget {
-
   final String selectedCountry;
-  final List<String> countries;
+  final Map<String, String> countries;
   final ValueChanged<String?> onChanged;
 
   const CountrySelector({
@@ -18,8 +17,7 @@ class CountrySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 0,
+        horizontal: 5,
       ),
       decoration: AppColors.glassCardDecoration,
       child: DropdownButtonHideUnderline(
@@ -33,12 +31,31 @@ class CountrySelector extends StatelessWidget {
           style: const TextStyle(
             color: AppColors.textPrimaryColor,
           ),
-          items: countries.map((country) {
-            return DropdownMenuItem(
-              value: country,
-              child: Text(country),
+
+          selectedItemBuilder: (context) {
+            return countries.entries.map((entry) {
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.public,
+                    size: 14,
+                    color: AppColors.textSecondaryColor,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(entry.key),
+                ],
+              );
+            }).toList();
+          },
+
+          items: countries.entries.map((entry) {
+            return DropdownMenuItem<String>(
+              value: entry.key,
+              child: Text(entry.value),
             );
           }).toList(),
+
           onChanged: onChanged,
         ),
       ),

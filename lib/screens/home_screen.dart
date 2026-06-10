@@ -30,14 +30,14 @@ class HomeScreen extends StatefulWidget{
 }
 class _HomeScreenState extends State<HomeScreen> {
 
-  String selectedCountry = "Germany";
+  String selectedCountry = "DE";
 
-  final List<String> countries = [
-    "Germany",
-    "United States",
-    "United Kingdom",
-    "Turkey",
-  ];
+  final Map<String, String>countries = {
+    "DE": "Germany",
+    "US": "United States",
+    "UK": "United Kingdom",
+    "TR": "Turkey",
+  };
 
   final List<Stock> trendingStocks = [
     Stock(
@@ -153,16 +153,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
               ),
-              CountrySelector(
-                selectedCountry: selectedCountry,
-                countries: countries,
-                onChanged: (country) {
-                  setState(() {
-                    selectedCountry = country!;
-                  });
-                },
+
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 10,
+                  top: 20,
+                ),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: SizedBox(
+                    width: 75,
+                    height: 40,
+                    child: CountrySelector(
+                      selectedCountry: selectedCountry,
+                      countries: countries,
+                      onChanged: (country) {
+                        setState(() {
+                          selectedCountry = country!;
+                        });
+                      },
+                    ),
+                  ),
+                ),
               ),
-              SizedBox(height: 16),
+
               SectionTitle(title: "Market Overview"),
               SizedBox(height: 0),
               SingleChildScrollView(
