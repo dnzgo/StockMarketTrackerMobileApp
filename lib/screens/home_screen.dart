@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/screens/stock_explore_screen.dart';
 import '../models/stock.dart';
 import '../models/news_article.dart';
 import '../models/market_index.dart';
+import '../services/location_service.dart';
 import '../widgets/stock_card.dart';
+import '../widgets/news_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/quick_overview_card.dart';
 import '../widgets/country_selector.dart';
 import '../screens/stock_detail_screen.dart';
 import '../screens/news_detail_screen.dart';
 import '../utils/app_theme.dart';
-
-import '../widgets/news_card.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -30,7 +29,23 @@ class HomeScreen extends StatefulWidget{
 }
 class _HomeScreenState extends State<HomeScreen> {
 
-  String selectedCountry = "DE";
+  String selectedCountry = "TR";
+
+  @override
+  void initState() {
+    super.initState();
+    loadCountry();
+  }
+
+  Future<void> loadCountry() async {
+    final countryCode = await LocationService.getCountry();
+
+    if (countryCode != null && countries.containsKey(countryCode)) {
+      setState(() {
+        selectedCountry = countryCode;
+      });
+    }
+  }
 
   final Map<String, String>countries = {
     "DE": "Germany",
