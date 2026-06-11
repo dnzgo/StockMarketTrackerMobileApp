@@ -2,12 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../utils/app_theme.dart';
 
-class PortfolioChart extends StatelessWidget{
+class ReusableLineChart extends StatelessWidget{
 
-  const PortfolioChart({super.key});
+  final List<FlSpot> spots;
+
+  const ReusableLineChart({
+    super.key,
+    required this.spots,
+  });
+
+  bool get isPositive {
+    return spots.last.y >= spots.first.y;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final chartColor = isPositive
+        ? AppColors.increasedValueColor
+        : AppColors.decreasedValueColor;
+
     return SizedBox( // container for chart
       height: 200,
       child: LineChart(
@@ -29,17 +42,8 @@ class PortfolioChart extends StatelessWidget{
           lineBarsData: [
             LineChartBarData(
               isCurved: true,
-              spots: const [
-                FlSpot(0, 9000),
-                FlSpot(1, 9500),
-                FlSpot(2, 6000),
-                FlSpot(3, 5500),
-                FlSpot(4, 10100),
-                FlSpot(5, 9950),
-                FlSpot(6, 10500),
-              ],
-
-              color: AppColors.increasedValueColor,
+              spots: spots,
+              color: chartColor,
               barWidth: 5,
               isStrokeCapRound: true,
               dotData: const FlDotData(show: false),
@@ -50,10 +54,8 @@ class PortfolioChart extends StatelessWidget{
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    AppColors.increasedValueColor
-                        .withOpacity(0.35),
-                    AppColors.increasedValueColor
-                        .withOpacity(0.00),
+                    chartColor.withOpacity(0.20),
+                    chartColor.withOpacity(0.00),
                   ],
                 ),
               ),

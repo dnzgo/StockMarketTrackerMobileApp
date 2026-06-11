@@ -109,26 +109,28 @@ class _StockDetailState extends State<StockDetailScreen> {
 
                 const SizedBox(height: 12),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    StockInfoCard(
-                      title: "Open",
-                      value: 175.32,
-                    ),
-                    StockInfoCard(
-                      title: "High",
-                      value: 177.85,
-                    ),
-                    StockInfoCard(
-                      title: "Low",
-                      value: 134.20,
-                    ),
-                    StockInfoCard(
-                      title: "Volume",
-                      value: 52.34,
-                    ),
-                  ],
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: const Row(
+                    children: [
+                      StockInfoCard(
+                        title: "Open",
+                        value: 175.32,
+                      ),
+                      StockInfoCard(
+                        title: "High",
+                        value: 177.85,
+                      ),
+                      StockInfoCard(
+                        title: "Low",
+                        value: 134.20,
+                      ),
+                      StockInfoCard(
+                        title: "Volume",
+                        value: 52.34,
+                      ),
+                    ],
+                  )
                 ),
               ],
             ),
