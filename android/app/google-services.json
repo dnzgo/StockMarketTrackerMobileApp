@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1079285390558",
+    "project_id": "tradeon-stock-market",
+    "storage_bucket": "tradeon-stock-market.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079285390558:android:ddbe9a21f86b5425a7364f",
+        "android_client_info": {
+          "package_name": "com.example.stock_market_tracker_mobile_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvE4dcLb_IOhTk4yincvPRMa2N3n-mkz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
