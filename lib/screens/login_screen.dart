@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/screens/main_navigation_screen.dart';
-import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
-import 'package:stock_market_tracker_mobile_app/screens/signup_screen.dart';
+import '../screens/main_navigation_screen.dart';
+import '../utils/app_theme.dart';
+import '../screens/signup_screen.dart';
+import '../services/auth_sevice.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,8 +12,64 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String emailAddress = "";
-  String password = "";
+  final authService = AuthService();
+
+  final emailController =
+  TextEditingController();
+
+  final passwordController =
+  TextEditingController();
+
+  Future<void> login() async {
+    final email =
+    emailController.text.trim();
+    final password =
+    passwordController.text.trim();
+    // validation
+    if (email.isEmpty ||
+        password.isEmpty) {
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        const SnackBar(
+          content:
+          Text("Please fill all fields"),
+        ),
+      );
+      return;
+    }
+
+    if (!email.contains("@")) {
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        const SnackBar(
+          content:
+          Text("Invalid email"),
+        ),
+      );
+      return;
+    }
+
+    try {
+      // Firebase login later
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+          const MainNavigationScreen(),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        SnackBar(
+          content:
+          Text(e.toString()),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       decoration: AppColors.glassCardDecoration,
                       child: TextField(
+                        controller: emailController,
                         style: const TextStyle(
                           color: AppColors.textPrimaryColor,
                         ),
@@ -68,9 +126,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             vertical: 16,
                           ),
                         ),
-                        onChanged: (text) {
-                          emailAddress = text;
-                        },
                       ),
                     ),
 
@@ -79,6 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       decoration: AppColors.glassCardDecoration,
                       child: TextField(
+                        controller: passwordController,
                         style: const TextStyle(
                           color: AppColors.textPrimaryColor,
                         ),
@@ -94,9 +150,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         obscureText: true,
-                        onChanged: (text) {
-                          password = text;
-                        },
                       ),
                     ),
 
@@ -104,15 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     InkWell(
                       borderRadius: BorderRadius.circular(32),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                            const MainNavigationScreen(),
-                          ),
-                        );
-                      },
+                      onTap: login,
                       child: Container(
                         width: 240,
                         height: 54,
