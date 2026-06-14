@@ -61,7 +61,79 @@ class _ProfileState extends State<ProfileScreen> {
             ),
           ),
 
-          const SizedBox(height: 70),
+          const SizedBox(height: 24),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Container(
+              height: 90,
+              decoration: AppColors.glassCardDecoration,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 16,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(
+                          "Balance",
+                          style: TextStyle(
+                            color: AppColors.textSecondaryColor,
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          "€10,000.00",
+                          style: TextStyle(
+                            color: AppColors.textPrimaryColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  InkWell(
+                    borderRadius: BorderRadius.circular(18),
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
+                      decoration: AppColors.glassButtonDecoration,
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.add,
+                            size: 18,
+                            color: AppColors.textPrimaryColor,
+                          ),
+                          SizedBox(width: 6),
+                          Text(
+                            "Add",
+                            style: TextStyle(
+                              color: AppColors.textPrimaryColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 16),
 
           _buildProfileButton(
             icon: Icons.diamond_outlined,
@@ -74,6 +146,7 @@ class _ProfileState extends State<ProfileScreen> {
                 ),
               );
             },
+            isCentered: true,
           ),
 
           const SizedBox(height: 16),
@@ -82,6 +155,7 @@ class _ProfileState extends State<ProfileScreen> {
             icon: Icons.settings,
             title: "Account Settings",
             onTap: () {},
+            isCentered: true,
           ),
 
           const SizedBox(height: 16),
@@ -90,14 +164,16 @@ class _ProfileState extends State<ProfileScreen> {
             icon: Icons.security,
             title: "Security & Privacy",
             onTap: () {},
+            isCentered: true,
           ),
 
           const SizedBox(height: 16),
 
           _buildProfileButton(
-            icon: Icons.help_outline,
-            title: "Help & Support",
+            icon: Icons.logout_rounded,
+            title: "Log Out",
             onTap: () {},
+            isCentered: true,
           ),
         ],
       ),
@@ -108,6 +184,7 @@ class _ProfileState extends State<ProfileScreen> {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
+    bool isCentered = false,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -119,6 +196,8 @@ class _ProfileState extends State<ProfileScreen> {
           decoration: AppColors.glassButtonDecoration,
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Row(
+            mainAxisAlignment:
+            isCentered ? MainAxisAlignment.center : MainAxisAlignment.start,
             children: [
               Icon(
                 icon,
@@ -126,7 +205,7 @@ class _ProfileState extends State<ProfileScreen> {
                 size: 24,
               ),
 
-              const SizedBox(width: 20),
+              const SizedBox(width: 12),
 
               Text(
                 title,
