@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/screens/stock_detail_screen.dart';
 import '../widgets/section_title.dart';

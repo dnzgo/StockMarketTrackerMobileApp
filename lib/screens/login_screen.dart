@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../screens/main_navigation_screen.dart';
+import '../utils/input_validation.dart';
 import '../utils/app_theme.dart';
+import '../services/auth_service.dart';
+import '../screens/main_navigation_screen.dart';
 import '../screens/signup_screen.dart';
-import '../services/auth_sevice.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,34 +26,29 @@ class _LoginScreenState extends State<LoginScreen> {
     emailController.text.trim();
     final password =
     passwordController.text.trim();
-    // validation
-    if (email.isEmpty ||
-        password.isEmpty) {
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(
-        const SnackBar(
-          content:
-          Text("Please fill all fields"),
-        ),
+    // validation
+    final emailError = InputValidation.validateEmail(email);
+    if(emailError != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(emailError)),
       );
       return;
     }
-
-    if (!email.contains("@")) {
-
-      ScaffoldMessenger.of(context)
-          .showSnackBar(
-        const SnackBar(
-          content:
-          Text("Invalid email"),
-        ),
+    
+    final passwordError = InputValidation.validatePassword(password);
+    if(passwordError != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(passwordError)),
       );
       return;
     }
 
     try {
-      // Firebase login later
+      await authService.signIn(
+        email: email,
+        password: password,
+      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -61,14 +57,30 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     } catch (e) {
+      String errorMessage =
+          "Something went wrong";
+
+      if (e.toString().contains(
+          "invalid-credential")) {
+        errorMessage =
+        "Wrong email or password";
+      }
+
       ScaffoldMessenger.of(context)
           .showSnackBar(
         SnackBar(
-          content:
-          Text(e.toString()),
+          content: Text(errorMessage),
         ),
       );
     }
+  }
+
+  // destroy resources before widget dies
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override

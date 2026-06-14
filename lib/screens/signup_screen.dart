@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/screens/main_navigation_screen.dart';
-import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
+import '../utils/input_validation.dart';
+import '../utils/app_theme.dart';
+import '../services/auth_service.dart';
+import '../services/user_service.dart';
+import '../screens/main_navigation_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -10,10 +13,141 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  String name = "";
-  String surname = "";
-  String emailAddress = "";
-  String password = "";
+  final authService = AuthService();
+  final userService = UserService();
+
+  bool isLoading = false;
+
+  final nameController =
+  TextEditingController();
+
+  final surnameController =
+  TextEditingController();
+
+  final emailController =
+  TextEditingController();
+
+  final passwordController =
+  TextEditingController();
+
+  Future<void> signUp() async {
+
+    setState(() {
+      isLoading = true;
+    });
+
+    final email =
+        emailController.text.trim();
+    final name =
+        nameController.text.trim();
+    final surname =
+        surnameController.text.trim();
+    final password =
+        passwordController.text.trim();
+
+    // validation
+    final emailError = InputValidation.validateEmail(email);
+    if(emailError != null) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(emailError)),
+      );
+      return;
+    }
+
+    final passwordError = InputValidation.validatePassword(password);
+    if(passwordError != null) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(passwordError)),
+      );
+      return;
+    }
+
+    final nameError = InputValidation.validateName(name);
+    if(nameError != null) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(nameError)),
+      );
+      return;
+    }
+
+    final surnameError = InputValidation.validateName(surname);
+    if(surnameError != null) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(surnameError)),
+      );
+      return;
+    }
+
+    try {
+      final credential = await authService.signUp(
+        email: email,
+        password: password,
+      );
+
+      final uid = credential.user!.uid;
+
+      await userService.createUser(
+        uid: uid,
+        firstName: name,
+        surname: surname,
+        email: email,
+      );
+
+      // if screen removed stop
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+          const MainNavigationScreen(),
+        ),
+      );
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      String errorMessage =
+          "Something went wrong";
+
+      if (e.toString().contains("email-already-in-use")) {
+        errorMessage = "This email is already registered";
+      } else if (e.toString().contains("weak-password")) {
+        errorMessage = "Password is too weak";
+      }
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+        ),
+      );
+    }
+
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    surnameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +198,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: Container(
                             decoration: AppColors.glassCardDecoration,
                           child: TextField(
-                          style: const TextStyle(
-                            color: AppColors.textPrimaryColor,
-                          ),
+                            controller: nameController,
+                            style: const TextStyle(
+                              color: AppColors.textPrimaryColor,
+                            ),
                           decoration: const InputDecoration(
                             hintText: "Name*",
                             hintStyle: TextStyle(
@@ -78,9 +213,6 @@ class _SignupScreenState extends State<SignupScreen> {
                               vertical: 16,
                             ),
                           ),
-                          onChanged: (text) {
-                            name = text;
-                          },
                         ),
                        ),
                       ),
@@ -91,6 +223,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: Container(
                             decoration: AppColors.glassCardDecoration,
                         child: TextField(
+                          controller: surnameController,
                           style: const TextStyle(
                             color: AppColors.textPrimaryColor,
                           ),
@@ -105,9 +238,6 @@ class _SignupScreenState extends State<SignupScreen> {
                               vertical: 16,
                             ),
                           ),
-                          onChanged: (text) {
-                            surname = text;
-                          },
                         ),
                        ),
                      ),
@@ -119,6 +249,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     Container(
                       decoration: AppColors.glassCardDecoration,
                       child: TextField(
+                        controller: emailController,
                         style: const TextStyle(
                           color: AppColors.textPrimaryColor,
                         ),
@@ -133,9 +264,6 @@ class _SignupScreenState extends State<SignupScreen> {
                             vertical: 16,
                           ),
                         ),
-                        onChanged: (text) {
-                          emailAddress = text;
-                        },
                       ),
                     ),
 
@@ -144,6 +272,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     Container(
                       decoration: AppColors.glassCardDecoration,
                       child: TextField(
+                        controller: passwordController,
                         style: const TextStyle(
                           color: AppColors.textPrimaryColor,
                         ),
@@ -159,9 +288,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                         obscureText: true,
-                        onChanged: (text) {
-                          password = text;
-                        },
                       ),
                     ),
 
@@ -169,24 +295,28 @@ class _SignupScreenState extends State<SignupScreen> {
 
                     InkWell(
                       borderRadius: BorderRadius.circular(32),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                            const MainNavigationScreen(),
-                          ),
-                        );
-                      },
+                      onTap: signUp,
                       child: Container(
                         width: 240,
                         height: 54,
                         decoration: AppColors.glassButtonDecoration,
-                        child: const Center(
-                          child: Text(
+                        child: Center(
+                          child: isLoading
+                              ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child:
+                            CircularProgressIndicator(
+                              strokeWidth: 3,
+                              color:
+                              AppColors.textPrimaryColor,
+                            ),
+                          )
+                              : const Text(
                             "Create Account",
                             style: TextStyle(
-                              color: AppColors.textPrimaryColor,
+                              color:
+                              AppColors.textPrimaryColor,
                               fontSize: 20,
                             ),
                           ),
