@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/screens/premium_screen.dart';
 import '../utils/app_theme.dart';
+import 'package:stock_market_tracker_mobile_app/screens/settings_screen.dart';
+import 'package:stock_market_tracker_mobile_app/screens/security_and_privacy_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -154,8 +156,15 @@ class _ProfileState extends State<ProfileScreen> {
           _buildProfileButton(
             icon: Icons.settings,
             title: "Account Settings",
-            onTap: () {},
             isCentered: true,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
+              );
+            },
           ),
 
           const SizedBox(height: 16),
@@ -163,7 +172,14 @@ class _ProfileState extends State<ProfileScreen> {
           _buildProfileButton(
             icon: Icons.security,
             title: "Security & Privacy",
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SecurityAndPrivacyScreen(),
+                ),
+              );
+            },
             isCentered: true,
           ),
 
