@@ -34,12 +34,11 @@ class HomeScreen extends StatefulWidget{
 class _HomeScreenState extends State<HomeScreen> {
   final authService = AuthService();
   final userService = UserService();
+  final _newsService = NewsService();
 
   String firstName = "", surname = "";
-
   String selectedCountry = "TR";
 
-  final NewsService _newsService = NewsService();
   List<NewsArticle> trendingNews = [];
   bool isLoadingNews = true;
 

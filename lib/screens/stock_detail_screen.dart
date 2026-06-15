@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
+import '../services/user_service.dart';
 import '../widgets/stock_chart_card.dart';
 import '../widgets/stock_info_card.dart';
 import '../screens/trade_screen.dart';
-import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
+import '../utils/app_theme.dart';
 
 class StockDetailScreen extends StatefulWidget {
   final String symbol;
@@ -25,6 +27,56 @@ class StockDetailScreen extends StatefulWidget {
 }
 
 class _StockDetailState extends State<StockDetailScreen> {
+
+  final authService = AuthService();
+  final userService = UserService();
+
+  bool isWatchlisted = false;
+
+  Future<void> loadWatchlistStatus() async {
+    final user = authService.currentUser;
+    if(user == null) return;
+
+    final watched = await userService.isWatchlisted(
+        uid: user.uid,
+        symbol: widget.symbol
+    );
+
+    if(!mounted) return;
+
+    setState(() {
+      isWatchlisted = watched;
+    });
+  }
+
+  Future<void> toggleWatchlist() async{
+    final user = authService.currentUser;
+    if(user == null) return;
+
+    if(isWatchlisted) {
+      await userService.removeFromWatchlist(
+          uid: user.uid,
+          symbol: widget.symbol
+      );
+    } else {
+      await userService.addToWatchlist(
+          uid: user.uid,
+          symbol: widget.symbol
+      );
+    }
+    if(!mounted) return;
+
+    setState(() {
+      isWatchlisted = !isWatchlisted;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadWatchlistStatus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,6 +97,15 @@ class _StockDetailState extends State<StockDetailScreen> {
               color: AppColors.textPrimaryColor,
             ),
           ),
+          actions: [
+            IconButton(onPressed: toggleWatchlist, icon: Icon(
+              isWatchlisted
+                ? Icons.star
+                : Icons.star_border,
+              color: Colors.amber,
+            ),
+            ),
+          ],
         ),
         body: SafeArea(
           child: SingleChildScrollView(

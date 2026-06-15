@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
+import '../services/user_service.dart';
 import '../models/stock.dart';
 import '../screens/stock_detail_screen.dart';
 import '../widgets/stock_card.dart';
@@ -18,6 +20,10 @@ class StockExploreScreen extends StatefulWidget{
   State<StatefulWidget> createState() => _StockExploreState();
 }
 class _StockExploreState extends State<StockExploreScreen> {
+  final authService = AuthService();
+  final userService = UserService();
+
+  List<String> watchlistSymbols = [];
 
   late String selectedCategory;
   String searchText = "";
@@ -46,6 +52,7 @@ class _StockExploreState extends State<StockExploreScreen> {
   // category list
   final List<String> categories = [
     "All",
+    "Watchlist",
     "Trends",
     "Technology",
     "Energy",
@@ -61,18 +68,48 @@ class _StockExploreState extends State<StockExploreScreen> {
       final matchesSearch =
           stock.symbol.toLowerCase().contains(query) ||
               stock.companyName.toLowerCase().contains(query);
-      final matchesCategory =
-          selectedCategory == "All" ||
-              selectedCategory == "Trends";
+
+      bool matchesCategory = false;
+
+      if(selectedCategory == "All") {
+        matchesCategory = true;
+      } else if(selectedCategory == "Watchlist") {
+        matchesCategory = watchlistSymbols.contains(stock.symbol);
+      } else if(selectedCategory == "Trends") {
+        matchesCategory = true;                  // temporary
+      } else if(selectedCategory == "Technology") {
+        matchesCategory = true;                  // temporary
+      } else if(selectedCategory == "Energy") {
+        matchesCategory = true;                  // temporary
+      } else if(selectedCategory == "Finance") {
+        matchesCategory = true;                  // temporary
+      } else if(selectedCategory == "Crypto") {
+        matchesCategory = true;                  // temporary
+      }
 
       return matchesSearch && matchesCategory;
     }).toList();
+  }
+
+  Future<void> loadWatchlist() async {
+    final user = authService.currentUser;
+
+    if(user == null) return;
+
+    final loadedWatchlist = await userService.getWatchlist(uid: user.uid);
+
+    if(!mounted) return;
+
+    setState(() {
+      watchlistSymbols = loadedWatchlist;
+    });
   }
 
   @override
   void initState() {
     super.initState();
     selectedCategory = widget.initialCategory;
+    loadWatchlist();
   }
 
   @override
@@ -126,10 +163,13 @@ class _StockExploreState extends State<StockExploreScreen> {
                             return CategoryChip(
                               title: category,
                               isSelected: selectedCategory == category,
-                              onTap: () {
+                              onTap: () async {
                                 setState(() {
                                   selectedCategory = category;
                                 });
+                                if (category == "watchlist") {
+                                  await loadWatchlist();
+                                }
                               },
                             );
                           }).toList(),
@@ -154,8 +194,8 @@ class _StockExploreState extends State<StockExploreScreen> {
                               price: stock.price,
                               changePercentage: stock.changePercentage,
                               isPositive: stock.isPositive,
-                              onTap: () {
-                                Navigator.push(
+                              onTap: () async {
+                                await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => StockDetailScreen(
@@ -167,6 +207,7 @@ class _StockExploreState extends State<StockExploreScreen> {
                                     ),
                                   ),
                                 );
+                                await loadWatchlist();
                               },
                           );
                         }).toList()
