@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/screens/premium_screen.dart';
+import '../services/auth_service.dart';
+import '../services/user_service.dart';
 import '../utils/app_theme.dart';
-import 'package:stock_market_tracker_mobile_app/screens/settings_screen.dart';
-import 'package:stock_market_tracker_mobile_app/screens/security_and_privacy_screen.dart';
+import '../utils/string_formatter.dart';
+import '../screens/premium_screen.dart';
+import '../screens/settings_screen.dart';
+import '../screens/security_and_privacy_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -12,6 +16,38 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfileScreen> {
+  final authService = AuthService();
+  final userService = UserService();
+
+  String firstName = "";
+  String surname = "";
+  String email = "";
+  double cashBalance = 0;
+
+  Future<void> loadUserData() async {
+    final user = authService.currentUser;
+
+    if(user == null) return;
+
+    final data = await userService.getCurrentUserData(user.uid);
+
+    if(data == null) return;
+    if(!mounted) return;
+
+    setState(() {
+      firstName = data["firstName"] ?? "";
+      surname = data["surname"] ?? "";
+      email = data["email"] ?? "";
+      cashBalance = data["cashBalance"] ?? 0;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +80,8 @@ class _ProfileState extends State<ProfileScreen> {
 
           const SizedBox(height: 20),
 
-          const Text(
-            "Emir Yalçınkaya",
+          Text(
+            "${StringFormatter.toTitleCase(firstName)} ${StringFormatter.toTitleCase(surname)}",
             style: TextStyle(
               color: AppColors.textPrimaryColor,
               fontSize: 20,
@@ -55,8 +91,8 @@ class _ProfileState extends State<ProfileScreen> {
 
           const SizedBox(height: 8),
 
-          const Text(
-            "emir@gmail.com",
+          Text(
+            email,
             style: TextStyle(
               color: AppColors.textSecondaryColor,
               fontSize: 15,
@@ -80,7 +116,7 @@ class _ProfileState extends State<ProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text(
                           "Balance",
                           style: TextStyle(
@@ -90,7 +126,7 @@ class _ProfileState extends State<ProfileScreen> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "€10,000.00",
+                          "€${cashBalance.toStringAsFixed(2)}",
                           style: TextStyle(
                             color: AppColors.textPrimaryColor,
                             fontSize: 18,

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../widgets/holding_card.dart';
-import '../widgets/stock_card.dart';
 import '../services/service_locator.dart';
+import '../services/auth_service.dart';
+import '../services/user_service.dart';
+import '../widgets/holding_card.dart';
 import '../widgets/portfolio_summary_card.dart';
 import '../widgets/section_title.dart';
-import '../widgets/holding_card.dart';
 import '../widgets/cash_balance_card.dart';
 import '../screens/stock_detail_screen.dart';
 import '../utils/app_theme.dart';
@@ -16,6 +16,43 @@ class PortfolioScreen extends StatefulWidget{
   State<StatefulWidget> createState() => _PortfolioState();
 }
 class _PortfolioState extends State<PortfolioScreen> {
+
+  final authService = AuthService();
+  final userService = UserService();
+
+  Future<void> loadPortfolioData() async {
+    final user = authService.currentUser;
+
+    if (user == null) {
+      return;
+    }
+
+    final data =
+    await userService.getCurrentUserData(user.uid);
+
+    if (data == null) {
+      return;
+    }
+
+    final loadedCashBalance =
+    (data["cashBalance"] ?? 0).toDouble();
+
+    portfolioService.setCashBalance(loadedCashBalance);
+
+    final loadedHoldings = await userService.getHoldings(uid: user.uid);
+    portfolioService.setHoldings(loadedHoldings);
+
+    if (!mounted) return;
+
+    setState(() {}); // rebuild ui
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadPortfolioData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

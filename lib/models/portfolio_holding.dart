@@ -46,4 +46,28 @@ class PortfolioHolding {
     return profitLoss >= 0;
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      "symbol": stock.symbol,
+      "quantity": quantity,
+      "averageBuyPrice": averageBuyPrice,
+    };
+  }
+
+  factory PortfolioHolding.fromMap(
+      Map<String, dynamic> map,
+      ) {
+    return PortfolioHolding(
+      stock: Stock(
+        symbol: map["symbol"],
+        companyName: map["symbol"], // temporary
+        price: 0, // later loaded from API
+        changePercentage: 0, // later loaded from API
+      ),
+      quantity: (map["quantity"] ?? 0).toDouble(),
+      averageBuyPrice:
+      (map["averageBuyPrice"] ?? 0).toDouble(),
+    );
+  }
+
 }

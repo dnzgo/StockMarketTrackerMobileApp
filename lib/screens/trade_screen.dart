@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/widgets/trade_type_selection.dart';
+import '../services/auth_service.dart';
+import '../services/user_service.dart';
 import '../services/service_locator.dart';
 import '../models/stock.dart';
 import '../utils/app_theme.dart';
 import '../widgets/stock_chart_card.dart';
 import '../widgets/order_summary_card.dart';
+import '../widgets/trade_type_selection.dart';
 
 class TradeScreen extends StatefulWidget {
   final String symbol;
@@ -23,6 +25,10 @@ class TradeScreen extends StatefulWidget {
 }
 
 class _TradeState extends State<TradeScreen> {
+
+  final authService = AuthService();
+  final userService = UserService();
+
   bool isBuySelected = true;
   double quantity = 1;
 
@@ -43,19 +49,54 @@ class _TradeState extends State<TradeScreen> {
     return ownedQuantity >= quantity;
   }
 
-  void executeTrade() {
+  Future<void> executeTrade() async {
+    print("1. executeTrade started");
+    final user = authService.currentUser;
+
+    print("2. user: ${user?.uid}");
+    if(user == null) return;
+
     final stock = Stock(
       symbol: widget.symbol,
       companyName: widget.companyName,
       price: widget.price,
       changePercentage: 0,
     );
+    print("3. before trade cash: ${portfolioService.cashBalance}");
 
     if (isBuySelected) {
       portfolioService.buyStock(stock: stock, quantity: quantity);
     } else {
       portfolioService.sellStock(stock: stock, quantity: quantity);
     }
+    print("4. after trade cash: ${portfolioService.cashBalance}");
+
+    final holding = portfolioService.getHoldingBySymbol(widget.symbol);
+
+    print("5. holding after trade: $holding");
+    if(holding == null) {
+      print("6. deleting holding");
+      await userService.deleteHolding(
+          uid: user.uid,
+          symbol: widget.symbol,
+      );
+    } else {
+      print("6. saving holding");
+      await userService.saveHolding(
+          uid: user.uid,
+          holding: holding,
+      );
+    }
+
+    print("7. updating cash balance");
+    await userService.updateCashBalance(
+        uid: user.uid,
+        cashBalance: portfolioService.cashBalance
+    );
+
+    print("8. database updated");
+    if(!mounted) return;
+
     setState(() {});
 
     ScaffoldMessenger.of(context).showSnackBar(

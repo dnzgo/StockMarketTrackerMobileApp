@@ -52,14 +52,14 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBvE4dcLb_IOhTk4yincvPRMa2N3n-mkz4',
-    appId: '1:1079285390558:android:ddbe9a21f86b5425a7364f',
+    appId: '1:1079285390558:android:79cc7a441ea45afaa7364f',
     messagingSenderId: '1079285390558',
     projectId: 'tradeon-stock-market',
     storageBucket: 'tradeon-stock-market.firebasestorage.app',
   );
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCkMfWGFAqxny-oeWoD1x_lzrDYGenw1Qk',
-    appId: '1:1079285390558:ios:d68b91e84af0121ca7364f',
+    appId: '1:1079285390558:ios:7dfb1522a9256120a7364f',
     messagingSenderId: '1079285390558',
     projectId: 'tradeon-stock-market',
     storageBucket: 'tradeon-stock-market.firebasestorage.app',

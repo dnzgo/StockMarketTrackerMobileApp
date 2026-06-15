@@ -194,4 +194,13 @@ class PortfolioService {
     return (totalPnL / totalCostBasis) * 100;
   }
 
+  void setCashBalance(double balance) {
+    _cashBalance = balance;
+  }
+
+  void setHoldings(List<PortfolioHolding> holdings) {
+    _holdings.clear();
+    _holdings.addAll(holdings);
+  }
+
 }

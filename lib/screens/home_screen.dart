@@ -3,6 +3,8 @@ import '../models/stock.dart';
 import '../models/news_article.dart';
 import '../models/market_index.dart';
 import '../services/location_service.dart';
+import '../services/auth_service.dart';
+import '../services/user_service.dart';
 import '../widgets/stock_card.dart';
 import '../widgets/news_card.dart';
 import '../widgets/section_title.dart';
@@ -11,6 +13,7 @@ import '../widgets/country_selector.dart';
 import '../screens/stock_detail_screen.dart';
 import '../screens/news_detail_screen.dart';
 import '../utils/app_theme.dart';
+import '../utils/string_formatter.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -28,6 +31,10 @@ class HomeScreen extends StatefulWidget{
 
 }
 class _HomeScreenState extends State<HomeScreen> {
+  final authService = AuthService();
+  final userService = UserService();
+
+  String firstName = "", surname = "";
 
   String selectedCountry = "TR";
 
@@ -35,6 +42,24 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     loadCountry();
+    loadUserData();
+  }
+
+  Future<void> loadUserData() async {
+    final user = authService.currentUser;
+
+    if(user == null) return;
+
+    final data = await userService.getCurrentUserData(user.uid);
+
+    if(data == null) return;
+
+    if(!mounted) return;
+
+    setState(() {
+      firstName = data["firstName"] ?? "";
+      surname = data["surname"] ?? "";
+    });
   }
 
   Future<void> loadCountry() async {
@@ -147,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          "Deniz Gözcü",
+                          "${StringFormatter.toTitleCase(firstName)} ${StringFormatter.toTitleCase(surname)}",
                           style: const TextStyle(
                             color: AppColors.textPrimaryColor,
                             fontSize: 30,
