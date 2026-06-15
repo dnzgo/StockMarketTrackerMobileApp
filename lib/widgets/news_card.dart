@@ -44,9 +44,30 @@ class NewsCard extends StatelessWidget {
               ),
               child: SizedBox(
                 width: 120,
-                child: Image.network(
+                child: imageURL.isNotEmpty
+                    ? Image.network(
                   imageURL,
                   fit: BoxFit.cover,
+                  errorBuilder: (
+                      context,
+                      error,
+                      stackTrace,
+                      ) {
+                    return const Center(
+                      child: Icon(
+                        Icons.image_not_supported,
+                        color: Colors.white54,
+                        size: 40,
+                      ),
+                    );
+                  },
+                )
+                    : const Center(
+                  child: Icon(
+                    Icons.image,
+                    color: Colors.white54,
+                    size: 40,
+                  ),
                 ),
               ),
             ),

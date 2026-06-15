@@ -5,6 +5,7 @@ import '../widgets/news_card.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/category_chip.dart';
 import '../utils/app_theme.dart';
+import '../services/news_service.dart';
 
 class NewsExploreScreen extends StatefulWidget {
 
@@ -24,25 +25,11 @@ class _NewsExploreState extends State<NewsExploreScreen> {
   late String selectedCategory;
   String searchText = "";
 
-  final List<NewsArticle> latestNews = [
-    NewsArticle(
-      title: "Apple unveils new AI-powered devices",
-      description: "Apple introduced new AI features.",
-      articleText: "Full article text here...",
-      imageURL: "https://...",
-      source: "Reuters",
-      date: "June 6, 2026",
-    ),
+  final NewsService _newsService = NewsService();
 
-    NewsArticle(
-      title: "Tesla stock jumps after strong earnings",
-      description: "Tesla shares surged after earnings.",
-      articleText: "Full article text here...",
-      imageURL: "https://...",
-      source: "Bloomberg",
-      date: "June 5, 2026",
-    ),
-  ];
+  List<NewsArticle> latestNews = [];
+  bool isLoading = true;
+
 
   // category list
   final List<String> categories = [
@@ -74,6 +61,24 @@ class _NewsExploreState extends State<NewsExploreScreen> {
   void initState() {
     super.initState();
     selectedCategory = widget.initialCategory;
+    loadNews();
+  }
+
+  Future<void> loadNews() async {
+    try {
+      final news = await _newsService.getLatestNews();
+
+      setState(() {
+        latestNews = news;
+        isLoading = false;
+      });
+    } catch (e) {
+      print(e);
+
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -142,7 +147,11 @@ class _NewsExploreState extends State<NewsExploreScreen> {
               ),
             ),
             Expanded(
-              child: SingleChildScrollView(
+              child: isLoading
+                  ? const Center(
+                child: CircularProgressIndicator(),
+              )
+                  : SingleChildScrollView(
                 child: Column(
                   children: [
                     ...filteredNews.map((news) {

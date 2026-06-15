@@ -14,6 +14,7 @@ import '../screens/stock_detail_screen.dart';
 import '../screens/news_detail_screen.dart';
 import '../utils/app_theme.dart';
 import '../utils/string_formatter.dart';
+import '../services/news_service.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -38,11 +39,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String selectedCountry = "TR";
 
+  final NewsService _newsService = NewsService();
+  List<NewsArticle> trendingNews = [];
+  bool isLoadingNews = true;
+
   @override
   void initState() {
     super.initState();
     loadCountry();
     loadUserData();
+    loadNews();
   }
 
   Future<void> loadUserData() async {
@@ -72,6 +78,27 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> loadNews() async {
+    try {
+      final news = await _newsService.getLatestNews();
+
+      if (!mounted) return;
+
+      setState(() {
+        trendingNews = news;
+        isLoadingNews = false;
+      });
+    } catch (e) {
+      print(e);
+
+      if (!mounted) return;
+
+      setState(() {
+        isLoadingNews = false;
+      });
+    }
+  }
+
   final Map<String, String>countries = {
     "DE": "Germany",
     "US": "United States",
@@ -97,26 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
         companyName: 'Tesla, Inc.',
         price: 321.33,
         changePercentage: -1.2
-    ),
-  ];
-
-  final List<NewsArticle> trendingNews = [
-    NewsArticle(
-      title: "Apple unveils new AI-powered devices",
-      description: "Apple introduced new AI features.",
-      articleText: "Full article text here...",
-      imageURL: "https://...",
-      source: "Reuters",
-      date: "June 6, 2026",
-    ),
-
-    NewsArticle(
-      title: "Tesla stock jumps after strong earnings",
-      description: "Tesla shares surged after earnings.",
-      articleText: "Full article text here...",
-      imageURL: "https://...",
-      source: "Bloomberg",
-      date: "June 5, 2026",
     ),
   ];
 
@@ -270,28 +277,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: widget.onSeeAllTrendingNews,
               ),
 
-              ...trendingNews.take(3).map((news) {
-                return NewsCard(
-                  title: news.title,
-                  description: news.description,
-                  imageURL: news.imageURL,
-                  date: news.date,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NewsDetailScreen(
+              if (isLoadingNews)
+                const Center(
+                  child: CircularProgressIndicator(),
+                )
+              else
+                ...trendingNews.take(3).map((news) {
+                  return NewsCard(
+                    title: news.title,
+                    description: news.description,
+                    imageURL: news.imageURL,
+                    date: news.date,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewsDetailScreen(
                             title: news.title,
                             articleText: news.articleText,
                             source: news.source,
                             date: news.date,
                             imageURL: news.imageURL,
-                        )
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
 
               SizedBox(height: 60,),
             ],

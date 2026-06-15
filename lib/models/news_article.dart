@@ -1,5 +1,4 @@
-class NewsArticle {
-  /*
+/*
   news model for data: title,
   description(article content in short),
   articleText (whole article),
@@ -7,6 +6,8 @@ class NewsArticle {
   source of the news,
   date of the news,
    */
+class NewsArticle {
+
   final String title;
   final String description;
   final String articleText;
