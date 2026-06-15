@@ -90,4 +90,68 @@ class UserService {
     }).toList();
   }
 
+  // add stocks to watchlist avoid duplicates
+  Future<void> addToWatchlist({
+    required String uid,
+    required String symbol,
+  }) async {
+    await _firestore
+        .collection("users")
+        .doc(uid)
+        .update({"watchlist" : FieldValue.arrayUnion([symbol])
+    });
+  }
+  // remove if stock is in watchlist
+  Future<void> removeFromWatchlist({
+    required String uid,
+    required String symbol,
+  }) async {
+    await _firestore
+        .collection("users")
+        .doc(uid)
+        .update({"watchlist" : FieldValue.arrayRemove([symbol])
+    });
+  }
+
+  Future<bool> isWatchlisted({
+    required String uid,
+    required String symbol,
+  }) async {
+    try {
+      final document = await _firestore
+          .collection("users")
+          .doc(uid)
+          .get();
+
+      final data = document.data();
+
+      if (data == null) {
+        return false;
+      }
+
+      final watchlist =
+      List<String>.from(data["watchlist"] ?? []);
+
+      return watchlist.contains(symbol);
+    } catch (e) {
+      print("WATCHLIST ERROR: $e");
+      return false;
+    }
+  }
+
+  Future<List<String>> getWatchlist({
+    required String uid,
+
+  }) async {
+    final document = await _firestore
+        .collection("users")
+        .doc(uid).get();
+
+    final data = document.data();
+
+    if (data == null) return [];
+
+    return List<String>.from(data["watchlist"] ?? []);
+  }
+
 }
