@@ -298,6 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             source: news.source,
                             date: news.date,
                             imageURL: news.imageURL,
+                            articleUrl: news.articleUrl,
                           ),
                         ),
                       );

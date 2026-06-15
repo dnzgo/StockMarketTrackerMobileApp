@@ -14,6 +14,7 @@ class NewsArticle {
   final String imageURL;
   final String source;
   final String date;
+  final String articleUrl;
 
   const NewsArticle({
     required this.title,
@@ -22,6 +23,7 @@ class NewsArticle {
     required this.imageURL,
     required this.source,
     required this.date,
+    required this.articleUrl,
   });
 
 }

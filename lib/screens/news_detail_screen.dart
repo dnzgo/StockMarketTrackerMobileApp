@@ -3,6 +3,7 @@ import 'package:stock_market_tracker_mobile_app/screens/stock_detail_screen.dart
 import '../widgets/section_title.dart';
 import '../widgets/affected_stock_chip.dart';
 import '../utils/app_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetailScreen extends StatelessWidget{
   final String title;
@@ -10,6 +11,7 @@ class NewsDetailScreen extends StatelessWidget{
   final String source;
   final String date;
   final String imageURL;
+  final String articleUrl;
 
   const NewsDetailScreen({
     super.key,
@@ -18,6 +20,7 @@ class NewsDetailScreen extends StatelessWidget{
     required this.source,
     required this.date,
     required this.imageURL,
+    required this.articleUrl,
   });
 
   @override
@@ -141,14 +144,57 @@ class NewsDetailScreen extends StatelessWidget{
 
             SizedBox(height: 20),
 
-            Text(
-              articleText,
-              style: const TextStyle(
-                color: AppColors.textPrimaryColor,
-              ),
-            ),
+                Text(
+                  articleText,
+                  style: const TextStyle(
+                    color: AppColors.textPrimaryColor,
+                  ),
+                ),
 
-            SizedBox(height: 24,),
+                const SizedBox(height: 24),
+
+                InkWell(
+                  borderRadius: BorderRadius.circular(32),
+                  onTap: () async {
+                    final uri = Uri.parse(articleUrl);
+
+                    await launchUrl(
+                      uri,
+                      mode: LaunchMode.externalApplication,
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
+                    ),
+                    decoration: AppColors.glassButtonDecoration,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Read Full Article",
+                          style: TextStyle(
+                            color: AppColors.textPrimaryColor,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+
+                        SizedBox(width: 8),
+
+                        Icon(
+                          Icons.north_east_rounded,
+                          color: AppColors.textPrimaryColor,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
             ],
           ),
         ),

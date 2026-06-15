@@ -170,6 +170,7 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                                   source: news.source,
                                   date: news.date,
                                   imageURL: news.imageURL,
+                                  articleUrl: news.articleUrl,
                                 )
                             ),
                           );

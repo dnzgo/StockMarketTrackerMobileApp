@@ -52,6 +52,7 @@ class NewsService {
             ((news["datetime"] ?? 0) as int) * 1000,
           ),
         ),
+        articleUrl: news["url"] ?? "",
       );
     }).toList();
   }
