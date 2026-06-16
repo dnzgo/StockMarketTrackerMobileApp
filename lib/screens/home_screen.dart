@@ -15,6 +15,8 @@ import '../screens/news_detail_screen.dart';
 import '../utils/app_theme.dart';
 import '../utils/string_formatter.dart';
 import '../services/news_service.dart';
+import '../services/stock_service.dart';
+import '../services/market_service.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -29,12 +31,14 @@ class HomeScreen extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() => _HomeScreenState();
-
 }
 class _HomeScreenState extends State<HomeScreen> {
   final authService = AuthService();
   final userService = UserService();
   final _newsService = NewsService();
+  final StockService _stockService = StockService();
+  final MarketService _marketService = MarketService();
+
 
   String firstName = "", surname = "";
   String selectedCountry = "TR";
@@ -42,12 +46,17 @@ class _HomeScreenState extends State<HomeScreen> {
   List<NewsArticle> trendingNews = [];
   bool isLoadingNews = true;
 
+  List<Stock> trendingStocks = [];
+  bool isLoadingStocks = true;
+
   @override
   void initState() {
     super.initState();
     loadCountry();
     loadUserData();
     loadNews();
+    loadStocks();
+    loadIndexes();
   }
 
   Future<void> loadUserData() async {
@@ -98,6 +107,103 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> loadStocks() async {
+    try {
+
+      final tesla =
+      await _stockService.getStockQuote(
+        "TSLA",
+        "Tesla Inc.",
+      );
+
+      final nvidia =
+      await _stockService.getStockQuote(
+        "NVDA",
+        "NVIDIA",
+      );
+
+      final apple =
+      await _stockService.getStockQuote(
+        "AAPL",
+        "Apple",
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        trendingStocks = [
+          tesla,
+          nvidia,
+          apple,
+        ];
+
+        isLoadingStocks = false;
+      });
+
+    } catch (e) {
+
+      print(e);
+
+      if (!mounted) return;
+
+      setState(() {
+        isLoadingStocks = false;
+      });
+    }
+  }
+
+  Future<void> loadIndexes() async {
+    try {
+
+      final nasdaq =
+      await _marketService.getIndex(
+        "IXIC",
+        "NASDAQ",
+      );
+
+      final sp500 =
+      await _marketService.getIndex(
+        "GSPC",
+        "S&P 500",
+      );
+
+      final dax =
+      await _marketService.getIndex(
+        "GDAXI",
+        "DAX",
+      );
+
+      final ftse =
+      await _marketService.getIndex(
+        "FTSE",
+        "FTSE 100",
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        marketIndexes = [
+          nasdaq,
+          sp500,
+          dax,
+          ftse,
+        ];
+
+        isLoadingIndexes = false;
+      });
+
+    } catch (e) {
+
+      print(e);
+
+      if (!mounted) return;
+
+      setState(() {
+        isLoadingIndexes = false;
+      });
+    }
+  }
+
   final Map<String, String>countries = {
     "DE": "Germany",
     "US": "United States",
@@ -105,49 +211,8 @@ class _HomeScreenState extends State<HomeScreen> {
     "TR": "Turkey",
   };
 
-  final List<Stock> trendingStocks = [
-    Stock(
-      symbol: 'TSLA',
-      companyName: 'Tesla, Inc.',
-      price: 321.33,
-      changePercentage: -1.2,
-    ),
-    Stock(
-      symbol: 'NVDA',
-      companyName: 'NVIDIA',
-      price: 142.81,
-      changePercentage: 2.4,
-    ),
-    Stock(
-        symbol: 'TSLA',
-        companyName: 'Tesla, Inc.',
-        price: 321.33,
-        changePercentage: -1.2
-    ),
-  ];
-
-  final List<MarketIndex> marketIndexes = [
-    MarketIndex(
-      name: "NASDAQ",
-      value: 17650.43,
-      changePercentage: 1.32,
-    ),
-    MarketIndex(
-      name: "S&P 500",
-      value: 5398.20,
-      changePercentage: 0.84,
-    ),
-    MarketIndex(
-      name: "DAX",
-      value: 18902.54,
-      changePercentage: -0.43,
-    ),
-    MarketIndex(
-      name: "FTSE 100",
-      value: 8273.11,
-      changePercentage: 0.22,
-    ),
-  ];
+  List<MarketIndex> marketIndexes = [];
+  bool isLoadingIndexes = true;
 
   @override
   Widget build(BuildContext context) {
@@ -224,30 +289,39 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               SectionTitle(title: "Market Overview"),
-              SizedBox(height: 0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    ...marketIndexes.map((index) {
-                      return QuickOverviewCard(
-                        marketName: index.name,
-                        marketValue: index.value,
-                        changePercentage:
-                        index.changePercentage,
-                      );
-                    }).toList(),
-                  ],
+
+              if (isLoadingIndexes)
+                const Center(
+                  child: CircularProgressIndicator(),
+                )
+              else
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      ...marketIndexes.map((index) {
+                        return QuickOverviewCard(
+                          marketName: index.name,
+                          marketValue: index.value,
+                          changePercentage: index.changePercentage,
+                        );
+                      }).toList(),
+                    ],
+                  ),
                 ),
-              ),
               SectionTitle(
                 title: "Trending Stocks",
                 actionText: "See all",
                 onTap: widget.onSeeAllTrendingStocks,
               ),
 
-              ...trendingStocks.take(3).map((stock) {
-                return StockCard(
+              if (isLoadingStocks)
+                const Center(
+                  child: CircularProgressIndicator(),
+                )
+              else
+                ...trendingStocks.take(3).map((stock) {
+                  return StockCard(
                     symbol: stock.symbol,
                     companyName: stock.companyName,
                     price: stock.price,
@@ -257,18 +331,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => StockDetailScreen(
-                                symbol: stock.symbol,
-                                companyName: stock.companyName,
-                                price: stock.price,
-                                changePercentage: stock.changePercentage,
-                                isPositive: stock.isPositive,
-                            ),
+                          builder: (context) => StockDetailScreen(
+                            symbol: stock.symbol,
+                            companyName: stock.companyName,
+                            price: stock.price,
+                            changePercentage: stock.changePercentage,
+                            isPositive: stock.isPositive,
+                          ),
                         ),
                       );
                     },
-                );
-              }).toList(),
+                  );
+                }).toList(),
 
               SectionTitle(
                 title: "Trending News",
