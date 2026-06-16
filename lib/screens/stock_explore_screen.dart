@@ -7,6 +7,7 @@ import '../widgets/stock_card.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/category_chip.dart';
 import '../utils/app_theme.dart';
+import '../services/stock_service.dart';
 
 class StockExploreScreen extends StatefulWidget{
   final String initialCategory;
@@ -22,32 +23,15 @@ class StockExploreScreen extends StatefulWidget{
 class _StockExploreState extends State<StockExploreScreen> {
   final authService = AuthService();
   final userService = UserService();
+  final StockService _stockService = StockService();
 
   List<String> watchlistSymbols = [];
 
+  List<Stock> stocks = [];
+  bool isLoadingStocks = true;
+
   late String selectedCategory;
   String searchText = "";
-
-  final List<Stock> stocks = [
-    Stock(
-      symbol: 'TSLA',
-      companyName: 'Tesla, Inc.',
-      price: 321.33,
-      changePercentage: -1.2,
-    ),
-    Stock(
-        symbol: 'NVDA',
-        companyName: 'NVIDIA',
-        price: 142.81,
-        changePercentage: 2.4,
-    ),
-    Stock(
-        symbol: 'TSLA',
-        companyName: 'Tesla, Inc.',
-        price: 321.33,
-        changePercentage: -1.2
-    ),
-  ];
 
   // category list
   final List<String> categories = [
@@ -105,11 +89,39 @@ class _StockExploreState extends State<StockExploreScreen> {
     });
   }
 
+  Future<void> loadStocks() async {
+    try {
+      final data = [
+        await _stockService.getStockQuote("TSLA", "Tesla"),
+        await _stockService.getStockQuote("NVDA", "NVIDIA"),
+        await _stockService.getStockQuote("AAPL", "Apple"),
+        await _stockService.getStockQuote("MSFT", "Microsoft"),
+        await _stockService.getStockQuote("AMZN", "Amazon"),
+      ];
+
+      if (!mounted) return;
+      setState(() {
+        stocks = data;
+        isLoadingStocks = false;
+      });
+
+    } catch (e) {
+
+      print(e);
+
+      if (!mounted) return;
+      setState(() {
+        isLoadingStocks = false;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     selectedCategory = widget.initialCategory;
     loadWatchlist();
+    loadStocks();
   }
 
   @override
@@ -180,40 +192,46 @@ class _StockExploreState extends State<StockExploreScreen> {
                   ],
                 ),
               ),
+
               Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        // spread operator (...) used children expects individual widgets
-                        // but stock.map returns a list spread operator unwraps the list items
-                        // into children one by one
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // show loading indicator while stocks are being fetched
+                      if (isLoadingStocks)
+                        const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      // spread operator (...) used because children expects widgets
+                      // map() returns a list, spread operator unwraps each StockCard
+                      else
                         ...filteredStocks.map((stock) {
                           return StockCard(
                             symbol: stock.symbol,
-                              companyName: stock.companyName,
-                              price: stock.price,
-                              changePercentage: stock.changePercentage,
-                              isPositive: stock.isPositive,
-                              onTap: () async {
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => StockDetailScreen(
-                                      symbol: stock.symbol,
-                                      companyName: stock.companyName,
-                                      price: stock.price,
-                                      changePercentage: stock.changePercentage,
-                                      isPositive: stock.isPositive,
-                                    ),
+                            companyName: stock.companyName,
+                            price: stock.price,
+                            changePercentage: stock.changePercentage,
+                            isPositive: stock.isPositive,
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => StockDetailScreen(
+                                    symbol: stock.symbol,
+                                    companyName: stock.companyName,
+                                    price: stock.price,
+                                    changePercentage: stock.changePercentage,
+                                    isPositive: stock.isPositive,
                                   ),
-                                );
-                                await loadWatchlist();
-                              },
+                                ),
+                              );
+                              await loadWatchlist();
+                            },
                           );
-                        }).toList()
-                      ],
-                    ),
-                  )
+                        }).toList(),
+                    ],
+                  ),
+                ),
               )
             ],
       )
