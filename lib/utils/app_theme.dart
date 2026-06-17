@@ -98,4 +98,45 @@ class AppColors {
       ),
     ],
   );
+
+  static BoxDecoration glassToggleDecoration =
+  BoxDecoration(
+    borderRadius: BorderRadius.circular(32),
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Color.fromRGBO(255, 255, 255, 0.12),
+        Color.fromRGBO(255, 255, 255, 0.05),
+      ],
+    ),
+    border: Border.all(
+      color: Color.fromRGBO(255, 255, 255, 0.20),
+      width: 1,
+    ),
+  );
+
+  static BoxDecoration selectedGlassToggleDecoration =
+  BoxDecoration(
+    borderRadius: BorderRadius.circular(32),
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Color.fromRGBO(255, 255, 255, 0.16),
+        Color.fromRGBO(255, 255, 255, 0.08),
+      ],
+    ),
+    border: Border.all(
+      color: Colors.white,
+      width: 1.2,
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.white.withValues(alpha: 0.08),
+        blurRadius: 4,
+        spreadRadius: 0,
+      ),
+    ],
+  );
 }
