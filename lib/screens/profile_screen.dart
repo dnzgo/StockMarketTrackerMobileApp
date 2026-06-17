@@ -2,11 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
+import '../services/service_locator.dart';
 import '../utils/app_theme.dart';
 import '../utils/string_formatter.dart';
 import '../screens/premium_screen.dart';
 import '../screens/settings_screen.dart';
 import '../screens/security_and_privacy_screen.dart';
+import '../screens/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -224,7 +226,21 @@ class _ProfileState extends State<ProfileScreen> {
           _buildProfileButton(
             icon: Icons.logout_rounded,
             title: "Log Out",
-            onTap: () {},
+            onTap: () async {
+              await authService.signOut();
+
+              portfolioService.clearPortfolio();
+
+              if (!mounted) return;
+
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const LoginScreen(),
+                ),
+                    (route) => false,
+              );
+            },
             isCentered: true,
           ),
         ],

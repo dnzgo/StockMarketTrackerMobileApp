@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:stock_market_tracker_mobile_app/screens/auth_gate.dart';
 import 'firebase_options.dart';
 import '../screens/login_screen.dart';
 
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: LoginScreen(),
+      home: const AuthGate(),
     );
   }
 }

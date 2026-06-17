@@ -203,4 +203,9 @@ class PortfolioService {
     _holdings.addAll(holdings);
   }
 
+  void clearPortfolio() {
+    _cashBalance = 10000;
+    _holdings.clear();
+  }
+
 }
