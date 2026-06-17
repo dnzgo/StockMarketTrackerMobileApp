@@ -90,6 +90,24 @@ class _PortfolioState extends State<PortfolioScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.history,
+              color: AppColors.textPrimaryColor,
+              size: 28,
+            ),
+            tooltip: "Transaction History",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const TransactionHistoryScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -103,34 +121,8 @@ class _PortfolioState extends State<PortfolioScreen> {
                 totalPnLPercentage: portfolioService.totalPnLPercentage,
                 isPositive: portfolioService.isPositive,
               ),
-              SizedBox(height: 12,),
 
-              InkWell(
-                borderRadius: BorderRadius.circular(16),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                      const TransactionHistoryScreen(),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: AppColors.glassCardDecoration,
-                  child: const Text(
-                    "View Transaction History",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppColors.textPrimaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+              SizedBox(height: 12,),
 
               SectionTitle(title: "Holdings"),
               SizedBox(height: 8,),
