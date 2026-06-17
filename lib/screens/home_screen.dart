@@ -113,19 +113,16 @@ class _HomeScreenState extends State<HomeScreen> {
       final tesla =
       await _stockService.getStockQuote(
         "TSLA",
-        "Tesla Inc.",
       );
 
       final nvidia =
       await _stockService.getStockQuote(
         "NVDA",
-        "NVIDIA",
       );
 
       final apple =
       await _stockService.getStockQuote(
         "AAPL",
-        "Apple",
       );
 
       if (!mounted) return;

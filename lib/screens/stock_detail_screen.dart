@@ -155,7 +155,9 @@ class _StockDetailState extends State<StockDetailScreen> {
 
                 const SizedBox(height: 24),
 
-                const StockChartCard(),
+                StockChartCard(
+                  symbol: widget.symbol,
+                ),
 
                 const SizedBox(height: 24),
 

@@ -162,7 +162,9 @@ class _TradeState extends State<TradeScreen> {
 
               const SizedBox(height: 24),
 
-              const StockChartCard(),
+              StockChartCard(
+                symbol: widget.symbol,
+              ),
 
               const SizedBox(height: 24),
 

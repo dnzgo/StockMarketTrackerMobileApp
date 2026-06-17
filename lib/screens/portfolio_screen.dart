@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../services/service_locator.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
+import '../services/stock_service.dart';
+import '../models/portfolio_holding.dart';
 import '../widgets/holding_card.dart';
 import '../widgets/portfolio_summary_card.dart';
 import '../widgets/section_title.dart';
@@ -19,6 +21,7 @@ class _PortfolioState extends State<PortfolioScreen> {
 
   final authService = AuthService();
   final userService = UserService();
+  final stockService = StockService();
 
   Future<void> loadPortfolioData() async {
     final user = authService.currentUser;
@@ -40,7 +43,25 @@ class _PortfolioState extends State<PortfolioScreen> {
     portfolioService.setCashBalance(loadedCashBalance);
 
     final loadedHoldings = await userService.getHoldings(uid: user.uid);
-    portfolioService.setHoldings(loadedHoldings);
+    final List<PortfolioHolding> liveHoldings = [];
+
+    for (final holding in loadedHoldings) {
+      final liveStock =
+      await stockService.getStockQuote(
+        holding.stock.symbol,
+      );
+
+      liveHoldings.add(
+        PortfolioHolding(
+          stock: liveStock,
+          quantity: holding.quantity,
+          averageBuyPrice:
+          holding.averageBuyPrice,
+        ),
+      );
+    }
+
+    portfolioService.setHoldings(liveHoldings);
 
     if (!mounted) return;
 

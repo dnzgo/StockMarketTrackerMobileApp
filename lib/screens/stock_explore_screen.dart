@@ -23,7 +23,7 @@ class StockExploreScreen extends StatefulWidget{
 class _StockExploreState extends State<StockExploreScreen> {
   final authService = AuthService();
   final userService = UserService();
-  final StockService _stockService = StockService();
+  final stockService = StockService();
 
   List<String> watchlistSymbols = [];
 
@@ -91,28 +91,17 @@ class _StockExploreState extends State<StockExploreScreen> {
 
   Future<void> loadStocks() async {
     try {
-      final data = [
-        await _stockService.getStockQuote("TSLA", "Tesla"),
-        await _stockService.getStockQuote("NVDA", "NVIDIA"),
-        await _stockService.getStockQuote("AAPL", "Apple"),
-        await _stockService.getStockQuote("MSFT", "Microsoft"),
-        await _stockService.getStockQuote("AMZN", "Amazon"),
-      ];
+      final loadedStocks = await stockService.getTrendingStocks();
 
-      if (!mounted) return;
+      if(!mounted) return;
+
       setState(() {
-        stocks = data;
+        stocks = loadedStocks;
         isLoadingStocks = false;
       });
 
     } catch (e) {
-
       print(e);
-
-      if (!mounted) return;
-      setState(() {
-        isLoadingStocks = false;
-      });
     }
   }
 
@@ -200,31 +189,87 @@ class _StockExploreState extends State<StockExploreScreen> {
                       // show loading indicator while stocks are being fetched
                       if (isLoadingStocks)
                         const Center(
-                          child: CircularProgressIndicator(),
+                          child: Padding(
+                            padding: EdgeInsets.all(32),
+                            child: CircularProgressIndicator(),
+                          ),
                         )
-                      // spread operator (...) used because children expects widgets
-                      // map() returns a list, spread operator unwraps each StockCard
+
+                      // watchlist empty state
+                      else if (
+                      selectedCategory == "Watchlist" &&
+                          filteredStocks.isEmpty
+                      )
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(32),
+                          decoration:
+                          AppColors.glassCardDecoration,
+                          child: const Column(
+                            children: [
+                              Icon(
+                                Icons.star_border,
+                                size: 48,
+                                color:
+                                AppColors.textSecondaryColor,
+                              ),
+
+                              SizedBox(height: 12),
+
+                              Text(
+                                "No watchlist stocks yet",
+                                style: TextStyle(
+                                  color:
+                                  AppColors.textPrimaryColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+
+                              SizedBox(height: 8),
+
+                              Text(
+                                "Add stocks by tapping the star icon.",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color:
+                                  AppColors.textSecondaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+
+                      // stock list
                       else
                         ...filteredStocks.map((stock) {
                           return StockCard(
                             symbol: stock.symbol,
                             companyName: stock.companyName,
                             price: stock.price,
-                            changePercentage: stock.changePercentage,
-                            isPositive: stock.isPositive,
+                            changePercentage:
+                            stock.changePercentage,
+                            isPositive:
+                            stock.isPositive,
                             onTap: () async {
                               await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => StockDetailScreen(
-                                    symbol: stock.symbol,
-                                    companyName: stock.companyName,
-                                    price: stock.price,
-                                    changePercentage: stock.changePercentage,
-                                    isPositive: stock.isPositive,
-                                  ),
+                                  builder: (context) =>
+                                      StockDetailScreen(
+                                        symbol: stock.symbol,
+                                        companyName:
+                                        stock.companyName,
+                                        price: stock.price,
+                                        changePercentage:
+                                        stock.changePercentage,
+                                        isPositive:
+                                        stock.isPositive,
+                                      ),
                                 ),
                               );
+
                               await loadWatchlist();
                             },
                           );

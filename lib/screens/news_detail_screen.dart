@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/screens/stock_detail_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../screens/stock_detail_screen.dart';
 import '../widgets/section_title.dart';
 import '../widgets/affected_stock_chip.dart';
 import '../utils/app_theme.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetailScreen extends StatelessWidget{
   final String title;
