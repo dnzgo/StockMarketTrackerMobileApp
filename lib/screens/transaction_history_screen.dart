@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
@@ -74,6 +76,9 @@ class _TransactionHistoryScreenState
             final price = transaction["price"] ?? 0;
             final totalAmount =
                 transaction["totalAmount"] ?? 0;
+            final timestamp = transaction["createdAt"] as Timestamp;
+            final date = timestamp.toDate();
+            final tradeDate = DateFormat("dd/MM/yy HH:mm").format(date);
 
             final isBuy = type == "buy";
 
@@ -102,8 +107,13 @@ class _TransactionHistoryScreenState
                       Text(
                         "$quantity shares at €${price.toStringAsFixed(2)}",
                         style: const TextStyle(
-                          color:
-                          AppColors.textSecondaryColor,
+                          color: AppColors.textSecondaryColor,
+                        ),
+                      ),
+                      Text(
+                        tradeDate,
+                        style: const TextStyle(
+                          color: AppColors.textSecondaryColor,
                         ),
                       ),
                     ],
@@ -112,6 +122,7 @@ class _TransactionHistoryScreenState
                     "€${totalAmount.toStringAsFixed(2)}",
                     style: const TextStyle(
                       color: AppColors.textPrimaryColor,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
