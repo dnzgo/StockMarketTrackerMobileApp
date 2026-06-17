@@ -4,6 +4,7 @@ class AppColors {
   // Background colors
   static const Color backgroundColor = Color(0xFF000000);
   static const Color backgroundLightingColor = Color(0xFF0080FF);
+  static const Color backgroundGradientMiddle = Color(0xFF021B3A);
 
   // App main colors
   static const Color primaryColor = Color(0xFF111827);
@@ -21,6 +22,44 @@ class AppColors {
   static const Color increasedValueColor = Color(0xFF34C759);
   static const Color decreasedValueColor = Color(0xFFFF3B30);
 
+  // Glass colors
+  static const Color glassPrimary =
+  Color.fromRGBO(255, 255, 255, 0.08);
+
+  static const Color glassSecondary =
+  Color.fromRGBO(255, 255, 255, 0.03);
+
+  static const Color glassButtonPrimary =
+  Color.fromRGBO(255, 255, 255, 0.12);
+
+  static const Color glassButtonSecondary =
+  Color.fromRGBO(255, 255, 255, 0.05);
+
+  static const Color glassTogglePrimary =
+  Color.fromRGBO(255, 255, 255, 0.16);
+
+  static const Color glassToggleSecondary =
+  Color.fromRGBO(255, 255, 255, 0.08);
+
+  static const Color glassBorder =
+  Color.fromRGBO(255, 255, 255, 0.15);
+
+  static const Color glassButtonBorder =
+  Color.fromRGBO(255, 255, 255, 0.20);
+
+  static const Color glassShadow =
+  Color.fromRGBO(255, 255, 255, 0.04);
+
+  static const Color glassToggleShadow =
+  Color.fromRGBO(255, 255, 255, 0.08);
+
+  // Selected state colors
+  static const Color selectedGlassBorder = Colors.white;
+  static const Color selectedGlassShadow = Colors.white10;
+
+  // Toggle colors
+  static const Color toggleKnobColor = Colors.white;
+
   static BoxDecoration appBackground({
     Alignment center = Alignment.center,
   }) {
@@ -28,10 +67,10 @@ class AppColors {
       gradient: RadialGradient(
         center: center,
         radius: 1.2,
-        colors: [
-          Color(0xFF0080FF),
-          Color(0xFF021B3A),
-          Color(0xFF000000),
+        colors: const [
+          backgroundLightingColor,
+          backgroundGradientMiddle,
+          backgroundColor,
         ],
       ),
     );
@@ -39,21 +78,21 @@ class AppColors {
 
   static BoxDecoration glassCardDecoration = BoxDecoration(
     borderRadius: BorderRadius.circular(24),
-    gradient: LinearGradient(
+    gradient: const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        Color.fromRGBO(255, 255, 255, 0.08),
-        Color.fromRGBO(255, 255, 255, 0.03),
+        glassPrimary,
+        glassSecondary,
       ],
     ),
     border: Border.all(
-      color: Color.fromRGBO(255, 255, 255, 0.15),
+      color: glassBorder,
       width: 1,
     ),
-    boxShadow: [
+    boxShadow: const [
       BoxShadow(
-        color: Color.fromRGBO(255, 255, 255, 0.04),
+        color: glassShadow,
         blurRadius: 20,
         spreadRadius: 1,
       ),
@@ -62,37 +101,38 @@ class AppColors {
 
   static BoxDecoration glassButtonDecoration = BoxDecoration(
     borderRadius: BorderRadius.circular(32),
-    gradient: LinearGradient(
+    gradient: const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        Color.fromRGBO(255, 255, 255, 0.12),
-        Color.fromRGBO(255, 255, 255, 0.05),
+        glassButtonPrimary,
+        glassButtonSecondary,
       ],
     ),
     border: Border.all(
-      color: Color.fromRGBO(255, 255, 255, 0.20),
+      color: glassButtonBorder,
       width: 1,
     ),
   );
 
-  static BoxDecoration selectedGlassCardDecoration = BoxDecoration(
+  static BoxDecoration selectedGlassCardDecoration =
+  BoxDecoration(
     borderRadius: BorderRadius.circular(24),
-    gradient: LinearGradient(
+    gradient: const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        Color.fromRGBO(255, 255, 255, 0.08),
-        Color.fromRGBO(255, 255, 255, 0.03),
+        glassPrimary,
+        glassSecondary,
       ],
     ),
     border: Border.all(
-      color: AppColors.textPrimaryColor,
+      color: selectedGlassBorder,
       width: 1.5,
     ),
-    boxShadow: [
+    boxShadow: const [
       BoxShadow(
-        color: Colors.white10,
+        color: selectedGlassShadow,
         blurRadius: 10,
         spreadRadius: 0,
       ),
@@ -102,16 +142,16 @@ class AppColors {
   static BoxDecoration glassToggleDecoration =
   BoxDecoration(
     borderRadius: BorderRadius.circular(32),
-    gradient: LinearGradient(
+    gradient: const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        Color.fromRGBO(255, 255, 255, 0.12),
-        Color.fromRGBO(255, 255, 255, 0.05),
+        glassButtonPrimary,
+        glassButtonSecondary,
       ],
     ),
     border: Border.all(
-      color: Color.fromRGBO(255, 255, 255, 0.20),
+      color: glassButtonBorder,
       width: 1,
     ),
   );
@@ -119,21 +159,21 @@ class AppColors {
   static BoxDecoration selectedGlassToggleDecoration =
   BoxDecoration(
     borderRadius: BorderRadius.circular(32),
-    gradient: LinearGradient(
+    gradient: const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        Color.fromRGBO(255, 255, 255, 0.16),
-        Color.fromRGBO(255, 255, 255, 0.08),
+        glassTogglePrimary,
+        glassToggleSecondary,
       ],
     ),
     border: Border.all(
-      color: Colors.white,
+      color: selectedGlassBorder,
       width: 1.2,
     ),
-    boxShadow: [
+    boxShadow: const [
       BoxShadow(
-        color: Colors.white.withValues(alpha: 0.08),
+        color: glassToggleShadow,
         blurRadius: 4,
         spreadRadius: 0,
       ),
