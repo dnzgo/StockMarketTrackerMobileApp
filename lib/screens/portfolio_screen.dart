@@ -9,6 +9,7 @@ import '../widgets/portfolio_summary_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/cash_balance_card.dart';
 import '../screens/stock_detail_screen.dart';
+import '../screens/transaction_history_screen.dart';
 import '../utils/app_theme.dart';
 
 class PortfolioScreen extends StatefulWidget{
@@ -103,6 +104,33 @@ class _PortfolioState extends State<PortfolioScreen> {
                 isPositive: portfolioService.isPositive,
               ),
               SizedBox(height: 12,),
+
+              InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                      const TransactionHistoryScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: AppColors.glassCardDecoration,
+                  child: const Text(
+                    "View Transaction History",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColors.textPrimaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
 
               SectionTitle(title: "Holdings"),
               SizedBox(height: 8,),
