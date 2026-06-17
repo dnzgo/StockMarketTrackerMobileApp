@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:stock_market_tracker_mobile_app/widgets/chart_period_selector.dart';
+import '../services/service_locator.dart';
+import '../widgets/chart_period_selector.dart';
 import '../utils/app_theme.dart';
 import '../widgets/reusable_line_chart.dart';
 
@@ -25,77 +26,29 @@ class PortfolioSummaryCard extends StatefulWidget {
 
 class _PortfolioSummaryState extends State<PortfolioSummaryCard> {
 
-  int selectedIndex = 0;
+  List<FlSpot> portfolioChartSpots = [];
+  bool isLoadingChart = true;
 
-  final List<String> periods = [
-    "1D",
-    "1W",
-    "1M",
-    "3M",
-    "1Y",
-    "5Y",
-  ];
+  Future<void> loadPortfolioChart() async {
+    final spots =
+    await portfolioChartService
+        .buildPortfolioChartSpots(
+      holdings: portfolioService.holdings,
+      cashBalance: portfolioService.cashBalance,
+    );
 
-  List<FlSpot> get chartData {
-    switch (periods[selectedIndex]) {
+    if (!mounted) return;
 
-      case "1D":
-        return const [
-          FlSpot(0, 9800),
-          FlSpot(1, 10100),
-          FlSpot(2, 9950),
-          FlSpot(3, 10300),
-          FlSpot(4, 10050),
-        ];
+    setState(() {
+      portfolioChartSpots = spots;
+      isLoadingChart = false;
+    });
+  }
 
-      case "1W":
-        return const [
-          FlSpot(0, 9200),
-          FlSpot(1, 9500),
-          FlSpot(2, 9400),
-          FlSpot(3, 9800),
-          FlSpot(4, 10200),
-        ];
-
-      case "1M":
-        return const [
-          FlSpot(0, 10500),
-          FlSpot(1, 10200),
-          FlSpot(2, 9800),
-          FlSpot(3, 9400),
-          FlSpot(4, 9100),
-        ];
-
-      case "3M":
-        return const [
-          FlSpot(0, 8500),
-          FlSpot(1, 8900),
-          FlSpot(2, 9200),
-          FlSpot(3, 9800),
-          FlSpot(4, 10400),
-        ];
-
-      case "1Y":
-        return const [
-          FlSpot(0, 6000),
-          FlSpot(1, 7200),
-          FlSpot(2, 8100),
-          FlSpot(3, 9300),
-          FlSpot(4, 10400),
-        ];
-
-      case "5Y":
-        return const [
-          FlSpot(0, 3000),
-          FlSpot(1, 4500),
-          FlSpot(2, 6500),
-          FlSpot(3, 8500),
-          FlSpot(4, 10400),
-        ];
-
-      default:
-        return [];
-    }
+  @override
+  void initState() {
+    super.initState();
+    loadPortfolioChart();
   }
 
   @override
@@ -121,9 +74,9 @@ class _PortfolioSummaryState extends State<PortfolioSummaryCard> {
               top: 70,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: ReusableLineChart(
-                  spots: chartData,
-                ),
+                  child : isLoadingChart
+                      ? const Center(child: CircularProgressIndicator())
+                      : ReusableLineChart(spots: portfolioChartSpots),
               ),
             ),
 
@@ -199,22 +152,6 @@ class _PortfolioSummaryState extends State<PortfolioSummaryCard> {
                     ),
                   ),
                 ],
-              ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-
-              child: ChartPeriodSelector(
-                selectedIndex: selectedIndex,
-                periods: periods,
-
-                onChanged: (index) {
-                  setState(() {
-                    selectedIndex = index;
-                  });
-                },
               ),
             ),
           ],

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import '../services/portfolio_service.dart';
 import '../services/user_service.dart';
 import '../services/service_locator.dart';
 import '../models/stock.dart';
+import '../models/transaction_record.dart';
 import '../utils/app_theme.dart';
+import '../utils/trade_validation.dart';
 import '../widgets/stock_chart_card.dart';
 import '../widgets/order_summary_card.dart';
 import '../widgets/trade_type_selection.dart';
@@ -35,25 +38,37 @@ class _TradeState extends State<TradeScreen> {
   bool canIncreaseQuantity() {
     final nextQuantity = quantity + 1;
     if(isBuySelected) {
-      final nextCost = nextQuantity * widget.price;
-      return nextCost <= portfolioService.cashBalance;
-    } else {
-      return nextQuantity <= ownedQuantity;
+      return TradeValidation.canBuy(
+        cashBalance: portfolioService.cashBalance,
+        quantity: nextQuantity,
+        price: widget.price,
+        feeRate: PortfolioService.tradingFeeRate,
+      );
     }
+    return TradeValidation.canSell(
+      ownedQuantity: ownedQuantity,
+      quantity: nextQuantity,
+    );
   }
 
   bool canConfirmTrade() {
     if(isBuySelected) {
-      return estimatedCost <= portfolioService.cashBalance;
+      return TradeValidation.canBuy(
+        cashBalance: portfolioService.cashBalance,
+        quantity: quantity,
+        price: widget.price,
+        feeRate: PortfolioService.tradingFeeRate,
+      );
     }
-    return ownedQuantity >= quantity;
+    return TradeValidation.canSell(
+      ownedQuantity: ownedQuantity,
+      quantity: quantity,
+    );
   }
 
   Future<void> executeTrade() async {
-    print("1. executeTrade started");
     final user = authService.currentUser;
 
-    print("2. user: ${user?.uid}");
     if(user == null) return;
 
     final stock = Stock(
@@ -62,39 +77,52 @@ class _TradeState extends State<TradeScreen> {
       price: widget.price,
       changePercentage: 0,
     );
-    print("3. before trade cash: ${portfolioService.cashBalance}");
+
+    final stockValue = quantity * stock.price;
+    final fee = stockValue * PortfolioService.tradingFeeRate;
+
+    final totalAmount = isBuySelected
+        ? stockValue + fee
+        : stockValue - fee;
 
     if (isBuySelected) {
       portfolioService.buyStock(stock: stock, quantity: quantity);
     } else {
       portfolioService.sellStock(stock: stock, quantity: quantity);
     }
-    print("4. after trade cash: ${portfolioService.cashBalance}");
 
     final holding = portfolioService.getHoldingBySymbol(widget.symbol);
 
-    print("5. holding after trade: $holding");
     if(holding == null) {
-      print("6. deleting holding");
       await userService.deleteHolding(
           uid: user.uid,
           symbol: widget.symbol,
       );
     } else {
-      print("6. saving holding");
       await userService.saveHolding(
           uid: user.uid,
           holding: holding,
       );
     }
 
-    print("7. updating cash balance");
     await userService.updateCashBalance(
         uid: user.uid,
         cashBalance: portfolioService.cashBalance
     );
 
-    print("8. database updated");
+    await userService.saveTransaction(
+      uid: user.uid,
+      transaction: TransactionRecord(
+        type: isBuySelected ? "buy" : "sell",
+        symbol: stock.symbol,
+        companyName: stock.companyName,
+        quantity: quantity,
+        price: stock.price,
+        fee: fee,
+        totalAmount: totalAmount,
+      ),
+    );
+
     if(!mounted) return;
 
     setState(() {});
@@ -111,8 +139,18 @@ class _TradeState extends State<TradeScreen> {
   double get ownedQuantity =>
       portfolioService.getOwnedQuantity(widget.symbol);
 
-  double get estimatedCost =>
-      quantity * widget.price;
+  double get estimatedCost {
+    final stockValue = quantity * widget.price;
+    final fee = stockValue * PortfolioService.tradingFeeRate;
+    return stockValue + fee;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    print("TradeScreen cash: ${portfolioService.cashBalance}");
+  }
 
   @override
   Widget build(BuildContext context) {

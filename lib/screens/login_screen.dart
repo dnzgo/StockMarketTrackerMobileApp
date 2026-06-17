@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../utils/input_validation.dart';
 import '../utils/app_theme.dart';
 import '../services/auth_service.dart';
+import '../services/user_service.dart';
+import '../services/service_locator.dart';
 import '../screens/main_navigation_screen.dart';
 import '../screens/signup_screen.dart';
 
@@ -14,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final authService = AuthService();
+  final userService = UserService();
 
   final emailController =
   TextEditingController();
@@ -49,6 +52,22 @@ class _LoginScreenState extends State<LoginScreen> {
         email: email,
         password: password,
       );
+
+      final user = authService.currentUser;
+
+      if (user != null) {
+        final data = await userService.getCurrentUserData(user.uid);
+
+        portfolioService.setCashBalance(
+          (data?["cashBalance"] ?? 0).toDouble(),
+        );
+
+        final holdings =
+        await userService.getHoldings(uid: user.uid);
+
+        portfolioService.setHoldings(holdings);
+      }
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

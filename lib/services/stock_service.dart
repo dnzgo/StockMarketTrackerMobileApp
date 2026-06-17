@@ -160,4 +160,18 @@ class StockService {
     );
   }
 
+  Future<List<double>> getHistoricalClosePrices({
+    required String symbol,
+    int outputSize = 5,
+  }) async {
+    final spots = await getChartData(
+      symbol,
+      "1M",
+    );
+
+    return spots
+        .map((spot) => spot.y)
+        .toList();
+  }
+
 }

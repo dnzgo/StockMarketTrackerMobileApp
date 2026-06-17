@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import '../models/portfolio_holding.dart';
+import '../models/transaction_record.dart';
 
 class UserService {
   final FirebaseFirestore _firestore =
@@ -152,6 +152,20 @@ class UserService {
     if (data == null) return [];
 
     return List<String>.from(data["watchlist"] ?? []);
+  }
+
+  Future<void> saveTransaction({
+    required String uid,
+    required TransactionRecord transaction,
+  }) async {
+    await _firestore
+        .collection("users")
+        .doc(uid)
+        .collection("transactions")
+        .add({
+      ...transaction.toMap(),
+      "createdAt": FieldValue.serverTimestamp(),
+    });
   }
 
 }

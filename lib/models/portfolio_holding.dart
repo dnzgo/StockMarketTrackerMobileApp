@@ -11,6 +11,7 @@ class PortfolioHolding {
   final Stock stock;
   final double quantity;
   final double averageBuyPrice;
+  //final DateTime buyDate;
 
   const PortfolioHolding({
     required this.stock,
