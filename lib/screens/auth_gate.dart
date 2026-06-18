@@ -64,28 +64,24 @@ class _AuthGateState extends State<AuthGate> {
   Widget build(BuildContext context) {
     print("AuthGate build isLoading: $isLoading");
     if (isLoading) {
-      return Container(
-        decoration: AppColors.appBackground(
-          center: Alignment.center,
-        ),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "Tradeon",
-                  style: TextStyle(
-                    color: AppColors.textSecondaryColor,
-                    fontSize: 48,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                SizedBox(height: 24),
-                CircularProgressIndicator(),
-              ],
-            ),
+      return Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "lib/assets/app_logo.png",
+                width: 300,
+              ),
+
+              const SizedBox(height: 32),
+
+              const CircularProgressIndicator(
+                color: AppColors.textPrimaryColor,
+                strokeWidth: 2,
+              ),
+            ],
           ),
         ),
       );
