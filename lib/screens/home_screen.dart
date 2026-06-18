@@ -154,26 +154,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
       final nasdaq =
       await _marketService.getIndex(
-        "IXIC",
+        "QQQ",
         "NASDAQ",
       );
 
       final sp500 =
       await _marketService.getIndex(
-        "GSPC",
+        "SPY",
         "S&P 500",
       );
 
-      final dax =
+      final dowJones =
       await _marketService.getIndex(
-        "GDAXI",
-        "DAX",
+        "DIA",
+        "Dow Jones",
       );
 
-      final ftse =
+      final russell =
       await _marketService.getIndex(
-        "FTSE",
-        "FTSE 100",
+        "IWM",
+        "Russell 2000",
       );
 
       if (!mounted) return;
@@ -182,8 +182,8 @@ class _HomeScreenState extends State<HomeScreen> {
         marketIndexes = [
           nasdaq,
           sp500,
-          dax,
-          ftse,
+          dowJones,
+          russell,
         ];
 
         isLoadingIndexes = false;
