@@ -34,11 +34,9 @@ class _NewsExploreState extends State<NewsExploreScreen> {
   // category list
   final List<String> categories = [
     "All",
-    "Trends",
-    "Technology",
-    "Energy",
-    "Finance",
     "Crypto",
+    "Markets",
+    "Companies"
   ];
 
   // filtered news list based on search text
@@ -49,11 +47,7 @@ class _NewsExploreState extends State<NewsExploreScreen> {
         news.title.toLowerCase().contains(query) ||
           news.source.toLowerCase().contains(query) ||
           news.description.toLowerCase().contains(query);
-      final matchesCategory =
-          selectedCategory == "All" ||
-            selectedCategory == "Trends";
-
-      return matchesSearch && matchesCategory;
+      return matchesSearch;
     }).toList();
   }
 
@@ -64,9 +58,15 @@ class _NewsExploreState extends State<NewsExploreScreen> {
     loadNews();
   }
 
-  Future<void> loadNews() async {
+  Future<void> loadNews({
+    String category = "general",
+  }) async {
     try {
-      final news = await _newsService.getLatestNews();
+      final news = await _newsService.getLatestNews(
+        category: category,
+      );
+
+      if (!mounted) return;
 
       setState(() {
         latestNews = news;
@@ -74,6 +74,8 @@ class _NewsExploreState extends State<NewsExploreScreen> {
       });
     } catch (e) {
       print(e);
+
+      if (!mounted) return;
 
       setState(() {
         isLoading = false;
@@ -132,10 +134,30 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                           return CategoryChip(
                             title: category,
                             isSelected: selectedCategory == category,
-                            onTap: () {
+                            onTap: () async {
+
                               setState(() {
                                 selectedCategory = category;
+                                isLoading = true;
                               });
+
+                              String apiCategory = "general";
+
+                              if (category == "Crypto") {
+                                apiCategory = "crypto";
+                              }
+
+                              if (category == "Markets") {
+                                apiCategory = "forex";
+                              }
+
+                              if (category == "Companies") {
+                                apiCategory = "merger";
+                              }
+
+                              await loadNews(
+                                category: apiCategory,
+                              );
                             },
                           );
                         }).toList(),

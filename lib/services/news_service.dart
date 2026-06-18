@@ -2,13 +2,13 @@
 fetch trending/latest news
 fetch stock-related news
 convert JSON → NewsArticle model
-filter news by stock symbol
- */
+filter news by category
+*/
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/news_article.dart';
 import 'package:intl/intl.dart';
+import '../models/news_article.dart';
 
 class NewsService {
 
@@ -27,10 +27,13 @@ class NewsService {
     print(response.body);
   }
 
-  Future<List<NewsArticle>> getLatestNews() async {
+  Future<List<NewsArticle>> getLatestNews({
+    String category = "general",
+  }) async {
+
     final response = await http.get(
       Uri.parse(
-        "https://finnhub.io/api/v1/news?category=general&token=$apiKey",
+        "https://finnhub.io/api/v1/news?category=$category&token=$apiKey",
       ),
     );
 
@@ -38,12 +41,14 @@ class NewsService {
       throw Exception("Failed to load news");
     }
 
-    final List<dynamic> jsonData = jsonDecode(response.body);
+    final List<dynamic> jsonData =
+    jsonDecode(response.body);
 
     return jsonData.take(20).map((news) {
       return NewsArticle(
         title: news["headline"] ?? "No Title",
-        description: news["summary"] ?? "No Description",
+        description:
+        news["summary"] ?? "No Description",
         articleText: news["summary"] ?? "",
         imageURL: news["image"] ?? "",
         source: news["source"] ?? "Unknown",
