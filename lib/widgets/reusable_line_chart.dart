@@ -41,12 +41,12 @@ class ReusableLineChart extends StatelessWidget{
 
           lineBarsData: [
             LineChartBarData(
-              isCurved: true,
+              isCurved: false,
               spots: spots,
               color: chartColor,
               barWidth: 5,
               isStrokeCapRound: true,
-              dotData: const FlDotData(show: false),
+              dotData: const FlDotData(show: true),
 
               belowBarData: BarAreaData(
                 show: true,

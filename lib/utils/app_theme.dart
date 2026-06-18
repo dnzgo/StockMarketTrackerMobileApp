@@ -22,6 +22,9 @@ class AppColors {
   static const Color increasedValueColor = Color(0xFF34C759);
   static const Color decreasedValueColor = Color(0xFFFF3B30);
 
+  // Watchlist icon color
+  static const Color watchlistColor = Colors.amber;
+
   // Glass colors
   static const Color glassPrimary =
   Color.fromRGBO(255, 255, 255, 0.08);
