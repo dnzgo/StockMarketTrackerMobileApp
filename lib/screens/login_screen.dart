@@ -24,7 +24,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController =
   TextEditingController();
 
+  bool isLoading = false;
+
   Future<void> login() async {
+    setState(() {
+      isLoading = true;
+    });
+
     final email =
     emailController.text.trim();
     final password =
@@ -33,6 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
     // validation
     final emailError = InputValidation.validateEmail(email);
     if(emailError != null) {
+      setState(() {
+        isLoading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(emailError)),
       );
@@ -41,6 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
     
     final passwordError = InputValidation.validatePassword(password);
     if(passwordError != null) {
+      setState(() {
+        isLoading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(passwordError)),
       );
@@ -91,6 +103,13 @@ class _LoginScreenState extends State<LoginScreen> {
           content: Text(errorMessage),
         ),
       );
+    }
+    finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -188,13 +207,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     InkWell(
                       borderRadius: BorderRadius.circular(32),
-                      onTap: login,
+                      onTap: isLoading ? null : login,
                       child: Container(
                         width: 240,
                         height: 54,
                         decoration: AppColors.glassButtonDecoration,
-                        child: const Center(
-                          child: Text(
+                        child: Center(
+                          child: isLoading
+                              ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppColors.textPrimaryColor,
+                            ),
+                          )
+                              : const Text(
                             "Login",
                             style: TextStyle(
                               color: AppColors.textPrimaryColor,
