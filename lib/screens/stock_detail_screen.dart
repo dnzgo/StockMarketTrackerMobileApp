@@ -5,6 +5,8 @@ import '../widgets/stock_chart_card.dart';
 import '../widgets/stock_info_card.dart';
 import '../screens/trade_screen.dart';
 import '../utils/app_theme.dart';
+import '../services/stock_service.dart';
+import '../models/stock_statistic.dart';
 
 class StockDetailScreen extends StatefulWidget {
   final String symbol;
@@ -30,7 +32,10 @@ class _StockDetailState extends State<StockDetailScreen> {
 
   final authService = AuthService();
   final userService = UserService();
+  final stockService = StockService();
 
+  StockStatistic? stockStatistic;
+  String selectedPeriod = "1D";
   bool isWatchlisted = false;
 
   Future<void> loadWatchlistStatus() async {
@@ -71,10 +76,24 @@ class _StockDetailState extends State<StockDetailScreen> {
     });
   }
 
+  Future<void> loadStockStatistics() async {
+    final statistics =
+    await stockService.getStockStatistics(
+      widget.symbol,
+    );
+
+    if (!mounted) return;
+
+    setState(() {
+      stockStatistic = statistics;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     loadWatchlistStatus();
+    loadStockStatistics();
   }
 
   @override
@@ -102,7 +121,7 @@ class _StockDetailState extends State<StockDetailScreen> {
               isWatchlisted
                 ? Icons.star
                 : Icons.star_border,
-              color: Colors.amber,
+              color: AppColors.watchlistColor,
             ),
             ),
           ],
@@ -174,26 +193,26 @@ class _StockDetailState extends State<StockDetailScreen> {
 
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: const Row(
+                  child: Row(
                     children: [
                       StockInfoCard(
                         title: "Open",
-                        value: 175.32,
+                        value: stockStatistic?.open ?? 0,
                       ),
                       StockInfoCard(
                         title: "High",
-                        value: 177.85,
+                        value: stockStatistic?.high ?? 0,
                       ),
                       StockInfoCard(
                         title: "Low",
-                        value: 134.20,
+                        value: stockStatistic?.low ?? 0,
                       ),
                       StockInfoCard(
                         title: "Volume",
-                        value: 52.34,
+                        value: stockStatistic?.volume ?? 0,
                       ),
                     ],
-                  )
+                  ),
                 ),
               ],
             ),

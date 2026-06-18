@@ -14,6 +14,24 @@ class StockInfoCard extends StatelessWidget {
     required this.value,
   });
 
+  String formatValue() {
+    if (title == "Volume") {
+
+      if (value >= 1000000000) {
+        return "${(value / 1000000000).toStringAsFixed(1)}B";
+      }
+
+      if (value >= 1000000) {
+        return "${(value / 1000000).toStringAsFixed(1)}M";
+      }
+
+      if (value >= 1000) {
+        return "${(value / 1000).toStringAsFixed(1)}K";
+      }
+    }
+    return value.toStringAsFixed(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,7 +62,7 @@ class StockInfoCard extends StatelessWidget {
           const SizedBox(height: 8),
 
           Text(
-            value.toStringAsFixed(2),
+            formatValue(),
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: AppColors.textPrimaryColor,

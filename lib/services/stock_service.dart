@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/stock.dart';
 import 'package:fl_chart/fl_chart.dart';
+import '../models/stock_statistic.dart';
 
 class StockService {
 
@@ -47,6 +48,42 @@ class StockService {
       companyName: data["name"] ?? symbol,
       price: currentPrice,
       changePercentage: changePercentage,
+    );
+  }
+
+  Future<StockStatistic> getStockStatistics(
+      String symbol,
+      ) async {
+
+    final response = await http.get(
+      Uri.parse(
+        "https://api.twelvedata.com/quote?symbol=$symbol&apikey=$apiKey",
+      ),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to load stock statistics");
+    }
+
+    final data = jsonDecode(response.body);
+    print("Volume: ${data["volume"]}");
+
+    return StockStatistic(
+      open: double.tryParse(
+        data["open"]?.toString() ?? "0",
+      ) ?? 0,
+
+      high: double.tryParse(
+        data["high"]?.toString() ?? "0",
+      ) ?? 0,
+
+      low: double.tryParse(
+        data["low"]?.toString() ?? "0",
+      ) ?? 0,
+
+      volume: double.tryParse(
+        data["volume"]?.toString() ?? "0",
+      ) ?? 0,
     );
   }
 
