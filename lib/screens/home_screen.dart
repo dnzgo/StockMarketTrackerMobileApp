@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/stock.dart';
 import '../models/news_article.dart';
-import '../models/market_index.dart';
 import '../services/location_service.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
@@ -16,7 +15,8 @@ import '../utils/app_theme.dart';
 import '../utils/string_formatter.dart';
 import '../services/news_service.dart';
 import '../services/stock_service.dart';
-import '../services/market_service.dart';
+import '../services/service_locator.dart';
+import '../models/portfolio_holding.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -37,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final userService = UserService();
   final _newsService = NewsService();
   final StockService _stockService = StockService();
-  final MarketService _marketService = MarketService();
 
 
   String firstName = "", surname = "";
@@ -56,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     loadUserData();
     loadNews();
     loadStocks();
-    loadIndexes();
+    loadPortfolio();
   }
 
   Future<void> loadUserData() async {
@@ -149,56 +148,41 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> loadIndexes() async {
-    try {
+  Future<void> loadPortfolio() async {
+    final user = authService.currentUser;
 
-      final nasdaq =
-      await _marketService.getIndex(
-        "QQQ",
-        "NASDAQ",
+    if (user == null) return;
+
+    final loadedHoldings =
+    await userService.getHoldings(
+      uid: user.uid,
+    );
+
+    final List<PortfolioHolding> liveHoldings = [];
+
+    for (final holding in loadedHoldings) {
+      final liveStock =
+      await _stockService.getStockQuote(
+        holding.stock.symbol,
       );
 
-      final sp500 =
-      await _marketService.getIndex(
-        "SPY",
-        "S&P 500",
+      liveHoldings.add(
+        PortfolioHolding(
+          stock: liveStock,
+          quantity: holding.quantity,
+          averageBuyPrice:
+          holding.averageBuyPrice,
+        ),
       );
-
-      final dowJones =
-      await _marketService.getIndex(
-        "DIA",
-        "Dow Jones",
-      );
-
-      final russell =
-      await _marketService.getIndex(
-        "IWM",
-        "Russell 2000",
-      );
-
-      if (!mounted) return;
-
-      setState(() {
-        marketIndexes = [
-          nasdaq,
-          sp500,
-          dowJones,
-          russell,
-        ];
-
-        isLoadingIndexes = false;
-      });
-
-    } catch (e) {
-
-      print(e);
-
-      if (!mounted) return;
-
-      setState(() {
-        isLoadingIndexes = false;
-      });
     }
+
+    portfolioService.setHoldings(
+      liveHoldings,
+    );
+
+    if (!mounted) return;
+
+    setState(() {});
   }
 
   final Map<String, String>countries = {
@@ -207,9 +191,6 @@ class _HomeScreenState extends State<HomeScreen> {
     "GB": "United Kingdom",
     "TR": "Turkey",
   };
-
-  List<MarketIndex> marketIndexes = [];
-  bool isLoadingIndexes = true;
 
   @override
   Widget build(BuildContext context) {
@@ -285,27 +266,38 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              SectionTitle(title: "Market Overview"),
+              SectionTitle(title: "Portfolio Holdings"),
 
-              if (isLoadingIndexes)
-                const Center(
-                  child: CircularProgressIndicator(),
+              if (portfolioService.holdings.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: Text(
+                    "No holdings yet",
+                    style: TextStyle(
+                      color: AppColors.textSecondaryColor,
+                    ),
+                  ),
                 )
               else
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      ...marketIndexes.map((index) {
+                      ...portfolioService.holdings.map((holding) {
                         return QuickOverviewCard(
-                          marketName: index.name,
-                          marketValue: index.value,
-                          changePercentage: index.changePercentage,
+                          marketName: holding.stock.symbol,
+                          marketValue: holding.stock.price,
+                          changePercentage:
+                          holding.stock.changePercentage,
                         );
-                      }).toList(),
+                      }),
                     ],
                   ),
                 ),
+
               SectionTitle(
                 title: "Trending Stocks",
                 actionText: "See all",
