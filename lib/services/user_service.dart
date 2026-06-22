@@ -11,6 +11,7 @@ class UserService {
     required String firstName,
     required String surname,
     required String email,
+    required String selectedCountry,
   }) async {
 
     await _firestore
@@ -22,6 +23,7 @@ class UserService {
       "email": email,
       "cashBalance": 10000.00,
       "watchlist": [],
+      "selectedCountry": selectedCountry,
       "createdAt":
       Timestamp.now(),
     });
@@ -34,6 +36,18 @@ class UserService {
     }
 
     return document.data();
+  }
+
+  Future<void> updateSelectedCountry({
+    required String uid,
+    required String countryCode,
+  }) async {
+    await _firestore
+        .collection("users")
+        .doc(uid)
+        .update({
+      "selectedCountry": countryCode,
+    });
   }
 
   Future<void> updateCashBalance({

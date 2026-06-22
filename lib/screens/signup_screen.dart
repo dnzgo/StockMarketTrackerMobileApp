@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/location_service.dart';
 import '../utils/input_validation.dart';
 import '../utils/app_theme.dart';
 import '../services/auth_service.dart';
@@ -98,11 +99,15 @@ class _SignupScreenState extends State<SignupScreen> {
 
       final uid = credential.user!.uid;
 
+      final countryCode =
+          await LocationService.getCountry() ?? "US";
+
       await userService.createUser(
         uid: uid,
         firstName: name,
         surname: surname,
         email: email,
+        selectedCountry: countryCode,
       );
 
       // if screen removed stop

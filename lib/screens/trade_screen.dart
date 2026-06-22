@@ -132,6 +132,7 @@ class _TradeState extends State<TradeScreen> {
         content: Text(
           "${isBuySelected ? "Bought" : "Sold"} $quantity ${widget.symbol}",
         ),
+        duration: const Duration(milliseconds: 500),
       ),
     );
   }

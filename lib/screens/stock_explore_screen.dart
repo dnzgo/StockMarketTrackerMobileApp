@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
+import '../services/service_locator.dart';
+import '../services/stock_service.dart';
 import '../models/stock.dart';
 import '../screens/stock_detail_screen.dart';
 import '../widgets/stock_card.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/category_chip.dart';
 import '../utils/app_theme.dart';
-import '../services/stock_service.dart';
 
 class StockExploreScreen extends StatefulWidget{
   final String initialCategory;
@@ -30,7 +31,7 @@ class _StockExploreState extends State<StockExploreScreen> {
   List<Stock> stocks = [];
   bool isLoadingStocks = true;
 
-  late String selectedCategory;
+  late String selectedCategory = "All";
   String searchText = "";
 
   // category list
@@ -90,18 +91,32 @@ class _StockExploreState extends State<StockExploreScreen> {
   }
 
   Future<void> loadStocks() async {
-    try {
-      final loadedStocks = await stockService.getTrendingStocks();
+    setState(() {
+      isLoadingStocks = true;
+    });
 
-      if(!mounted) return;
+    try {
+      final loadedStocks = <Stock>[];
+
+      for (final symbol in marketService.marketSymbols) {
+        final stock = await stockService.getStockQuote(symbol);
+        loadedStocks.add(stock);
+      }
+
+      if (!mounted) return;
 
       setState(() {
         stocks = loadedStocks;
         isLoadingStocks = false;
       });
-
     } catch (e) {
       print(e);
+
+      if (!mounted) return;
+
+      setState(() {
+        isLoadingStocks = false;
+      });
     }
   }
 

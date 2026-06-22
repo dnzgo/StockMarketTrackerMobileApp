@@ -96,15 +96,7 @@ class StockService {
 
   Future<List<Stock>> getTrendingStocks() async {
     // fake trending list for now
-    final symbols = [
-      "TSLA",
-      "NVDA",
-      "AAPL",
-      "MSFT",
-      "AMZN",
-      "META",
-      "GOOGL",
-    ];
+    final symbols = marketService.marketSymbols;
 
     final List<Stock> trendingStocks = [];
 

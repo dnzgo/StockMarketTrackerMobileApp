@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/stock.dart';
 import '../models/news_article.dart';
-import '../services/location_service.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
 import '../widgets/stock_card.dart';
@@ -51,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    loadCountry();
     loadUserData();
     loadNews();
     loadStocks();
@@ -67,22 +65,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if(data == null) return;
 
+    final loadedCountry =
+        data["selectedCountry"] ?? "US";
+
+    marketService.setMarket(loadedCountry);
+
     if(!mounted) return;
 
     setState(() {
       firstName = data["firstName"] ?? "";
       surname = data["surname"] ?? "";
+      selectedCountry = loadedCountry;
     });
-  }
-
-  Future<void> loadCountry() async {
-    final countryCode = await LocationService.getCountry();
-
-    if (countryCode != null && countries.containsKey(countryCode)) {
-      setState(() {
-        selectedCountry = countryCode;
-      });
-    }
   }
 
   Future<void> loadNews() async {
@@ -108,36 +102,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> loadStocks() async {
     try {
+      final List<Stock> loadedStocks = [];
 
-      final tesla =
-      await _stockService.getStockQuote(
-        "TSLA",
-      );
-
-      final nvidia =
-      await _stockService.getStockQuote(
-        "NVDA",
-      );
-
-      final apple =
-      await _stockService.getStockQuote(
-        "AAPL",
-      );
+      for (final symbol in marketService.marketSymbols.take(3)) {
+        final stock = await _stockService.getStockQuote(symbol);
+        loadedStocks.add(stock);
+      }
 
       if (!mounted) return;
 
       setState(() {
-        trendingStocks = [
-          tesla,
-          nvidia,
-          apple,
-        ];
-
+        trendingStocks = loadedStocks;
         isLoadingStocks = false;
       });
-
     } catch (e) {
-
       print(e);
 
       if (!mounted) return;
@@ -256,10 +234,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: CountrySelector(
                       selectedCountry: selectedCountry,
                       countries: countries,
-                      onChanged: (country) {
+                      onChanged: (country) async {
+                        if (country == null) return;
+
+                        final user = authService.currentUser;
+                        if (user == null) return;
+
                         setState(() {
-                          selectedCountry = country!;
+                          selectedCountry = country;
+                          isLoadingStocks = true;
                         });
+
+                        marketService.setMarket(country);
+
+                        await userService.updateSelectedCountry(
+                          uid: user.uid,
+                          countryCode: country,
+                        );
+
+                        await loadStocks();
                       },
                     ),
                   ),
