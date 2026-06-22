@@ -69,7 +69,7 @@ class StockCard extends StatelessWidget{
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "${currencyService.currencySymbol}${price.toStringAsFixed(2)}",
+                  currencyService.formatPrice(price),
                   style: const TextStyle(
                     color: AppColors.textPrimaryColor,
                     fontSize: 15,

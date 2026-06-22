@@ -43,7 +43,7 @@ class HoldingCard extends StatelessWidget{
                   ),
                 ),
                 Text(
-                  "${currencyService.currencySymbol}${holding.stock.price.toStringAsFixed(2)}",
+                  currencyService.formatPrice(holding.stock.price),
                   style: const TextStyle(
                     color: AppColors.textSecondaryColor,
                     fontSize: 18,
@@ -56,7 +56,7 @@ class HoldingCard extends StatelessWidget{
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "${currencyService.currencySymbol}${holding.currentValue.toStringAsFixed(2)}",
+                  currencyService.formatPrice(holding.currentValue),
                   style: const TextStyle(
                     color: AppColors.textSecondaryColor,
                     fontSize: 18,
@@ -64,7 +64,7 @@ class HoldingCard extends StatelessWidget{
                   ),
                 ),
                 Text(
-                  "${currencyService.currencySymbol}${holding.profitLoss.toStringAsFixed(2)}"
+                  "${currencyService.formatPrice(holding.profitLoss)}"
                   "(${holding.profitLossPercentage.toStringAsFixed(2)}%)",
                   style: TextStyle(
                     color: holding.isPositive ? AppColors.increasedValueColor : AppColors.decreasedValueColor,

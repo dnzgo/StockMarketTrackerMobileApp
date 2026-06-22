@@ -157,7 +157,7 @@ class _StockDetailState extends State<StockDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          "${currencyService.currencySymbol}${widget.price.toStringAsFixed(2)}",
+                          currencyService.formatPrice(widget.price),
                           style: const TextStyle(
                             color: AppColors.textPrimaryColor,
                             fontSize: 24,

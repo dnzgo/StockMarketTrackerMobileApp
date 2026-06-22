@@ -40,7 +40,7 @@ class QuickOverviewCard extends StatelessWidget{
             ),
           ),
           Text(
-            "${currencyService.currencySymbol}${marketValue.toStringAsFixed(2)}",
+            currencyService.formatPrice(marketValue),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(

@@ -106,7 +106,7 @@ class _TransactionHistoryScreenState
                         ),
                       ),
                       Text(
-                        "$quantity shares at ${currencyService.currencySymbol}${price.toStringAsFixed(2)}",
+                        "$quantity shares at ${currencyService.formatPrice(price)}",
                         style: const TextStyle(
                           color: AppColors.textSecondaryColor,
                         ),
@@ -120,7 +120,7 @@ class _TransactionHistoryScreenState
                     ],
                   ),
                   Text(
-                    "${currencyService.currencySymbol}${totalAmount.toStringAsFixed(2)}",
+                    currencyService.formatPrice(totalAmount),
                     style: const TextStyle(
                       color: AppColors.textPrimaryColor,
                       fontSize: 20,

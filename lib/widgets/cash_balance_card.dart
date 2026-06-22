@@ -53,7 +53,7 @@ class CashBalanceCard extends StatelessWidget{
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                "${currencyService.currencySymbol}${value.toStringAsFixed(2)}",
+                currencyService.formatPrice(value),
                 style: const TextStyle(
                   color: AppColors.textPrimaryColor,
                   fontSize: 20,

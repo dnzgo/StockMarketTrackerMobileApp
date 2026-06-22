@@ -2,7 +2,7 @@ class CurrencyService {
   String baseCurrency = "USD";
   String displayCurrency = "EUR";
 
-  double usdToEurRate = 0.86; // temporary fixed rate
+  double usdToEurRate = 0.87; // temporary fixed rate
 
   String get currencySymbol {
     switch (displayCurrency) {
@@ -34,4 +34,9 @@ class CurrencyService {
   void setDisplayCurrency(String currency) {
     displayCurrency = currency;
   }
+
+  String formatPrice(double value) {
+    return "$currencySymbol${value.toStringAsFixed(2)}";
+  }
+
 }
