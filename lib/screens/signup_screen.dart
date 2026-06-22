@@ -17,6 +17,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final userService = UserService();
 
   bool isLoading = false;
+  bool obscureConfirmPassword = true;
+  bool obscurePassword = true;
 
   final nameController =
   TextEditingController();
@@ -28,6 +30,9 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController();
 
   final passwordController =
+  TextEditingController();
+
+  final confirmPasswordController =
   TextEditingController();
 
   Future<void> signUp() async {
@@ -44,6 +49,8 @@ class _SignupScreenState extends State<SignupScreen> {
         surnameController.text.trim();
     final password =
         passwordController.text.trim();
+    final confirmPassword =
+        confirmPasswordController.text.trim();
 
     // validation
     final emailError = InputValidation.validateEmail(email);
@@ -86,6 +93,19 @@ class _SignupScreenState extends State<SignupScreen> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(surnameError)),
+      );
+      return;
+    }
+
+    if (password != confirmPassword) {
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Passwords do not match"),
+        ),
       );
       return;
     }
@@ -146,6 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
     surnameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -271,21 +292,72 @@ class _SignupScreenState extends State<SignupScreen> {
                       decoration: AppColors.glassCardDecoration,
                       child: TextField(
                         controller: passwordController,
+                        obscureText: obscurePassword,
                         style: const TextStyle(
                           color: AppColors.textPrimaryColor,
                         ),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           hintText: "Password*",
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             color: AppColors.textSecondaryColor,
                           ),
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 16,
                           ),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscurePassword = !obscurePassword;
+                              });
+                            },
+                            icon: Icon(
+                              obscurePassword
+                                  ? Icons.visibility_off_rounded
+                                  : Icons.visibility_rounded,
+                              color: AppColors.textSecondaryColor,
+                            ),
+                          ),
                         ),
-                        obscureText: true,
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    Container(
+                      decoration: AppColors.glassCardDecoration,
+                      child: TextField(
+                        controller: confirmPasswordController,
+                        obscureText: obscureConfirmPassword,
+                        style: const TextStyle(
+                          color: AppColors.textPrimaryColor,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: "Confirm Password*",
+                          hintStyle: const TextStyle(
+                            color: AppColors.textSecondaryColor,
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 16,
+                          ),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscureConfirmPassword =
+                                !obscureConfirmPassword;
+                              });
+                            },
+                            icon: Icon(
+                              obscureConfirmPassword
+                                  ? Icons.visibility_off_rounded
+                                  : Icons.visibility_rounded,
+                              color: AppColors.textSecondaryColor,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
 

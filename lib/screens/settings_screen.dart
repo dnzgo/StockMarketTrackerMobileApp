@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
+import '../screens/change_password_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -12,8 +13,6 @@ class _SettingsState extends State<SettingsScreen> {
   bool notificationsEnabled = true;
   bool priceAlertsEnabled = true;
   bool newsNotificationsEnabled = false;
-  bool biometricLoginEnabled = true;
-  bool darkModeEnabled = true;
 
   Widget buildGlassToggle({
     required String title,
@@ -83,7 +82,7 @@ class _SettingsState extends State<SettingsScreen> {
                     horizontal: 4,
                   ),
                   decoration: const BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.textPrimaryColor,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -159,31 +158,57 @@ class _SettingsState extends State<SettingsScreen> {
               },
             ),
 
-            buildGlassToggle(
-              title: "Biometric Login",
-              subtitle:
-              "Use Face ID or Touch ID",
-              value: biometricLoginEnabled,
+            GestureDetector(
               onTap: () {
-                setState(() {
-                  biometricLoginEnabled =
-                  !biometricLoginEnabled;
-                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ChangePasswordScreen(),
+                  ),
+                );
               },
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
+                decoration: AppColors.glassCardDecoration,
+                child: const Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Change Password",
+                            style: TextStyle(
+                              color: AppColors.textPrimaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            "Update your account password",
+                            style: TextStyle(
+                              color: AppColors.textSecondaryColor,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: AppColors.textSecondaryColor,
+                      size: 18,
+                    ),
+                  ],
+                ),
+              ),
             ),
 
-            buildGlassToggle(
-              title: "Dark Mode",
-              subtitle:
-              "Use dark appearance",
-              value: darkModeEnabled,
-              onTap: () {
-                setState(() {
-                  darkModeEnabled =
-                  !darkModeEnabled;
-                });
-              },
-            ),
             const SizedBox(height: 12),
 
             Container(
