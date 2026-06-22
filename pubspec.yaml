@@ -78,6 +78,7 @@ flutter:
   assets:
     - lib/assets/app_logo.png
     - lib/assets/logo.png
+    - lib/assets/login_logo.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -147,16 +147,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    const Text(
-                      "Tradeon",
-                      style: TextStyle(
-                        color: AppColors.textSecondaryColor,
-                        fontSize: 48,
-                        fontWeight: FontWeight.w800,
-                      ),
+                    const SizedBox(height: 20),
+
+                    Image.asset(
+                      "lib/assets/login_logo.png",
+                      width: 300,
                     ),
 
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 60),
 
                     Container(
                       decoration: AppColors.glassCardDecoration,
@@ -203,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 70),
+                    const SizedBox(height: 60),
 
                     InkWell(
                       borderRadius: BorderRadius.circular(32),
@@ -233,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 60),
                     TextButton(
                       onPressed: () {
                         Navigator.push(

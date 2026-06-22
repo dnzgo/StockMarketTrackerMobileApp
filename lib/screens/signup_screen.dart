@@ -181,16 +181,14 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
 
-                    const Text(
-                      "Tradeon",
-                      style: TextStyle(
-                        color: AppColors.textSecondaryColor,
-                        fontSize: 48,
-                        fontWeight: FontWeight.w800,
-                      ),
+                    const SizedBox(height: 20),
+
+                    Image.asset(
+                      "lib/assets/login_logo.png",
+                      width: 300,
                     ),
 
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 60),
 
                     Row(
                       children: [
@@ -291,7 +289,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 70),
+                    const SizedBox(height: 60),
 
                     InkWell(
                       borderRadius: BorderRadius.circular(32),
