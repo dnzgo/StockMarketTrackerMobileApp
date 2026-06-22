@@ -7,10 +7,12 @@ import '../utils/app_theme.dart';
 
 class StockChartCard extends StatefulWidget {
   final String symbol;
+  final Function(List<FlSpot>)? onChartDataChanged;
 
   const StockChartCard({
     super.key,
     required this.symbol,
+    this.onChartDataChanged,
   });
 
   @override
@@ -54,6 +56,9 @@ class _StockChartState extends State<StockChartCard> {
         chartSpots = loadedSpots;
         isLoadingChart = false;
       });
+      
+      widget.onChartDataChanged?.call(loadedSpots);
+
     } catch(e) {
       print("chart loading error: $e");
 

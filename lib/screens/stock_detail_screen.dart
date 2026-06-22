@@ -38,6 +38,9 @@ class _StockDetailState extends State<StockDetailScreen> {
   String selectedPeriod = "1D";
   bool isWatchlisted = false;
 
+  double displayedPrice = 0;
+  double displayedChangePercentage = 0;
+
   Future<void> loadWatchlistStatus() async {
     final user = authService.currentUser;
     if(user == null) return;
@@ -94,6 +97,9 @@ class _StockDetailState extends State<StockDetailScreen> {
     super.initState();
     loadWatchlistStatus();
     loadStockStatistics();
+
+    displayedPrice = widget.price;
+    displayedChangePercentage = widget.changePercentage;
   }
 
   @override
@@ -158,9 +164,9 @@ class _StockDetailState extends State<StockDetailScreen> {
                           ),
                         ),
                         Text(
-                          "${widget.changePercentage.toStringAsFixed(2)}%",
+                          "${displayedChangePercentage.toStringAsFixed(2)}%",
                           style: TextStyle(
-                            color: widget.isPositive
+                            color: displayedChangePercentage >= 0
                                 ? AppColors.increasedValueColor
                                 : AppColors.decreasedValueColor,
                             fontSize: 18,
@@ -176,6 +182,18 @@ class _StockDetailState extends State<StockDetailScreen> {
 
                 StockChartCard(
                   symbol: widget.symbol,
+                  onChartDataChanged: (spots) {
+                    if (spots.length < 2) return;
+
+                    final firstPrice = spots.first.y;
+                    final lastPrice = spots.last.y;
+
+                    setState(() {
+                      displayedPrice = lastPrice;
+                      displayedChangePercentage =
+                          ((lastPrice - firstPrice) / firstPrice) * 100;
+                    });
+                  },
                 ),
 
                 const SizedBox(height: 24),
@@ -230,7 +248,7 @@ class _StockDetailState extends State<StockDetailScreen> {
                     builder: (context) => TradeScreen(
                       symbol: widget.symbol,
                       companyName: widget.companyName,
-                      price: widget.price,
+                      price: displayedPrice,
                     ),
                   ),
                 );
