@@ -199,6 +199,7 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                         },
                       );
                     }).toList(),
+                    const SizedBox(height: 80)
                   ],
                 ),
               ),

@@ -154,7 +154,7 @@ class _PortfolioState extends State<PortfolioScreen> {
                   },
                 );
               }).toList(),
-
+              const SizedBox(height: 60)
             ],
           ),
         )

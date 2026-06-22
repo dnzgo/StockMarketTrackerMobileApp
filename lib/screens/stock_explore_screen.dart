@@ -289,6 +289,7 @@ class _StockExploreState extends State<StockExploreScreen> {
                             },
                           );
                         }).toList(),
+                      const SizedBox(height: 60)
                     ],
                   ),
                 ),
