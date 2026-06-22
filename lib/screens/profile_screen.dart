@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
@@ -141,7 +140,29 @@ class _ProfileState extends State<ProfileScreen> {
 
                   InkWell(
                     borderRadius: BorderRadius.circular(18),
-                    onTap: () {},
+                    onTap: () async {
+                      final user = authService.currentUser;
+                      if(user == null) return;
+
+                      const amount = 1000.0;
+                      portfolioService.addCash(amount);
+                      
+                      await userService.updateCashBalance(
+                          uid: user.uid,
+                          cashBalance: portfolioService.cashBalance
+                      );
+                      if(!mounted) return;
+
+                      setState(() {
+                        cashBalance = portfolioService.cashBalance;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: const Text("€1000 added to your balance"),
+                          duration: const Duration(milliseconds: 500),
+                        ),
+                      );
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 14,

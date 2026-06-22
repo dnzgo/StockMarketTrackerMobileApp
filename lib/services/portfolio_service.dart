@@ -198,6 +198,10 @@ class PortfolioService {
     _cashBalance = balance;
   }
 
+  void addCash(double amount) {
+    _cashBalance += amount;
+  }
+
   void setHoldings(List<PortfolioHolding> holdings) {
     _holdings.clear();
     _holdings.addAll(holdings);
