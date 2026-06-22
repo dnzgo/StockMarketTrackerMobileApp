@@ -103,7 +103,7 @@ class _PortfolioSummaryState extends State<PortfolioSummaryCard> {
                   const SizedBox(height: 2),
 
                   Text(
-                    "€${widget.totalValue.toStringAsFixed(2)}",
+                    "${currencyService.currencySymbol}${widget.totalValue.toStringAsFixed(2)}",
                     style: const TextStyle(
                       color:
                       AppColors.textPrimaryColor,
@@ -135,7 +135,7 @@ class _PortfolioSummaryState extends State<PortfolioSummaryCard> {
                     ),
 
                     child: Text(
-                      "${widget.totalPnL.toStringAsFixed(2)}€ "
+                      "${widget.totalPnL.toStringAsFixed(2)}${currencyService.currencySymbol} "
                           "(${widget.totalPnLPercentage.toStringAsFixed(2)}%)",
 
                       style: TextStyle(

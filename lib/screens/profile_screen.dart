@@ -127,7 +127,7 @@ class _ProfileState extends State<ProfileScreen> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "€${cashBalance.toStringAsFixed(2)}",
+                          "${currencyService.currencySymbol}${cashBalance.toStringAsFixed(2)}",
                           style: TextStyle(
                             color: AppColors.textPrimaryColor,
                             fontSize: 18,

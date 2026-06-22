@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/service_locator.dart';
 import '../utils/app_theme.dart';
 
 class CashBalanceCard extends StatelessWidget{
@@ -52,7 +53,7 @@ class CashBalanceCard extends StatelessWidget{
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                "€${value.toStringAsFixed(2)}",
+                "${currencyService.currencySymbol}${value.toStringAsFixed(2)}",
                 style: const TextStyle(
                   color: AppColors.textPrimaryColor,
                   fontSize: 20,
