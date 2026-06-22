@@ -9,8 +9,9 @@ cache data ??
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/stock.dart';
 import 'package:fl_chart/fl_chart.dart';
+import '../services/service_locator.dart';
+import '../models/stock.dart';
 import '../models/stock_statistic.dart';
 
 class StockService {
@@ -46,7 +47,7 @@ class StockService {
     return Stock(
       symbol: symbol,
       companyName: data["name"] ?? symbol,
-      price: currentPrice,
+      price: currencyService.convertFromBase(currentPrice),
       changePercentage: changePercentage,
     );
   }
@@ -69,17 +70,23 @@ class StockService {
     print("Volume: ${data["volume"]}");
 
     return StockStatistic(
-      open: double.tryParse(
-        data["open"]?.toString() ?? "0",
-      ) ?? 0,
+      open: currencyService.convertFromBase(
+        double.tryParse(
+          data["open"]?.toString() ?? "0",
+        ) ?? 0,
+      ),
 
-      high: double.tryParse(
-        data["high"]?.toString() ?? "0",
-      ) ?? 0,
+      high: currencyService.convertFromBase(
+        double.tryParse(
+          data["high"]?.toString() ?? "0",
+        ) ?? 0,
+      ),
 
-      low: double.tryParse(
-        data["low"]?.toString() ?? "0",
-      ) ?? 0,
+      low: currencyService.convertFromBase(
+        double.tryParse(
+          data["low"]?.toString() ?? "0",
+        ) ?? 0,
+      ),
 
       volume: double.tryParse(
         data["volume"]?.toString() ?? "0",
@@ -182,12 +189,11 @@ class StockService {
     return List.generate(
       reversedValues.length,
           (index) {
-        final closePrice =
-            double.tryParse(
-              reversedValues[index]["close"]
-                  ?.toString() ??
-                  "0",
-            ) ?? 0;
+        final closePrice = currencyService.convertFromBase(
+          double.tryParse(
+            reversedValues[index]["close"]?.toString() ?? "0",
+          ) ?? 0,
+        );
 
         return FlSpot(
           index.toDouble(),

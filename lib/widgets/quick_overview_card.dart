@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
 
+import '../services/service_locator.dart';
+
 class QuickOverviewCard extends StatelessWidget{
   /*
   Quick overview card shows stock Indexes with name, price value, and percentage
@@ -38,7 +40,7 @@ class QuickOverviewCard extends StatelessWidget{
             ),
           ),
           Text(
-            "€${marketValue.toStringAsFixed(2)}",
+            currencyService.formatPrice(marketValue),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(

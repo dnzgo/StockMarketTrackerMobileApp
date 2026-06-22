@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import '../services/service_locator.dart';
 import '../services/user_service.dart';
 import '../utils/app_theme.dart';
 
@@ -105,7 +106,7 @@ class _TransactionHistoryScreenState
                         ),
                       ),
                       Text(
-                        "$quantity shares at €${price.toStringAsFixed(2)}",
+                        "$quantity shares at ${currencyService.formatPrice(price)}",
                         style: const TextStyle(
                           color: AppColors.textSecondaryColor,
                         ),
@@ -119,7 +120,7 @@ class _TransactionHistoryScreenState
                     ],
                   ),
                   Text(
-                    "€${totalAmount.toStringAsFixed(2)}",
+                    currencyService.formatPrice(totalAmount),
                     style: const TextStyle(
                       color: AppColors.textPrimaryColor,
                       fontSize: 20,

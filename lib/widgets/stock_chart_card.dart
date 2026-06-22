@@ -56,7 +56,7 @@ class _StockChartState extends State<StockChartCard> {
         chartSpots = loadedSpots;
         isLoadingChart = false;
       });
-      
+
       widget.onChartDataChanged?.call(loadedSpots);
 
     } catch(e) {

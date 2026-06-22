@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/portfolio_holding.dart';
+import '../services/service_locator.dart';
 import '../utils/app_theme.dart';
 
 class HoldingCard extends StatelessWidget{
@@ -42,7 +43,7 @@ class HoldingCard extends StatelessWidget{
                   ),
                 ),
                 Text(
-                  "€${holding.stock.price.toStringAsFixed(2)}",
+                  currencyService.formatPrice(holding.stock.price),
                   style: const TextStyle(
                     color: AppColors.textSecondaryColor,
                     fontSize: 18,
@@ -55,7 +56,7 @@ class HoldingCard extends StatelessWidget{
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "€${holding.currentValue.toStringAsFixed(2)}",
+                  currencyService.formatPrice(holding.currentValue),
                   style: const TextStyle(
                     color: AppColors.textSecondaryColor,
                     fontSize: 18,
@@ -63,7 +64,7 @@ class HoldingCard extends StatelessWidget{
                   ),
                 ),
                 Text(
-                  "€${holding.profitLoss.toStringAsFixed(2)}"
+                  "${currencyService.formatPrice(holding.profitLoss)}"
                   "(${holding.profitLossPercentage.toStringAsFixed(2)}%)",
                   style: TextStyle(
                     color: holding.isPositive ? AppColors.increasedValueColor : AppColors.decreasedValueColor,

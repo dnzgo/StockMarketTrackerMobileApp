@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/service_locator.dart';
 import '../utils/app_theme.dart';
 
 class OrderSummaryCard extends StatelessWidget {
@@ -65,7 +66,7 @@ class OrderSummaryCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "€${price.toStringAsFixed(2)}",
+                    currencyService.formatPrice(price),
                     style: const TextStyle(
                       color: AppColors.textPrimaryColor,
                     ),
@@ -79,7 +80,7 @@ class OrderSummaryCard extends StatelessWidget {
                   ),
                   SizedBox(height: 8,),
                   Text(
-                    "€${((price * quantity) * 0.001).toStringAsFixed(2)}",
+                    currencyService.formatPrice(price * quantity * 0.001),
                     style: const TextStyle(
                       color: AppColors.textPrimaryColor,
                     ),
@@ -107,11 +108,10 @@ class OrderSummaryCard extends StatelessWidget {
                 ),
               ),
               Text(
-                "€${(
+                currencyService.formatPrice(
                     isBuySelected
                         ? price * quantity * 1.001
-                        : price * quantity * 0.999).toStringAsFixed(2
-                )}",
+                        : price * quantity * 0.999),
                 style: const TextStyle(
                   color: AppColors.textPrimaryColor,
                   fontSize: 22,

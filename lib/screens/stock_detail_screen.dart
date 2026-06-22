@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import '../services/service_locator.dart';
 import '../services/user_service.dart';
 import '../widgets/stock_chart_card.dart';
 import '../widgets/stock_info_card.dart';
@@ -156,7 +157,7 @@ class _StockDetailState extends State<StockDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          "€${widget.price.toStringAsFixed(2)}",
+                          currencyService.formatPrice(widget.price),
                           style: const TextStyle(
                             color: AppColors.textPrimaryColor,
                             fontSize: 24,

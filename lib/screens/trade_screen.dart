@@ -349,7 +349,7 @@ class _TradeState extends State<TradeScreen> {
                   ),
                   Text(
                     isBuySelected
-                      ? "€${portfolioService.cashBalance.toStringAsFixed(2)}"
+                      ? currencyService.formatPrice(portfolioService.cashBalance)
                       : ownedQuantity.toStringAsFixed(2) + " " + widget.symbol,
                     style: const TextStyle(
                       color: AppColors.textPrimaryColor,
