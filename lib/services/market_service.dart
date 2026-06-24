@@ -11,13 +11,13 @@ class MarketService {
         return ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "META", "GOOGL"];
 
       case "DE":
-        return ["SAP", "BMW.DE", "VOW3.DE", "SIE.DE", "MBG.DE"];
+        return ["SAP", "BMW", "VOW3", "SIE", "MBG"];
 
       case "TR":
-        return ["THYAO.IS", "ASELS.IS", "GARAN.IS", "BIMAS.IS", "AKBNK.IS"];
+        return ["THYAO", "ASELS", "GARAN", "BIMAS", "AKBNK"];
 
       case "GB":
-        return ["AZN.L", "HSBA.L", "BP.L", "VOD.L", "BARC.L"];
+        return ["AZN", "HSBA", "BP", "VOD", "BARC"];
 
       default:
         return ["AAPL", "MSFT", "NVDA"];

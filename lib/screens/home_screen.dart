@@ -139,19 +139,28 @@ class _HomeScreenState extends State<HomeScreen> {
     final List<PortfolioHolding> liveHoldings = [];
 
     for (final holding in loadedHoldings) {
-      final liveStock =
-      await _stockService.getStockQuote(
-        holding.stock.symbol,
-      );
+      try {
+        final liveStock =
+        await _stockService.getStockQuote(
+          holding.stock.symbol,
+        );
 
-      liveHoldings.add(
-        PortfolioHolding(
-          stock: liveStock,
-          quantity: holding.quantity,
-          averageBuyPrice:
-          holding.averageBuyPrice,
-        ),
-      );
+        liveHoldings.add(
+          PortfolioHolding(
+            stock: liveStock,
+            quantity: holding.quantity,
+            averageBuyPrice:
+            holding.averageBuyPrice,
+          ),
+        );
+      } catch (e) {
+        print(
+          "Failed to load holding "
+              "${holding.stock.symbol}: $e",
+        );
+
+        liveHoldings.add(holding);
+      }
     }
 
     portfolioService.setHoldings(
@@ -174,6 +183,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        centerTitle: false,
+        title: const Text(
+          "Tradeon",
+          style: TextStyle(
+            color: AppColors.textPrimaryColor,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(

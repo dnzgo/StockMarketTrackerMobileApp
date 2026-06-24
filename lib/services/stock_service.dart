@@ -29,6 +29,8 @@ class StockService {
     );
 
     if (response.statusCode != 200) {
+      print("Quote failed for $symbol:");
+      print(response.body);
       throw Exception("Failed to load stock");
     }
 
