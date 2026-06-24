@@ -188,7 +188,7 @@ class _NewsExploreState extends State<NewsExploreScreen> {
                             MaterialPageRoute(
                                 builder: (context) => NewsDetailScreen(
                                   title: news.title,
-                                  articleText: news.articleText,
+                                  description: news.description,
                                   source: news.source,
                                   date: news.date,
                                   imageURL: news.imageURL,

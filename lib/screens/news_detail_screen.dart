@@ -7,7 +7,7 @@ import '../utils/app_theme.dart';
 
 class NewsDetailScreen extends StatelessWidget{
   final String title;
-  final String articleText;
+  final String description;
   final String source;
   final String date;
   final String imageURL;
@@ -16,7 +16,7 @@ class NewsDetailScreen extends StatelessWidget{
   const NewsDetailScreen({
     super.key,
     required this.title,
-    required this.articleText,
+    required this.description,
     required this.source,
     required this.date,
     required this.imageURL,
@@ -145,9 +145,11 @@ class NewsDetailScreen extends StatelessWidget{
             SizedBox(height: 20),
 
                 Text(
-                  articleText,
+                  description,
                   style: const TextStyle(
-                    color: AppColors.textPrimaryColor,
+                    color: AppColors.textSecondaryColor,
+                    fontSize: 16,
+                    height: 1.5,
                   ),
                 ),
 

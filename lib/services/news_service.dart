@@ -49,7 +49,6 @@ class NewsService {
         title: news["headline"] ?? "No Title",
         description:
         news["summary"] ?? "No Description",
-        articleText: news["summary"] ?? "",
         imageURL: news["image"] ?? "",
         source: news["source"] ?? "Unknown",
         date: DateFormat("dd MMM yyyy").format(
