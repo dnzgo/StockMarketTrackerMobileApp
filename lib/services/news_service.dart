@@ -6,14 +6,14 @@ filter news by category
 */
 
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../models/news_article.dart';
 
 class NewsService {
 
-  static const String apiKey =
-      "d8o4i31r01qvtr6mgik0d8o4i31r01qvtr6mgikg";
+  static final String apiKey = dotenv.env["NEWS_API_KEY"]!;
 
   Future<void> testConnection() async {
 

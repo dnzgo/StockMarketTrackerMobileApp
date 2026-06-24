@@ -8,6 +8,7 @@ cache data ??
  */
 
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:fl_chart/fl_chart.dart';
 import '../services/service_locator.dart';
@@ -16,7 +17,7 @@ import '../models/stock_statistic.dart';
 
 class StockService {
 
-  static const String apiKey = "c19e44d534624e31976412c88233556c";
+  static final String apiKey = dotenv.env["TWELVE_DATA_API_KEY"]!;
 
   Future<Stock> getStockQuote(
       String symbol,
