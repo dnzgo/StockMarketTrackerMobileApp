@@ -230,7 +230,7 @@ class _SettingsState extends State<SettingsScreen> {
                   SizedBox(height: 12),
 
                   Text(
-                    "Tradeon is a modern stock market tracking application designed to provide market insights, financial news, and portfolio monitoring tools in a simple and intuitive experience.",
+                    "Tradeon is a modern stock market tracking application designed to provide market insights, financial news, and portfolio monitoring tools and buy/sell simulation in a simple and intuitive experience.",
                     style: TextStyle(
                       color: AppColors.textSecondaryColor,
                       fontSize: 14,
@@ -253,9 +253,7 @@ class _SettingsState extends State<SettingsScreen> {
 
                   Text(
                     "• Emir Yalçınkaya\n"
-                        "• Deniz Gözcü\n"
-                        "• Batu Kerem Yıldırım\n"
-                        "• Ada Uğur Abur",
+                    "• Deniz Gözcü\n",
                     style: TextStyle(
                       color: AppColors.textSecondaryColor,
                       fontSize: 14,

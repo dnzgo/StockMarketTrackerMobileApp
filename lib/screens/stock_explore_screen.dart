@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
 import '../services/service_locator.dart';
@@ -26,6 +27,9 @@ class _StockExploreState extends State<StockExploreScreen> {
   final userService = UserService();
   final stockService = StockService();
 
+  bool isSearching = false;
+  Timer? searchDebounce;
+
   List<String> watchlistSymbols = [];
 
   List<Stock> stocks = [];
@@ -44,6 +48,42 @@ class _StockExploreState extends State<StockExploreScreen> {
     "Finance",
     "Crypto",
   ];
+
+  Future<void> searchStocks(String text) async {
+    setState(() {
+      searchText = text;
+    });
+
+    if (text.trim().isEmpty) {
+      setState(() {
+        isSearching = false;
+      });
+
+      await loadStocks();
+      return;
+    }
+
+    setState(() {
+      isSearching = true;
+    });
+
+    try {
+      final results = await stockService.searchStocks(text);
+
+      if (!mounted) return;
+
+      setState(() {
+        stocks = results;
+        isSearching = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        isSearching = false;
+      });
+    }
+  }
 
   // filtered stock list based on search text and category(for now mock)
   List<Stock> get filteredStocks {
@@ -95,29 +135,23 @@ class _StockExploreState extends State<StockExploreScreen> {
       isLoadingStocks = true;
     });
 
-    try {
-      final loadedStocks = <Stock>[];
+    final loadedStocks = <Stock>[];
 
-      for (final symbol in marketService.marketSymbols) {
+    for (final symbol in marketService.marketSymbols) {
+      try {
         final stock = await stockService.getStockQuote(symbol);
         loadedStocks.add(stock);
+      } catch (e) {
+        print("Skipping $symbol: $e");
       }
-
-      if (!mounted) return;
-
-      setState(() {
-        stocks = loadedStocks;
-        isLoadingStocks = false;
-      });
-    } catch (e) {
-      print(e);
-
-      if (!mounted) return;
-
-      setState(() {
-        isLoadingStocks = false;
-      });
     }
+
+    if (!mounted) return;
+
+    setState(() {
+      stocks = loadedStocks;
+      isLoadingStocks = false;
+    });
   }
 
   @override
@@ -135,6 +169,12 @@ class _StockExploreState extends State<StockExploreScreen> {
     if (oldWidget.initialCategory != widget.initialCategory) {
       selectedCategory = widget.initialCategory;
     }
+  }
+
+  @override
+  void dispose() {
+    searchDebounce?.cancel();
+    super.dispose();
   }
 
   @override
@@ -164,9 +204,14 @@ class _StockExploreState extends State<StockExploreScreen> {
                     SearchBarWidget(
                       hintText: "Search Stocks...",
                       onChanged: (text) {
-                        setState(() {
-                          searchText = text;
-                        });
+                        searchDebounce?.cancel();
+
+                        searchDebounce = Timer(
+                          const Duration(milliseconds: 1000),
+                              () {
+                            searchStocks(text);
+                          },
+                        );
                       },
                     ),
                     const SizedBox(height: 12),
@@ -183,7 +228,7 @@ class _StockExploreState extends State<StockExploreScreen> {
                                 setState(() {
                                   selectedCategory = category;
                                 });
-                                if (category == "watchlist") {
+                                if (category == "Watchlist") {
                                   await loadWatchlist();
                                 }
                               },
@@ -202,7 +247,7 @@ class _StockExploreState extends State<StockExploreScreen> {
                   child: Column(
                     children: [
                       // show loading indicator while stocks are being fetched
-                      if (isLoadingStocks)
+                      if (isLoadingStocks || isSearching)
                         const Center(
                           child: Padding(
                             padding: EdgeInsets.all(32),
@@ -255,6 +300,41 @@ class _StockExploreState extends State<StockExploreScreen> {
                             ],
                           ),
                         )
+
+                      // no stocks found
+                      else if (filteredStocks.isEmpty)
+                          Container(
+                            width: double.infinity,
+                            margin: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(32),
+                            decoration: AppColors.glassCardDecoration,
+                            child: const Column(
+                              children: [
+                                Icon(
+                                  Icons.search_off,
+                                  size: 48,
+                                  color: AppColors.textSecondaryColor,
+                                ),
+                                SizedBox(height: 12),
+                                Text(
+                                  "No stocks found",
+                                  style: TextStyle(
+                                    color: AppColors.textPrimaryColor,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  "Try another company name or symbol.",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColors.textSecondaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
 
                       // stock list
                       else

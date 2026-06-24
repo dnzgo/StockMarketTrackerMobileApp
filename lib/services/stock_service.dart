@@ -211,4 +211,42 @@ class StockService {
         .toList();
   }
 
+  Future<List<Stock>> searchStocks(String query) async {
+    if (query.trim().isEmpty) {
+      return [];
+    }
+
+    final response = await http.get(
+      Uri.parse(
+        "https://api.twelvedata.com/symbol_search"
+            "?symbol=${query.trim()}"
+            "&apikey=$apiKey",
+      ),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to search stocks");
+    }
+
+    final data = jsonDecode(response.body);
+    final results = data["data"] ?? [];
+
+    final List<Stock> searchedStocks = [];
+
+    for (final item in results.take(5)) {
+      try {
+        final symbol = item["symbol"]?.toString();
+
+        if (symbol == null) continue;
+
+        final stock = await getStockQuote(symbol);
+        searchedStocks.add(stock);
+      } catch (e) {
+        print("Failed to load searched stock: $e");
+      }
+    }
+
+    return searchedStocks;
+  }
+
 }

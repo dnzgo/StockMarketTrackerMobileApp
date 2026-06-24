@@ -8,19 +8,19 @@ class MarketService {
   List<String> get marketSymbols {
     switch (selectedMarket) {
       case "US":
-        return ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "META", "GOOGL"];
+        return ["AAPL", "MSFT", "TSLA"];
 
       case "DE":
-        return ["SAP", "BMW", "VOW3", "SIE", "MBG"];
+        return ["SAP", "BMW", "VOW3"];
 
       case "TR":
-        return ["THYAO", "ASELS", "GARAN", "BIMAS", "AKBNK"];
+        return ["THYAO", "ASELS", "GARAN"];
 
       case "GB":
-        return ["AZN", "HSBA", "BP", "VOD", "BARC"];
+        return ["AZN", "HSBA", "BP"];
 
       default:
-        return ["AAPL", "MSFT", "NVDA"];
+        return ["AAPL", "MSFT", "TSLA"];
     }
   }
 }
