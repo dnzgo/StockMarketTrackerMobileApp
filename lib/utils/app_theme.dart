@@ -182,4 +182,37 @@ class AppColors {
       ),
     ],
   );
+
+  static BoxDecoration transactionGlassDecoration({
+    required bool isBuy,
+  }) {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(24),
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          glassPrimary,
+          glassSecondary,
+        ],
+      ),
+      border: Border.all(
+        color: (isBuy
+            ? AppColors.increasedValueColor
+            : AppColors.decreasedValueColor)
+            .withOpacity(0.20),
+        width: 1,
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: (isBuy
+              ? increasedValueColor
+              : decreasedValueColor)
+              .withOpacity(0.09),
+          blurRadius: 20,
+          spreadRadius: 1,
+        ),
+      ],
+    );
+  }
 }

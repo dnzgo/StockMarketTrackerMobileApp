@@ -15,7 +15,7 @@ import '../utils/string_formatter.dart';
 import '../services/news_service.dart';
 import '../services/stock_service.dart';
 import '../services/service_locator.dart';
-import '../models/portfolio_holding.dart';
+import '../screens/transaction_history_screen.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -47,13 +47,16 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Stock> trendingStocks = [];
   bool isLoadingStocks = true;
 
+  List<Map<String, dynamic>> recentTransactions = [];
+  bool isLoadingTransactions = true;
+
   @override
   void initState() {
     super.initState();
     loadUserData();
     loadNews();
     loadStocks();
-    loadPortfolio();
+    loadRecentTransactions();
   }
 
   Future<void> loadUserData() async {
@@ -126,50 +129,36 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> loadPortfolio() async {
+  Future<void> loadRecentTransactions() async {
     final user = authService.currentUser;
 
-    if (user == null) return;
-
-    final loadedHoldings =
-    await userService.getHoldings(
-      uid: user.uid,
-    );
-
-    final List<PortfolioHolding> liveHoldings = [];
-
-    for (final holding in loadedHoldings) {
-      try {
-        final liveStock =
-        await _stockService.getStockQuote(
-          holding.stock.symbol,
-        );
-
-        liveHoldings.add(
-          PortfolioHolding(
-            stock: liveStock,
-            quantity: holding.quantity,
-            averageBuyPrice:
-            holding.averageBuyPrice,
-          ),
-        );
-      } catch (e) {
-        print(
-          "Failed to load holding "
-              "${holding.stock.symbol}: $e",
-        );
-
-        liveHoldings.add(holding);
-      }
+    if (user == null) {
+      return;
     }
 
-    portfolioService.setHoldings(
-      liveHoldings,
-    );
+    try {
+      final loadedTransactions =
+      await userService.getTransactions(
+        uid: user.uid,
+      );
 
-    if (!mounted) return;
+      if (!mounted) return;
 
-    setState(() {});
+      setState(() {
+        recentTransactions =
+            loadedTransactions.take(5).toList();
+
+        isLoadingTransactions = false;
+      });
+    } catch (e) {
+      print(e);
+
+      if (!mounted) return;
+
+      setState(() {
+        isLoadingTransactions = false;
+      });
+    }
   }
 
   final Map<String, String>countries = {
@@ -183,18 +172,47 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        centerTitle: false,
-        title: const Text(
-          "Tradeon",
-          style: TextStyle(
-            color: AppColors.textPrimaryColor,
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          centerTitle: false,
+          title: Image.asset(
+            "lib/assets/login_logo.png",
+            height: 30,
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: SizedBox(
+                width: 75,
+                height: 40,
+                child: CountrySelector(
+                  selectedCountry: selectedCountry,
+                  countries: countries,
+                  onChanged: (country) async {
+                    if (country == null) return;
+
+                    final user = authService.currentUser;
+                    if (user == null) return;
+
+                    setState(() {
+                      selectedCountry = country;
+                      isLoadingStocks = true;
+                    });
+
+                    marketService.setMarket(country);
+
+                    await userService.updateSelectedCountry(
+                      uid: user.uid,
+                      countryCode: country,
+                    );
+
+                    await loadStocks();
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
@@ -242,54 +260,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
               ),
 
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: 10,
-                  top: 20,
-                ),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: SizedBox(
-                    width: 75,
-                    height: 40,
-                    child: CountrySelector(
-                      selectedCountry: selectedCountry,
-                      countries: countries,
-                      onChanged: (country) async {
-                        if (country == null) return;
+              const SizedBox(height: 24),
 
-                        final user = authService.currentUser;
-                        if (user == null) return;
+              SectionTitle(title: "Recent Transactions"),
 
-                        setState(() {
-                          selectedCountry = country;
-                          isLoadingStocks = true;
-                        });
-
-                        marketService.setMarket(country);
-
-                        await userService.updateSelectedCountry(
-                          uid: user.uid,
-                          countryCode: country,
-                        );
-
-                        await loadStocks();
-                      },
-                    ),
-                  ),
-                ),
-              ),
-
-              SectionTitle(title: "Portfolio Holdings"),
-
-              if (portfolioService.holdings.isEmpty)
+              if (isLoadingTransactions)
+                const Center(
+                  child: CircularProgressIndicator(),
+                )
+              else if (recentTransactions.isEmpty)
                 const Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 8,
                   ),
                   child: Text(
-                    "No holdings yet",
+                    "No transactions yet",
                     style: TextStyle(
                       color: AppColors.textSecondaryColor,
                     ),
@@ -299,16 +285,35 @@ class _HomeScreenState extends State<HomeScreen> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: [
-                      ...portfolioService.holdings.map((holding) {
-                        return QuickOverviewCard(
-                          marketName: holding.stock.symbol,
-                          marketValue: holding.stock.price,
-                          changePercentage:
-                          holding.stock.changePercentage,
-                        );
-                      }),
-                    ],
+                    children: recentTransactions.map((transaction) {
+
+                      final type =
+                          transaction["type"] ?? "";
+                      final symbol =
+                          transaction["symbol"] ?? "";
+                      final quantity =
+                          transaction["quantity"] ?? 0;
+                      final price =
+                          transaction["price"] ?? 0;
+                      final createdAt =
+                      transaction["createdAt"];
+
+                      return QuickOverviewCard(
+                        type: type,
+                        symbol: symbol,
+                        quantity: (quantity as num).toDouble(),
+                        price: (price as num).toDouble(),
+                        createdAt: createdAt,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const TransactionHistoryScreen(),
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
                   ),
                 ),
 
@@ -382,7 +387,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }).toList(),
 
-              SizedBox(height: 60,),
+              SizedBox(height: 60),
             ],
           ),
         ),
