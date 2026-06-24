@@ -233,7 +233,7 @@ class StockService {
 
     final List<Stock> searchedStocks = [];
 
-    for (final item in results.take(5)) {
+    for (final item in results.take(1)) {
       try {
         final symbol = item["symbol"]?.toString();
 
