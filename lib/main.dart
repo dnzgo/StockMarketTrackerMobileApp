@@ -3,16 +3,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:stock_market_tracker_mobile_app/screens/auth_gate.dart';
 import 'firebase_options.dart';
-import '../screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await dotenv.load(fileName: ".env");
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());
 }
@@ -41,7 +40,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const AuthGate(),
     );

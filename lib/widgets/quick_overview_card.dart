@@ -7,7 +7,7 @@ class QuickOverviewCard extends StatelessWidget {
   final String symbol;
   final double quantity;
   final double price;
-  final dynamic createdAt;
+  final DateTime? createdAt;
   final VoidCallback? onTap;
 
   const QuickOverviewCard({
@@ -93,9 +93,9 @@ class QuickOverviewCard extends StatelessWidget {
             const SizedBox(height: 2),
 
             Text(
-              DateFormat("dd MMM").format(
-                createdAt.toDate(),
-              ),
+              createdAt == null
+                  ? ""
+                  : DateFormat("dd MMM").format(createdAt!),
               style: const TextStyle(
                 color: AppColors.textSecondaryColor,
                 fontSize: 11,

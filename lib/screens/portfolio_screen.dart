@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 import '../services/service_locator.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
@@ -24,6 +25,8 @@ class _PortfolioState extends State<PortfolioScreen> {
   final userService = UserService();
   final stockService = StockService();
 
+  List<FlSpot> portfolioChartSpots = [];
+
   Future<void> loadPortfolioData() async {
     final user = authService.currentUser;
 
@@ -43,7 +46,22 @@ class _PortfolioState extends State<PortfolioScreen> {
 
     portfolioService.setCashBalance(loadedCashBalance);
 
+    final transactions =
+    await userService.getTransactions(uid: user.uid);
     final loadedHoldings = await userService.getHoldings(uid: user.uid);
+
+    final currentHoldingSymbols =
+    loadedHoldings.map((holding) => holding.stock.symbol).toSet();
+
+    final chartSpots =
+    await portfolioChartService.buildPortfolioChart(
+      transactions: transactions,
+      currentHoldingSymbols: currentHoldingSymbols,
+    );
+
+    portfolioChartSpots = chartSpots;
+
+
     final List<PortfolioHolding> liveHoldings = [];
 
     for (final holding in loadedHoldings) {
@@ -120,6 +138,7 @@ class _PortfolioState extends State<PortfolioScreen> {
                 totalPnL: portfolioService.totalPnL,
                 totalPnLPercentage: portfolioService.totalPnLPercentage,
                 isPositive: portfolioService.isPositive,
+                chartSpots: portfolioChartSpots,
               ),
 
               SizedBox(height: 12,),

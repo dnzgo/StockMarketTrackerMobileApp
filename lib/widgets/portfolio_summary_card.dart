@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../services/service_locator.dart';
-import '../widgets/chart_period_selector.dart';
 import '../utils/app_theme.dart';
 import '../widgets/reusable_line_chart.dart';
 
@@ -11,6 +10,7 @@ class PortfolioSummaryCard extends StatefulWidget {
   final double totalPnL;
   final double totalPnLPercentage;
   final bool isPositive;
+  final List<FlSpot> chartSpots;
 
   const PortfolioSummaryCard({
     super.key,
@@ -18,6 +18,7 @@ class PortfolioSummaryCard extends StatefulWidget {
     required this.totalPnL,
     required this.totalPnLPercentage,
     required this.isPositive,
+    required this.chartSpots,
   });
 
   @override
@@ -26,29 +27,14 @@ class PortfolioSummaryCard extends StatefulWidget {
 
 class _PortfolioSummaryState extends State<PortfolioSummaryCard> {
 
-  List<FlSpot> portfolioChartSpots = [];
-  bool isLoadingChart = true;
-
-  Future<void> loadPortfolioChart() async {
-    final spots =
-    await portfolioChartService
-        .buildPortfolioChartSpots(
-      holdings: portfolioService.holdings,
-      cashBalance: portfolioService.cashBalance,
-    );
-
-    if (!mounted) return;
-
-    setState(() {
-      portfolioChartSpots = spots;
-      isLoadingChart = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadPortfolioChart();
+  List<FlSpot> get fallbackChartData {
+    return const [
+      FlSpot(0, 10000),
+      FlSpot(1, 10000),
+      FlSpot(2, 10000),
+      FlSpot(3, 10000),
+      FlSpot(4, 10000),
+    ];
   }
 
   @override
@@ -74,9 +60,11 @@ class _PortfolioSummaryState extends State<PortfolioSummaryCard> {
               top: 70,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                  child : isLoadingChart
-                      ? const Center(child: CircularProgressIndicator())
-                      : ReusableLineChart(spots: portfolioChartSpots),
+                child: ReusableLineChart(
+                  spots: widget.chartSpots.isEmpty
+                      ? fallbackChartData
+                      : widget.chartSpots,
+                ),
               ),
             ),
 

@@ -94,26 +94,40 @@ class _StockExploreState extends State<StockExploreScreen> {
           stock.symbol.toLowerCase().contains(query) ||
               stock.companyName.toLowerCase().contains(query);
 
-      bool matchesCategory = false;
-
-      if(selectedCategory == "All") {
-        matchesCategory = true;
-      } else if(selectedCategory == "Watchlist") {
-        matchesCategory = watchlistSymbols.contains(stock.symbol);
-      } else if(selectedCategory == "Trends") {
-        matchesCategory = true;                  // temporary
-      } else if(selectedCategory == "Technology") {
-        matchesCategory = true;                  // temporary
-      } else if(selectedCategory == "Energy") {
-        matchesCategory = true;                  // temporary
-      } else if(selectedCategory == "Finance") {
-        matchesCategory = true;                  // temporary
-      } else if(selectedCategory == "Crypto") {
-        matchesCategory = true;                  // temporary
-      }
+      final matchesCategory = matchesStockCategory(stock);
 
       return matchesSearch && matchesCategory;
     }).toList();
+  }
+
+  bool matchesStockCategory(Stock stock) {
+    final symbol = stock.symbol.toUpperCase();
+
+    switch (selectedCategory) {
+      case "All":
+        return true;
+
+      case "Watchlist":
+        return watchlistSymbols.contains(stock.symbol);
+
+      case "Trends":
+        return true;
+
+      case "Technology":
+        return ["AAPL", "MSFT", "NVDA", "GOOGL", "META", "SAP",].contains(symbol);
+
+      case "Energy":
+        return ["XOM", "CVX", "BP",].contains(symbol);
+
+      case "Finance":
+        return ["JPM", "BAC", "GS", "MS", "GARAN", "AKBNK", "HSBA.L", "BARC.L",].contains(symbol);
+
+      case "Crypto":
+        return ["BTC/USD", "ETH/USD",].contains(symbol);
+
+      default:
+        return true;
+    }
   }
 
   Future<void> loadWatchlist() async {

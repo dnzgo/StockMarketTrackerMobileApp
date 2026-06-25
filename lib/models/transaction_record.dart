@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TransactionRecord {
   final String type;
@@ -7,6 +8,7 @@ class TransactionRecord {
   final double price;
   final double fee;
   final double totalAmount;
+  final DateTime? createdAt;
 
   const TransactionRecord({
     required this.type,
@@ -16,7 +18,23 @@ class TransactionRecord {
     required this.price,
     required this.fee,
     required this.totalAmount,
+    this.createdAt,
   });
+
+  factory TransactionRecord.fromMap(Map<String, dynamic> data) {
+    return TransactionRecord(
+      type: data["type"] ?? "",
+      symbol: data["symbol"] ?? "",
+      companyName: data["companyName"] ?? "",
+      quantity: (data["quantity"] ?? 0).toDouble(),
+      price: (data["price"] ?? 0).toDouble(),
+      fee: (data["fee"] ?? 0).toDouble(),
+      totalAmount: (data["totalAmount"] ?? 0).toDouble(),
+      createdAt: data["createdAt"] == null
+          ? null
+          : (data["createdAt"] as Timestamp).toDate(),
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {

@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import '../models/transaction_record.dart';
 import '../services/auth_service.dart';
 import '../services/service_locator.dart';
 import '../services/user_service.dart';
@@ -19,7 +19,7 @@ class _TransactionHistoryScreenState
   final authService = AuthService();
   final userService = UserService();
 
-  List<Map<String, dynamic>> transactions = [];
+  List<TransactionRecord> transactions = [];
   bool isLoading = true;
 
   Future<void> loadTransactions() async {
@@ -71,15 +71,14 @@ class _TransactionHistoryScreenState
           itemBuilder: (context, index) {
             final transaction = transactions[index];
 
-            final type = transaction["type"] ?? "";
-            final symbol = transaction["symbol"] ?? "";
-            final quantity = transaction["quantity"] ?? 0;
-            final price = transaction["price"] ?? 0;
-            final totalAmount =
-                transaction["totalAmount"] ?? 0;
-            final timestamp = transaction["createdAt"] as Timestamp;
-            final date = timestamp.toDate();
-            final tradeDate = DateFormat("dd/MM/yy HH:mm").format(date);
+            final type = transaction.type;
+            final symbol = transaction.symbol;
+            final quantity = transaction.quantity;
+            final price = transaction.price;
+            final totalAmount = transaction.totalAmount;
+            final tradeDate = transaction.createdAt == null
+                ? ""
+                : DateFormat("dd/MM/yy HH:mm").format(transaction.createdAt!);
 
             final isBuy = type == "buy";
 

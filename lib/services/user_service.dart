@@ -182,18 +182,18 @@ class UserService {
     });
   }
 
-  Future<List<Map<String, dynamic>>> getTransactions({
+  Future<List<TransactionRecord>> getTransactions({
     required String uid,
   }) async {
     final snapshot = await _firestore
         .collection("users")
         .doc(uid)
         .collection("transactions")
-        .orderBy("createdAt", descending: true)
+        .orderBy("createdAt")
         .get();
 
     return snapshot.docs
-        .map((doc) => doc.data())
+        .map((doc) => TransactionRecord.fromMap(doc.data()))
         .toList();
   }
 

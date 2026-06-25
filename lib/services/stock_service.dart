@@ -202,14 +202,46 @@ class StockService {
     required String symbol,
     int outputSize = 5,
   }) async {
-    final spots = await getChartData(
-      symbol,
-      "1M",
+    final response = await http.get(
+      Uri.parse(
+        "https://api.twelvedata.com/time_series"
+            "?symbol=$symbol"
+            "&interval=1day"
+            "&outputsize=$outputSize"
+            "&apikey=$apiKey",
+      ),
     );
 
-    return spots
-        .map((spot) => spot.y)
-        .toList();
+    if (response.statusCode != 200) {
+      print("Historical price failed for $symbol:");
+      print(response.body);
+      throw Exception("Failed to load historical prices");
+    }
+
+    final data = jsonDecode(response.body);
+
+    if (data["status"] == "error") {
+      print("Historical price API error for $symbol:");
+      print(data["message"]);
+      return [];
+    }
+
+    final values = data["values"];
+
+    if (values == null) {
+      return [];
+    }
+
+    final reversedValues = List.from(values.reversed);
+
+    return reversedValues.map<double>((value) {
+      final closePriceUsd = double.tryParse(
+        value["close"]?.toString() ?? "0",
+      ) ??
+          0;
+
+      return currencyService.convertFromBase(closePriceUsd);
+    }).toList();
   }
 
   Future<List<Stock>> searchStocks(String query) async {

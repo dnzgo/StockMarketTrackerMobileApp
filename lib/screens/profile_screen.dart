@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/transaction_record.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
 import '../services/service_locator.dart';
@@ -153,12 +154,28 @@ class _ProfileState extends State<ProfileScreen> {
                       );
                       if(!mounted) return;
 
+                      await userService.saveTransaction(
+                        uid: user.uid,
+                        transaction: TransactionRecord(
+                          type: "deposit",
+                          symbol: "CASH",
+                          companyName: "Cash Deposit",
+                          quantity: 0,
+                          price: 0,
+                          fee: 0,
+                          totalAmount: amount,
+                        ),
+                      );
+
+                      if (!mounted) return;
+
                       setState(() {
                         cashBalance = portfolioService.cashBalance;
                       });
+
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: const Text("€1000 added to your balance"),
+                        SnackBar(
+                          content: Text("${currencyService.formatPrice(amount)} added to your balance",),
                           duration: const Duration(milliseconds: 500),
                         ),
                       );

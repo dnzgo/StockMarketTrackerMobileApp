@@ -12,7 +12,6 @@ final stockService = StockService();
 final marketService = MarketService();
 final currencyService = CurrencyService();
 
-final portfolioChartService =
-PortfolioChartService(
+final portfolioChartService = PortfolioChartService(
   stockService: stockService,
 );

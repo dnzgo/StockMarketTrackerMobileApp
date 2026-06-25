@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_market_tracker_mobile_app/models/transaction_record.dart';
 import '../models/stock.dart';
 import '../models/news_article.dart';
 import '../services/auth_service.dart';
@@ -47,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Stock> trendingStocks = [];
   bool isLoadingStocks = true;
 
-  List<Map<String, dynamic>> recentTransactions = [];
+  List<TransactionRecord> recentTransactions = [];
   bool isLoadingTransactions = true;
 
   @override
@@ -288,15 +289,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: recentTransactions.map((transaction) {
 
                       final type =
-                          transaction["type"] ?? "";
+                          transaction.type;
                       final symbol =
-                          transaction["symbol"] ?? "";
+                          transaction.symbol;
                       final quantity =
-                          transaction["quantity"] ?? 0;
+                          transaction.quantity;
                       final price =
-                          transaction["price"] ?? 0;
+                          transaction.price;
                       final createdAt =
-                      transaction["createdAt"];
+                      transaction.createdAt;
 
                       return QuickOverviewCard(
                         type: type,
