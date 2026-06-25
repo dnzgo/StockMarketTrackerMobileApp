@@ -37,6 +37,8 @@ class SectionTitle extends StatelessWidget{
           ),
 
           actionText != null
+          // if there is an action text that means we need to show text and onTop action
+          // otherwise use shrink to spaceBetween works correctly
               ? InkWell(onTap: onTap,
               child: Text(
                 actionText!,

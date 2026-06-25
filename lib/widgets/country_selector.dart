@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class CountrySelector extends StatelessWidget {
+  /*
+  Country selector shows selected country, when clicked shows countries list and when a new country selected shows it as default
+  */
   final String selectedCountry;
   final Map<String, String> countries;
   final ValueChanged<String?> onChanged;

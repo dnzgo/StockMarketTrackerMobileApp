@@ -4,10 +4,8 @@ import '../utils/app_theme.dart';
 
 class CashBalanceCard extends StatelessWidget{
   /*
-  stockCard for home and stock screens to list stocks as cards,
-  card shows: symbol of stock, company name
-  price of share, change percentage,
-  and card is clickable but interaction handled in screens with onTap
+  CashBalanceCard for portfolio screen to list cash holding as stock holdings,
+  card shows: type of cash, Value
    */
   final String cashType;
   final double value;
@@ -39,6 +37,7 @@ class CashBalanceCard extends StatelessWidget{
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
+                // shows cash type: EURO
                 cashType,
                 style: const TextStyle(
                   color: AppColors.textSecondaryColor,
@@ -53,6 +52,7 @@ class CashBalanceCard extends StatelessWidget{
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
+                // shows Value of cash with currency symbol
                 currencyService.formatPrice(value),
                 style: const TextStyle(
                   color: AppColors.textPrimaryColor,

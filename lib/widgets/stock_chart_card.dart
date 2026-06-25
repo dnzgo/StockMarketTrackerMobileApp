@@ -6,6 +6,11 @@ import '../widgets/chart_period_selector.dart';
 import '../utils/app_theme.dart';
 
 class StockChartCard extends StatefulWidget {
+  /*
+  Stock chart card uses reusable line chart and periods selector
+  to show stock chart as a card when period clicked handles chart change
+  loads chart data and handles fall
+   */
   final String symbol;
   final Function(List<FlSpot>)? onChartDataChanged;
 
@@ -29,6 +34,7 @@ class _StockChartState extends State<StockChartCard> {
 
 
   final List<String> periods = [
+    // periods to show in period selector
     "1D",
     "1W",
     "1M",
@@ -39,6 +45,7 @@ class _StockChartState extends State<StockChartCard> {
 
 
   Future<void> loadChartData() async {
+    // try to load stock prices as spots if not log error
     setState(() {
       isLoadingChart = true;
       chartSpots = [];
@@ -97,7 +104,7 @@ class _StockChartState extends State<StockChartCard> {
               : chartSpots.isEmpty
                 ? const SizedBox(
                   height: 200,
-                  child: Center(
+                  child: Center( // if could not load spots then show that there is no data
                     child: Text("No chart data available!",
                       style: TextStyle(
                         color: AppColors.textSecondaryColor,

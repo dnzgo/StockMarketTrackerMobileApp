@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class SearchBarWidget extends StatelessWidget{
+  /*
+  classic search bar with hint text and search icon
+   */
   final String hintText;
   final ValueChanged<String> onChanged;
 

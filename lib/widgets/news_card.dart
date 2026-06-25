@@ -25,7 +25,7 @@ class NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return InkWell( // clickable card
       onTap: onTap,
       child: Container(
         height: 130,

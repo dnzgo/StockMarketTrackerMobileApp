@@ -108,6 +108,7 @@ class OrderSummaryCard extends StatelessWidget {
                 ),
               ),
               Text(
+                // if buy selected total is stock price * quantity + fee if sell then - fee because total is what user pays or gets
                 currencyService.formatPrice(
                     isBuySelected
                         ? price * quantity * 1.001

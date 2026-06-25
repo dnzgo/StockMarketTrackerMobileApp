@@ -3,6 +3,10 @@ import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class QuickOverviewCard extends StatelessWidget {
+  /*
+  Quick overview cards show lastest transactions
+  as preview with type, symbol, quantity, price and time
+   */
   final String type;
   final String symbol;
   final double quantity;
@@ -92,7 +96,7 @@ class QuickOverviewCard extends StatelessWidget {
 
             const SizedBox(height: 2),
 
-            Text(
+            Text( // format date as 12 Jul
               createdAt == null
                   ? ""
                   : DateFormat("dd MMM").format(createdAt!),

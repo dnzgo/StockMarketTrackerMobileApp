@@ -3,6 +3,9 @@ import 'package:fl_chart/fl_chart.dart';
 import '../utils/app_theme.dart';
 
 class ReusableLineChart extends StatelessWidget{
+  /*
+  reusable line chart shared chart style to use everywhere, defines how chart looks like
+   */
 
   final List<FlSpot> spots;
 

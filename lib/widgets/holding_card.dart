@@ -4,6 +4,11 @@ import '../services/service_locator.dart';
 import '../utils/app_theme.dart';
 
 class HoldingCard extends StatelessWidget{
+  /*
+  holding card for to show portfolio holdings it gets holding and onTop
+  shows symbol, quantity, total value, total change.
+  when clicked navigates to stock detail screen of that holding
+  */
   final PortfolioHolding holding;
   final VoidCallback onTap;
 
@@ -34,7 +39,7 @@ class HoldingCard extends StatelessWidget{
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                Text( // holdings stock symbol
                   holding.stock.symbol,
                   style: const TextStyle(
                     color: AppColors.textSecondaryColor,
@@ -42,7 +47,7 @@ class HoldingCard extends StatelessWidget{
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
+                Text( // holdings current share price
                   currencyService.formatPrice(holding.stock.price),
                   style: const TextStyle(
                     color: AppColors.textSecondaryColor,
@@ -55,7 +60,7 @@ class HoldingCard extends StatelessWidget{
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
+                Text( // holdings current value
                   currencyService.formatPrice(holding.currentValue),
                   style: const TextStyle(
                     color: AppColors.textSecondaryColor,
@@ -63,7 +68,7 @@ class HoldingCard extends StatelessWidget{
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
+                Text( // PnL of holding & PnL percentage
                   "${currencyService.formatPrice(holding.profitLoss)}"
                   "(${holding.profitLossPercentage.toStringAsFixed(2)}%)",
                   style: TextStyle(

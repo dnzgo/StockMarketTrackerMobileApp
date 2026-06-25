@@ -15,6 +15,7 @@ class StockInfoCard extends StatelessWidget {
   });
 
   String formatValue() {
+    // format high numbers to show better ui
     if (title == "Volume") {
 
       if (value >= 1000000000) {

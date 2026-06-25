@@ -5,6 +5,9 @@ import '../utils/app_theme.dart';
 import '../widgets/reusable_line_chart.dart';
 
 class PortfolioSummaryCard extends StatefulWidget {
+  /*
+  Portfolio summary card includes total value total PnL and chart
+  */
 
   final double totalValue;
   final double totalPnL;
@@ -28,12 +31,13 @@ class PortfolioSummaryCard extends StatefulWidget {
 class _PortfolioSummaryState extends State<PortfolioSummaryCard> {
 
   List<FlSpot> get fallbackChartData {
+    // if API falls then show this spots
     return const [
-      FlSpot(0, 10000),
-      FlSpot(1, 10000),
-      FlSpot(2, 10000),
-      FlSpot(3, 10000),
-      FlSpot(4, 10000),
+      FlSpot(0, 10200),
+      FlSpot(1, 90000),
+      FlSpot(2, 9500),
+      FlSpot(3, 9900),
+      FlSpot(4, 10500),
     ];
   }
 
@@ -90,7 +94,7 @@ class _PortfolioSummaryState extends State<PortfolioSummaryCard> {
 
                   const SizedBox(height: 2),
 
-                  Text(
+                  Text( // total value: cash balance + current holdings value
                     currencyService.formatPrice(widget.totalValue),
                     style: const TextStyle(
                       color:
@@ -122,7 +126,7 @@ class _PortfolioSummaryState extends State<PortfolioSummaryCard> {
                       BorderRadius.circular(12),
                     ),
 
-                    child: Text(
+                    child: Text( // total PnL andPnL percentage does not inclued cash balance to calculation
                       "${currencyService.formatPrice(widget.totalPnL)} "
                           "(${widget.totalPnLPercentage.toStringAsFixed(2)}%)",
 

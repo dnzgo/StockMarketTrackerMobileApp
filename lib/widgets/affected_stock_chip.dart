@@ -5,6 +5,7 @@ class AffectedStockChip extends StatelessWidget{
   /*
   Affected stock chip for news detail screen to show stocks affected from news
   small card that only shows symbol and change percentage
+  when click on it navigates to stock detail screen of the stock (callback)
    */
   final String symbol;
   final double changePercentage;
@@ -32,6 +33,7 @@ class AffectedStockChip extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
+              // stock symbol
               symbol,
               style: const TextStyle(
                 color: AppColors.textPrimaryColor,
@@ -39,6 +41,7 @@ class AffectedStockChip extends StatelessWidget{
             ),
 
             Text(
+              // change percentage as 0.00 if its positive green otherwise its red
               "${changePercentage.toStringAsFixed(2)}%",
               style: TextStyle(
                 color: isPositive

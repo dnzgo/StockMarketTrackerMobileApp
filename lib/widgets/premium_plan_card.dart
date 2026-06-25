@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:stock_market_tracker_mobile_app/utils/app_theme.dart';
 
 class PremiumPlanCard extends StatelessWidget {
+  /*
+  Plan cards show different plans as cards, with title, price, subtitle, feature that plan unlocks
+   */
   final String title;
   final String price;
   final String subtitle;
@@ -64,7 +67,7 @@ class PremiumPlanCard extends StatelessWidget {
               ),
             ),
 
-            ...features.map(
+            ...features.map( // unwrap features to show as text widget because children expects widgets not list
                   (feature) => Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
