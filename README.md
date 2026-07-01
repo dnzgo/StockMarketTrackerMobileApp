@@ -172,10 +172,10 @@ flutter run
 
 ## 👨‍💻 Development Team
 
--**Deniz Gözcü**
--**Emir Yalcinkaya**
--**Ada Ugur Abur**
--**Batu Kerem Yildirim**
+- Deniz Gözcü
+- Emir Yalcinkaya
+- Ada Ugur Abur
+- Batu Kerem Yildirim
 
 Software Engineering Students
 
