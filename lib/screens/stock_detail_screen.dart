@@ -8,6 +8,7 @@ import '../screens/trade_screen.dart';
 import '../utils/app_theme.dart';
 import '../services/stock_service.dart';
 import '../models/stock_statistic.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StockDetailScreen extends StatefulWidget {
   final String symbol;
@@ -93,6 +94,17 @@ class _StockDetailState extends State<StockDetailScreen> {
     });
   }
 
+  Future<void> openWebAnalysis() async {
+    final uri = Uri.parse(
+      "https://adaabur.github.io/StockMarketTrackerWebApp/pages/stock-details.html?symbol=${widget.symbol}",
+    );
+
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -124,6 +136,15 @@ class _StockDetailState extends State<StockDetailScreen> {
             ),
           ),
           actions: [
+            IconButton(
+              onPressed: openWebAnalysis,
+              icon: const Icon(
+                Icons.language,
+                color: AppColors.textPrimaryColor,
+              ),
+              tooltip: "Open Web Analysis",
+            ),
+
             IconButton(onPressed: toggleWatchlist, icon: Icon(
               isWatchlisted
                 ? Icons.star
@@ -157,7 +178,7 @@ class _StockDetailState extends State<StockDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          currencyService.formatPrice(widget.price),
+                          currencyService.formatPrice(displayedPrice),
                           style: const TextStyle(
                             color: AppColors.textPrimaryColor,
                             fontSize: 24,
